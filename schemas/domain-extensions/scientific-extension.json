@@ -1,0 +1,66 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Scientific Domain Extension",
+  "description": "Extends core schema for scientific knowledge claims",
+  "allOf": [
+    {"$ref": "../core-knowledge-schema.json"}
+  ],
+  "properties": {
+    "scenario": {
+      "properties": {
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "hypothesis": {"type": "string"},
+            "timeframe": {"type": "string"},
+            "geographicScope": {"type": "string"},
+            "population": {"type": "string"},
+            "variables": {"type": "object"}
+          }
+        }
+      }
+    },
+    "conclusion": {
+      "properties": {
+        "outcome": {
+          "type": "object",
+          "properties": {
+            "claimIsTrue": {"type": "boolean"},
+            "effectSize": {
+              "type": "object",
+              "properties": {
+                "description": {"type": "string"},
+                "quantification": {"type": "string"},
+                "units": {"type": "string"}
+              }
+            },
+            "mechanism": {"type": "string"}
+          }
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "properties": {
+        "replicationStatus": {
+          "type": "object",
+          "properties": {
+            "totalStudies": {"type": "integer"},
+            "supportingStudies": {"type": "integer"},
+            "contradictingStudies": {"type": "integer"},
+            "replicationRate": {"type": "number"},
+            "independentGroups": {"type": "integer"}
+          }
+        },
+        "predictiveAccuracy": {
+          "type": "object",
+          "properties": {
+            "predictionsMade": {"type": "array"},
+            "predictionsVerified": {"type": "array"},
+            "accuracy": {"type": "number"}
+          }
+        }
+      }
+    }
+  }
+}

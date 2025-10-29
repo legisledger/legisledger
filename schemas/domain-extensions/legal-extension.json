@@ -1,0 +1,75 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Legal Domain Extension",
+  "description": "Extends core schema for legal rights knowledge",
+  "allOf": [
+    {"$ref": "../core-knowledge-schema.json"}
+  ],
+  "properties": {
+    "scenario": {
+      "properties": {
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "originCountry": {"type": "string", "pattern": "^[A-Z]{2}$"},
+            "destinationCountry": {"type": "string", "pattern": "^[A-Z]{2}$"},
+            "issueType": {"type": "string"},
+            "specificFacts": {"type": "object"}
+          }
+        }
+      }
+    },
+    "conclusion": {
+      "properties": {
+        "outcome": {
+          "type": "object",
+          "properties": {
+            "entitled": {"type": "boolean"},
+            "remedy": {
+              "type": "object",
+              "properties": {
+                "type": {"type": "string"},
+                "amount": {"type": "string"},
+                "description": {"type": "string"}
+              }
+            }
+          }
+        }
+      }
+    },
+    "jurisdiction": {
+      "type": "object",
+      "required": ["primary", "confidence"],
+      "properties": {
+        "primary": {"type": "string"},
+        "applicable": {"type": "array", "items": {"type": "string"}},
+        "reasoning": {"type": "string"},
+        "confidence": {"type": "number", "minimum": 0, "maximum": 1}
+      }
+    },
+    "enforcement": {
+      "type": "object",
+      "properties": {
+        "mechanism": {"type": "string"},
+        "steps": {"type": "array", "items": {"type": "string"}},
+        "successRate": {"type": "number"},
+        "typicalTimeline": {"type": "string"},
+        "agencies": {"type": "array"}
+      }
+    },
+    "validation": {
+      "type": "object",
+      "properties": {
+        "realWorldFeedback": {
+          "type": "object",
+          "properties": {
+            "claimsFiled": {"type": "integer"},
+            "compensationReceived": {"type": "integer"},
+            "denied": {"type": "integer"},
+            "actualSuccessRate": {"type": "number"}
+          }
+        }
+      }
+    }
+  }
+}
