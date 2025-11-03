@@ -141,12 +141,12 @@ See: [Core Schema](schemas/core-knowledge-schema.json)
 ### Core
 - [README](README.md) - This file
 - [Core Schema](schemas/core-knowledge-schema.json)
-- [Constitution](docs/governance/CONSTITUTION.md) - Governance by design
-- [FAQ](docs/governance/FAQ.md)
+- [Constitution](docs/CONSTITUTION.md) - Governance by design
+- [FAQ](docs/FAQ.md)
 
 ### Examples
 - [Scientific: Creatine](examples/scientific/creatine-lbm-resistance-training-2025.json)
-- [Legal: Passenger Rights](examples/legal/) (in development)
+- [Legal: Passenger Rights](examples/data/abstracts/us-denied-boarding.json) (in development)
 
 ---
 
@@ -197,13 +197,13 @@ See: [Core Schema](schemas/core-knowledge-schema.json)
 - Governance architecture documented
 - Legal clearance in progress
 
-### Phase 2: Public Launch (Q2 2025)
+### Phase 2: Public Launch (early 2026)
 - Repository made public
 - Documentation site live
 - Institution onboarding process
 - API documentation
 
-### Phase 3: Growth (2025-2026)
+### Phase 3: Growth (2026)
 - Climate change example
 - UBI pilot results
 - Multi-institution disagreement examples
@@ -222,7 +222,7 @@ This project will welcome contributions in:
 - Vocabulary governance
 - Institution recruitment
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) (to be created)
+See [docs/CONTRIBUTING.md](CONTRIBUTING.md) (to be created)
 
 ---
 
