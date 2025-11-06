@@ -1,8 +1,19 @@
-# Bayesian Calculation Method: Ensuring Reproducibility
+# Bayesian Calculation Method: Implementation Guide
 
-**Version:** 1.0  
-**Date:** 2025-01-26  
-**Purpose:** Rigorous methodology for calculating Bayesian confidence with full transparency
+**Version:** 2.0  
+**Date:** 2025-11-06  
+**Purpose:** Detailed operational guide for calculating Bayesian confidence with full transparency  
+**Authoritative Methodology:** See BAYESIAN_STANDARD.md v2.2
+
+---
+
+## Overview
+
+This document is the **operational implementation guide** for creating Bayesian knowledge abstracts. For high-level methodology and governance, see **BAYESIAN_STANDARD.md**.
+
+**Document relationship:**
+- **BAYESIAN_STANDARD.md** → What and why (methodology, principles)
+- **BAYESIAN_CALCULATION_METHOD.md** → How (detailed instructions, lookup tables)
 
 ---
 
@@ -30,7 +41,7 @@
 
 ## Step 1: Set Prior (Starting Confidence)
 
-### Rule: Priors Must Come From
+### Rule: Priors Must Come From One of These Sources
 
 #### 1. Base Rates from Literature (BEST)
 
@@ -106,18 +117,18 @@
 }
 ```
 
+#### 5. Conservative Default (WHEN NO SOURCE AVAILABLE)
+
+**When truly uncertain and no source available:**
+- Use 0.50 (maximum entropy, no bias)
+- Document: "No empirical base rate available. Using 0.50 as uninformative prior."
+
 ### NEVER ALLOWED
 
 ❌ "Seems like 0.60" (gut feeling)  
 ❌ "I think 0.50 is reasonable" (arbitrary)  
 ❌ "Let's start at 0.70" (unjustified)  
 ❌ "My intuition says..." (not documented)
-
-### Conservative Default
-
-**When truly uncertain and no source available:**
-- Use 0.50 (maximum entropy, no bias)
-- Document: "No empirical base rate available. Using 0.50 as uninformative prior."
 
 ---
 
@@ -131,12 +142,120 @@ Where:
 - P(E|H) = Probability we'd observe this evidence if hypothesis is true
 - P(E|~H) = Probability we'd observe this evidence if hypothesis is false
 - BF > 1: Evidence supports hypothesis
-- BF < 1: Evidence contradicts hypothesis
+- BF < 1: Evidence contradicts hypothesis (favors null)
 - BF = 1: Evidence is neutral
 
-### Method A: Empirical Base Rates (PREFERRED)
+---
 
-#### Example 1: Meta-Analysis Shows Positive Effect
+## CRITICAL UPDATE (2025-11-06): Handling BF < 1
+
+### When Evidence Favors Null Hypothesis
+
+**If BF < 1, you must:**
+
+1. **Set `favorsNullHypothesis: true`** in probabilityProvenance
+2. **Calculate Inverse BF:** Inverse BF = 1 / BF
+3. **Interpret using Inverse BF** with updated thresholds
+4. **Use clear language:** "Evidence suggests no effect" (not "failed to find effect")
+
+**Example:**
+
+```json
+{
+  "factor": "Large RCT shows null result (HR = 0.98, p=0.82)",
+  "increases": false,
+  "posteriorAfter": 0.35,
+  "bayesFactor": 0.25,
+  "reasoning": "Well-powered RCT finding null result provides evidence AGAINST the hypothesis. Inverse BF = 4.0 indicates moderate evidence supporting no effect.",
+  "probabilityProvenance": {
+    "method": "empirical-base-rate",
+    "evidenceGrade": "A",
+    "favorsNullHypothesis": true,
+    "calculation": {
+      "P_E_given_H": 0.20,
+      "P_E_given_H_reasoning": "If effect exists, only 20% chance of seeing null result in well-powered RCT (Type II error rare with adequate power)",
+      "P_E_given_H_source": "Statistical power calculations for RCTs with n>1000, 90% power",
+      "P_E_given_not_H": 0.80,
+      "P_E_given_not_H_reasoning": "If no effect exists, expect null result 80% of time (allowing for 5% false positives + some noise)",
+      "P_E_given_not_H_source": "Standard RCT methodology, α=0.05",
+      "BF": 0.25,
+      "BF_calculation": "0.20 / 0.80 = 0.25",
+      "Inverse_BF": 4.0,
+      "Inverse_BF_calculation": "1 / 0.25 = 4.0",
+      "Inverse_BF_interpretation": "Inverse BF = 4.0 is moderate evidence FOR the null hypothesis (no effect). Updated thresholds: BF 3-9 = Moderate, BF 9-30 = Strong."
+    }
+  }
+}
+```
+
+---
+
+## Standard Probability Lookup Tables
+
+### Evidence Detection Rates (P(E|H))
+
+**If hypothesis is TRUE, how likely would we detect it?**
+
+| Evidence Type | P(E\|H) | Source |
+|---------------|---------|--------|
+| **Meta-analysis (well-conducted)** | 0.90-0.95 | Cochrane methodology - meta-analyses detect true effects 90-95% of time |
+| **Large RCT (n>1000, 90% power)** | 0.85-0.90 | Power calculations - high power trials detect most true effects |
+| **Medium RCT (n=200-1000, 80% power)** | 0.75-0.85 | Standard power calculations |
+| **Small RCT (n<200)** | 0.60-0.75 | Underpowered studies often miss real effects |
+| **Strong observational (well-adjusted)** | 0.60-0.75 | Hill's criteria - well-conducted observational studies |
+| **Weak observational** | 0.50-0.65 | High confounding risk |
+| **Mechanistic study** | 0.75-0.85 | Lab confirmation of mechanism |
+| **Case series** | 0.40-0.60 | Very limited inference capability |
+
+**Sources:**
+- Cochrane Handbook for Systematic Reviews
+- Standard statistical power analysis textbooks
+- Hill's criteria for causation literature
+
+---
+
+### False Positive Rates (P(E|~H))
+
+**If hypothesis is FALSE, how likely would we still see this evidence?**
+
+| Evidence Type | P(E\|~H) | Source |
+|---------------|----------|--------|
+| **Meta-analysis** | 0.05-0.10 | Low false positive risk in well-conducted synthesis |
+| **Large RCT** | 0.10-0.15 | α=0.05 + modest publication bias |
+| **Medium RCT** | 0.15-0.20 | Higher bias risk in smaller trials |
+| **Small RCT** | 0.20-0.30 | Publication bias + p-hacking risks |
+| **Strong observational** | 0.30-0.50 | Confounding common even with adjustment |
+| **Weak observational** | 0.40-0.60 | Very high spurious association risk |
+| **Mechanistic** | 0.35-0.50 | Mechanism can exist without clinical effect |
+| **Case series** | 0.40-0.60 | High spurious association rate |
+
+**Sources:**
+- Ioannidis (2005) "Why Most Published Research Findings Are False"
+- Publication bias research (Franco et al. 2014)
+- Standard false positive rates (α=0.05 adjusted for real-world conditions)
+
+---
+
+## Updated BF Interpretation Thresholds (2025-11-06)
+
+| Bayes Factor | Interpretation | Real-World Context |
+|--------------|----------------|-------------------|
+| **BF > 100** | Decisive | Rare: forensics, physics, climate (orthogonal evidence types) |
+| **BF 30-100** | Very Strong | Uncommon: exceptional consensus, multiple independent meta-analyses |
+| **BF 9-30** | Strong | Realistic for well-established effects, high-quality meta-analyses |
+| **BF 3-9** | Moderate | Common for solid RCTs, consistent observational findings |
+| **BF 1-3** | Weak | Small studies, preliminary evidence |
+| **BF = 1** | Neutral | Evidence doesn't favor either hypothesis |
+| **BF < 1** | Favors Null | Calculate Inverse BF and interpret with thresholds above |
+
+**Previous thresholds (pre-2025-11-06):** BF 3-10 = Moderate, BF 10-30 = Strong  
+**Updated thresholds:** BF 3-9 = Moderate, BF 9-30 = Strong
+
+---
+
+## Method A: Empirical Base Rates (PREFERRED)
+
+### Example 1: Meta-Analysis Shows Positive Effect
 
 **Question:** If our hypothesis is true, how likely would we see a positive meta-analysis?
 
@@ -152,8 +271,9 @@ Where:
   "P_E_given_not_H_source": "Ioannidis (2005) 'Why Most Published Research Findings Are False' + meta-analysis methodology",
   "P_E_given_not_H_sourceURL": "https://doi.org/10.1371/journal.pmed.0020124",
   
-  "bayesFactor": 9.5,
-  "calculation": "0.95 / 0.10 = 9.5"
+  "BF": 9.5,
+  "calculation": "0.95 / 0.10 = 9.5",
+  "BF_interpretation": "BF = 9.5 is strong evidence supporting the hypothesis (just above the 9.0 threshold). Updated thresholds: BF 9-30 = Strong."
 }
 ```
 
@@ -162,7 +282,9 @@ Where:
 - P(E|~H): 0.05-0.10 (low false positive rate)
 - **Source:** Cochrane methodology + Ioannidis publication bias research
 
-#### Example 2: Single RCT Shows Positive Effect
+---
+
+### Example 2: Single RCT Shows Positive Effect
 
 ```json
 {
@@ -174,8 +296,9 @@ Where:
   "P_E_given_not_H_reasoning": "Higher false positive risk than meta-analysis due to single study, publication bias",
   "P_E_given_not_H_source": "α=0.05 threshold + estimated 2-3x inflation from publication bias (Franco et al. 2014)",
   
-  "bayesFactor": 5.7,
-  "calculation": "0.85 / 0.15 = 5.7"
+  "BF": 5.7,
+  "calculation": "0.85 / 0.15 = 5.7",
+  "BF_interpretation": "BF = 5.7 is moderate evidence (in the 3-9 range) supporting the hypothesis."
 }
 ```
 
@@ -183,7 +306,9 @@ Where:
 - P(E|H): 0.80-0.90 (depends on power)
 - P(E|~H): 0.10-0.20 (single study, higher false positive risk)
 
-#### Example 3: Observational Study Shows Association
+---
+
+### Example 3: Observational Study Shows Association
 
 ```json
 {
@@ -195,8 +320,9 @@ Where:
   "P_E_given_not_H_reasoning": "High risk of spurious associations from confounding, selection bias, measurement error",
   "P_E_given_not_H_source": "Ioannidis et al. research on observational study false positives",
   
-  "bayesFactor": 1.75,
-  "calculation": "0.70 / 0.40 = 1.75"
+  "BF": 1.75,
+  "calculation": "0.70 / 0.40 = 1.75",
+  "BF_interpretation": "BF = 1.75 is weak evidence (below the 3.0 threshold for Moderate). Observational data provides limited support."
 }
 ```
 
@@ -204,7 +330,34 @@ Where:
 - P(E|H): 0.60-0.75 (moderate reliability)
 - P(E|~H): 0.30-0.50 (high false positive risk)
 
-### Method B: Replication Rate (When Available)
+---
+
+### Example 4: RCT Shows Null Result (Evidence AGAINST Hypothesis)
+
+```json
+{
+  "P_E_given_H": 0.15,
+  "P_E_given_H_reasoning": "If effect truly exists, unlikely (15%) to see null result in well-powered RCT. Would expect positive result ~85% of time.",
+  "P_E_given_H_source": "Statistical power calculations - well-powered RCT (80-90% power) should detect real effects",
+  
+  "P_E_given_not_H": 0.85,
+  "P_E_given_not_H_reasoning": "If no true effect, expect null result 85% of time (5% false positive + remaining as true null)",
+  "P_E_given_not_H_source": "Standard RCT methodology with α=0.05",
+  
+  "BF": 0.18,
+  "calculation": "0.15 / 0.85 = 0.18",
+  "BF_interpretation": "BF = 0.18 means evidence favors null hypothesis",
+  
+  "favorsNullHypothesis": true,
+  "Inverse_BF": 5.67,
+  "Inverse_BF_calculation": "1 / 0.18 = 5.67",
+  "Inverse_BF_interpretation": "Inverse BF = 5.67 is moderate evidence (in the 3-9 range) SUPPORTING the null hypothesis (no effect exists). Updated thresholds: BF 3-9 = Moderate."
+}
+```
+
+---
+
+## Method B: Replication Rate (When Available)
 
 **Example: Multiple Studies Replicate Finding**
 
@@ -225,12 +378,15 @@ Where:
   "P_E_given_not_H_reasoning": "Seeing 18/20 positive very unlikely if no true effect (would require massive publication bias)",
   "P_E_given_not_H_source": "Binomial probability: P(k≥18|n=20,p=0.05) = 0.000002, but publication bias inflates to ~15%",
   
-  "bayesFactor": 6.0,
-  "calculation": "0.90 / 0.15 = 6.0"
+  "BF": 6.0,
+  "calculation": "0.90 / 0.15 = 6.0",
+  "BF_interpretation": "BF = 6.0 is moderate evidence (in the 3-9 range) supporting the hypothesis."
 }
 ```
 
-### Method C: Effect Size Consistency
+---
+
+## Method C: Effect Size Consistency
 
 **Example: Effect Sizes Converge Across Studies**
 
@@ -253,12 +409,15 @@ Where:
   "P_E_given_not_H_reasoning": "If no true effect, expect wide variance in effect sizes due to sampling error",
   "P_E_given_not_H_source": "Statistical theory: null hypothesis predicts high heterogeneity",
   
-  "bayesFactor": 4.25,
-  "calculation": "0.85 / 0.20 = 4.25"
+  "BF": 4.25,
+  "calculation": "0.85 / 0.20 = 4.25",
+  "BF_interpretation": "BF = 4.25 is moderate evidence (in the 3-9 range) supporting the hypothesis."
 }
 ```
 
-### Method D: Mechanistic Studies (Biological Plausibility)
+---
+
+## Method D: Mechanistic Studies (Biological Plausibility)
 
 **Example: Mechanism Confirmed in Lab**
 
@@ -272,8 +431,9 @@ Where:
   "P_E_given_not_H_reasoning": "Mechanism can exist without clinical benefit (many plausible mechanisms don't translate to humans)",
   "P_E_given_not_H_source": "Translational medicine failure rate: ~60% of mechanisms don't produce clinical effects",
   
-  "bayesFactor": 2.0,
-  "calculation": "0.80 / 0.40 = 2.0"
+  "BF": 2.0,
+  "calculation": "0.80 / 0.40 = 2.0",
+  "BF_interpretation": "BF = 2.0 is weak evidence (below the 3.0 threshold) supporting the hypothesis. Mechanistic studies alone provide limited support."
 }
 ```
 
@@ -319,44 +479,47 @@ Then convert back to probability:
 - Posterior probability
 - Verify against your calculation
 
+**Every calculation must be verifiable using this tool.**
+
 ---
 
-## Step 4: Document Everything
+## Conservative Rounding Rules
 
-### Required JSON Structure
+### When Uncertain, Round Conservatively
 
+**For P(E|H):** Round DOWN
+- Uncertain between 0.80-0.90? Use 0.80
+- Makes evidence weaker, more conservative
+
+**For P(E|~H):** Round UP
+- Uncertain between 0.10-0.20? Use 0.20
+- Makes evidence weaker, more conservative
+
+**Result:** Biases toward LOWER confidence, not higher
+
+**Document your conservatism:**
 ```json
-{
-  "factor": "Meta-analysis of 35 RCTs shows significant effect",
-  "increases": true,
-  "posteriorAfter": 0.934,
-  "bayesFactor": 9.5,
-  "reasoning": "Meta-analyses are highly reliable evidence. If hypothesis true, very likely (95%) we'd see this positive result. If false, only 10% chance of false positive. Strong evidence in favor.",
-  
-  "probabilityProvenance": {
-    "method": "empirical-base-rate",
-    "evidenceGrade": "A+",
-    
-    "P_E_given_H": 0.95,
-    "P_E_given_H_source": "Cochrane Handbook: Meta-analyses detect 90-95% of true effects",
-    "P_E_given_H_sourceURL": "https://training.cochrane.org/handbook/current/chapter-03",
-    
-    "P_E_given_not_H": 0.10,
-    "P_E_given_not_H_source": "Ioannidis (2005) + standard α=0.05: false positive rate ~5-10%",
-    "P_E_given_not_H_sourceURL": "https://doi.org/10.1371/journal.pmed.0020124",
-    
-    "BF": 9.5,
-    "calculation": "0.95 / 0.10 = 9.5",
-    
-    "posteriorCalculation": {
-      "priorOdds": 1.5,
-      "calculation": "1.5 × 9.5 = 14.25",
-      "posteriorOdds": 14.25,
-      "posterior": "14.25 / 15.25 = 0.934"
-    }
-  }
-}
+"conservativeRounding": "Rounded P(E|H) down from 0.85 to 0.80, rounded P(E|~H) up from 0.15 to 0.20 - biases toward lower confidence"
 ```
+
+---
+
+## Maximum Update Limits
+
+**Single piece of evidence should rarely:**
+- Increase confidence by >0.25
+- Produce BF > 20 (for biomedical/social science)
+- Take prior from 0.50 to >0.90
+
+**If calculations suggest large jump:**
+- Double-check probabilities
+- Consider if evidence is really that strong
+- Consult peer reviewer
+
+**Exception:** BF > 20 is realistic for:
+- Physics/forensics (orthogonal evidence)
+- Climate science (multiple independent measurement systems)
+- **NOT realistic for:** Single RCT, single observational study
 
 ---
 
@@ -381,6 +544,8 @@ Then convert back to probability:
 }
 ```
 
+---
+
 ### ❌ Pitfall 2: Double-Counting Evidence
 
 **Bad:**
@@ -390,6 +555,8 @@ Then convert back to probability:
 
 **Good:**
 - Use meta-analysis OR component studies, not both
+
+---
 
 ### ❌ Pitfall 3: Ignoring Contradictory Evidence
 
@@ -402,6 +569,8 @@ Then convert back to probability:
 - Include ALL relevant evidence
 - Negative evidence gets BF < 1
 - Reduces confidence appropriately
+
+---
 
 ### ❌ Pitfall 4: Unjustified Large Jumps
 
@@ -418,68 +587,6 @@ Then convert back to probability:
 
 ---
 
-## Standard Probability Lookup Table
-
-### Evidence Detection Rates (P(E|H))
-
-| Evidence Type | P(E\|H) | Source |
-|---------------|---------|--------|
-| Meta-analysis (well-conducted) | 0.90-0.95 | Cochrane methodology |
-| Large RCT (n>1000, 90% power) | 0.85-0.90 | Power calculations |
-| Medium RCT (n=200-1000, 80% power) | 0.75-0.85 | Power calculations |
-| Small RCT (n<200) | 0.60-0.75 | Underpowered studies |
-| Strong observational (adjusted) | 0.60-0.75 | Hill's criteria |
-| Weak observational | 0.50-0.65 | High confounding risk |
-| Mechanistic study | 0.75-0.85 | Lab confirmation |
-| Case series | 0.40-0.60 | Very limited inference |
-
-### False Positive Rates (P(E|~H))
-
-| Evidence Type | P(E\|~H) | Source |
-|---------------|----------|--------|
-| Meta-analysis | 0.05-0.10 | Low false positive risk |
-| Large RCT | 0.10-0.15 | α=0.05 + publication bias |
-| Medium RCT | 0.15-0.20 | Higher bias risk |
-| Observational | 0.30-0.50 | Confounding common |
-| Mechanistic | 0.35-0.50 | Doesn't guarantee clinical effect |
-| Case series | 0.40-0.60 | Very high spurious associations |
-
-**Sources:**
-- Cochrane Handbook for Systematic Reviews
-- Ioannidis (2005) "Why Most Published Research Findings Are False"
-- GRADE Working Group methodology
-- Standard statistical power analysis texts
-
----
-
-## Conservative Defaults
-
-### When Uncertain, Round Conservatively
-
-**For P(E|H):** Round DOWN
-- Uncertain between 0.80-0.90? Use 0.80
-- Makes evidence weaker, more conservative
-
-**For P(E|~H):** Round UP
-- Uncertain between 0.10-0.20? Use 0.20
-- Makes evidence weaker, more conservative
-
-**Result:** Biases toward LOWER confidence, not higher
-
-### Maximum Update Limits
-
-**Single piece of evidence should rarely:**
-- Increase confidence by >0.25
-- Produce BF > 20
-- Take prior from 0.50 to >0.90
-
-**If calculations suggest large jump:**
-- Double-check probabilities
-- Consider if evidence is really that strong
-- Consult peer reviewer
-
----
-
 ## Peer Review Checklist
 
 ### Can Someone Else Reproduce Your Calculation?
@@ -492,6 +599,7 @@ Then convert back to probability:
 - [ ] Reasoning is clear and documented
 - [ ] Contradictory evidence is included
 - [ ] Conservative defaults used when uncertain
+- [ ] BF < 1 handled with Inverse BF and favorsNullHypothesis flag
 
 ### Red Flags for Reviewer
 
@@ -500,75 +608,100 @@ Then convert back to probability:
 ⚠️ **Large unexplained jumps** (0.50 → 0.95 from one study)  
 ⚠️ **Missing contradictory evidence**  
 ⚠️ **Broken or missing citations**  
+⚠️ **BF < 1 without Inverse BF calculation**  
+⚠️ **Null results without favorsNullHypothesis flag**
 
 ---
 
-## Example: Full Transparency
+## Complete Example: Transparent Provenance
 
-### Claim: "Vitamin D supplementation reduces all-cause mortality in adults over 75"
+### Claim: "Vitamin D supplementation reduces dementia risk in adults >75"
 
 ```json
 {
   "bayesianAnalysis": {
     "prior": {
-      "confidence": 0.60,
-      "basis": "Vitamin D has plausible mechanism (receptor exists, regulates genes) + base rate of ~60% for vitamin supplementation effects in targeted populations",
-      "source": "Mechanistic reviews (PMID: 17634462) + Fortmann et al. (2013) vitamin supplement meta-analysis",
-      "sourceURL": "https://doi.org/10.7326/0003-4819-159-12-201312170-00729",
+      "confidence": 0.55,
+      "basis": "Mechanistic plausibility (vitamin D receptors in brain) + base rate (~50-60% of observational associations confirmed in RCTs)",
+      "source": "Neurological vitamin D receptor literature + Ioannidis (2005) validation rates",
       "method": "mechanistic-plus-base-rate"
     },
     
     "evidence": [
       {
-        "factor": "VITAL trial: No mortality benefit in general population ages 50-80",
-        "increases": false,
-        "bayesFactor": 0.43,
-        "posteriorAfter": 0.38,
-        "reasoning": "If effect exists in elderly (>75), surprising not to see it in 50-80 age range. Null result in VITAL weakens confidence that effect exists in any age group.",
+        "factor": "Multiple observational studies show association between low vitamin D and dementia risk",
+        "increases": true,
+        "bayesFactor": 2.5,
+        "posteriorAfter": 0.65,
+        "reasoning": "Consistent observational associations suggest possible relationship, but confounding common.",
         
         "probabilityProvenance": {
-          "P_E_given_H": 0.30,
-          "P_E_given_H_reasoning": "If true effect in elderly, only 30% chance we'd see null in 50-80 (overlapping populations)",
-          "P_E_given_H_source": "Statistical reasoning about age-related effects",
-          
-          "P_E_given_not_H": 0.70,
-          "P_E_given_not_H_reasoning": "If no true effect, null result is expected outcome",
-          "P_E_given_not_H_source": "Standard null hypothesis prediction",
-          
-          "BF": 0.43,
-          "calculation": "0.30 / 0.70 = 0.43"
+          "method": "empirical-base-rate",
+          "evidenceGrade": "B",
+          "favorsNullHypothesis": false,
+          "calculation": {
+            "P_E_given_H": 0.70,
+            "P_E_given_H_reasoning": "If vitamin D prevents dementia, observational studies should detect association ~70% of time",
+            "P_E_given_H_source": "Hill's criteria literature on observational detection rates",
+            
+            "P_E_given_not_H": 0.28,
+            "P_E_given_not_H_reasoning": "If no true effect, observational studies still show associations ~28% due to confounding and publication bias",
+            "P_E_given_not_H_source": "Ioannidis (2005) false positive rates in nutritional epidemiology",
+            
+            "BF": 2.5,
+            "calculation": "0.70 / 0.28 = 2.5",
+            "BF_interpretation": "BF = 2.5 is weak evidence (below 3.0 threshold for Moderate)"
+          }
         }
       },
       
       {
-        "factor": "Zhang et al. (2019) meta-analysis: Mortality reduction in adults >75 (8 RCTs, n=42,000)",
-        "increases": true,
-        "bayesFactor": 6.0,
-        "posteriorAfter": 0.70,
-        "reasoning": "Strong evidence from meta-analysis of age-specific subgroup. Multiple RCTs converge on effect in elderly population specifically.",
+        "factor": "Finnish RCT shows null result (underpowered, only 45 dementia cases)",
+        "increases": false,
+        "bayesFactor": 0.59,
+        "posteriorAfter": 0.50,
+        "reasoning": "RCT null result provides evidence against hypothesis, though underpowering creates ambiguity. Inverse BF = 1.69 is weak evidence supporting no effect.",
         
         "probabilityProvenance": {
-          "P_E_given_H": 0.90,
-          "P_E_given_H_reasoning": "Meta-analyses detect true effects 90-95% of time",
-          "P_E_given_H_source": "Cochrane Handbook Section 3.2",
-          "P_E_given_H_sourceURL": "https://training.cochrane.org/handbook",
-          
-          "P_E_given_not_H": 0.15,
-          "P_E_given_not_H_reasoning": "With 8 RCTs, unlikely to see consistent effect if null (publication bias + chance would need to align)",
-          "P_E_given_not_H_source": "Standard meta-analysis false positive rates adjusted for multiple studies",
-          
-          "BF": 6.0,
-          "calculation": "0.90 / 0.15 = 6.0"
+          "method": "empirical-base-rate",
+          "evidenceGrade": "A",
+          "favorsNullHypothesis": true,
+          "calculation": {
+            "P_E_given_H": 0.50,
+            "P_E_given_H_reasoning": "If effect exists but RCT underpowered, 50% chance of null result. Only 45 events → power ~20-30% to detect realistic effect.",
+            "P_E_given_H_source": "Statistical power calculations with n=45 events",
+            
+            "P_E_given_not_H": 0.85,
+            "P_E_given_not_H_reasoning": "If no effect exists, expect null result 85% of time in well-conducted RCT",
+            "P_E_given_not_H_source": "Standard RCT methodology, α=0.05",
+            
+            "BF": 0.59,
+            "calculation": "0.50 / 0.85 = 0.59",
+            "BF_interpretation": "BF = 0.59 means evidence favors null hypothesis",
+            
+            "Inverse_BF": 1.69,
+            "Inverse_BF_calculation": "1 / 0.59 = 1.69",
+            "Inverse_BF_interpretation": "Inverse BF = 1.69 is weak evidence (below 3.0 threshold) supporting null hypothesis (no prevention effect)"
+          }
         }
       }
     ],
     
-    "posterior": 0.70,
+    "posterior": 0.50,
+    
+    "posteriorCalculation": {
+      "step1": "Prior 0.55 → Prior odds = 0.55/0.45 = 1.22",
+      "step2": "Update with observational (BF 2.5): 1.22 × 2.5 = 3.05 odds → 0.75 probability",
+      "step3": "Update with RCT (BF 0.59): 3.05 × 0.59 = 1.80 odds → 0.64 probability",
+      "step4": "Conservative adjustment for publication bias: 0.64 → 0.50 (round down given major methodological concerns)",
+      "verificationURL": "https://www.gigacalculator.com/calculators/bayes-theorem-calculator.php"
+    },
     
     "howToChangeMyMind": [
-      "Large RCT (N>10,000) of adults >75 shows null effect → confidence drops to ~0.40",
-      "Meta-analysis controlling for publication bias eliminates effect → confidence drops to ~0.30",
-      "Mechanism disproven (vitamin D receptor dysfunction in elderly doesn't actually affect mortality pathways) → confidence drops to ~0.25"
+      "Large adequately-powered RCT (300+ dementia cases) shows significant benefit → confidence increases to 0.75-0.80",
+      "Same large RCT shows clear null (HR ~1.0, tight CI) → confidence drops to 0.25-0.30",
+      "Meta-analysis of multiple RCTs confirms benefit → confidence increases to 0.80-0.85",
+      "Mechanism disproven (vitamin D doesn't cross blood-brain barrier) → confidence drops to 0.15-0.20"
     ]
   }
 }
@@ -585,10 +718,31 @@ When in doubt:
 2. Use conservative default
 3. Document uncertainty clearly
 4. Ask peer reviewer
+5. Use calculator tool to verify
 
 **Trustworthiness comes from transparency, not from authority.**
 
 ---
 
-**Version:** 1.0 (2025-01-26)  
-**Next Review:** After 10 abstracts to refine probability sources
+## Tools & Resources
+
+**Calculator:** https://www.gigacalculator.com/calculators/bayes-theorem-calculator.php
+
+**Key References:**
+- Cochrane Handbook: https://training.cochrane.org/handbook
+- Ioannidis (2005): https://doi.org/10.1371/journal.pmed.0020124
+- GRADE Working Group: https://www.gradeworkinggroup.org/
+
+**Companion Documents:**
+- BAYESIAN_STANDARD.md (methodology)
+- EVIDENCE_GRADING.md (quality assessment)
+- FAQ.md (common questions)
+
+---
+
+**Version:** 2.0 (2025-11-06)  
+**Status:** Operational implementation guide  
+**Next Review:** After 10 abstracts to refine probability sources  
+**Changelog:**
+- v2.0: Added Inverse BF guidance, updated BF thresholds (3-9, 9-30), added favorsNullHypothesis handling, clarified conservative rounding, added calculator tool emphasis
+- v1.0: Initial version with lookup tables and examples
