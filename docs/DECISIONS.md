@@ -26,6 +26,109 @@
 
 ---
 
+## 2025-11-06: Standardized Interpretation of Bayes Factors < 1 (Evidence Against Hypothesis)
+
+**Decision:** The schema will include a new boolean field, `favorsNullHypothesis`, within the `probabilityProvenance` object. This field will explicitly indicate when evidence supports the null hypothesis (i.e., when $BF_H < 1$), enabling clearer, human-friendly interpretations in the UI and prose.
+
+**Rationale:**
+
+1.  **Clarity for Users:** Replaces the ambiguous "no significant differences" with a direct and interpretable statement like "no effect" or "no benefit," which aligns with the Bayesian framework's ability to provide evidence for absence.
+2.  **Cognitive Load Reduction:** Simplifies the interpretation of Bayes Factors less than 1, where the inverse factor ($BF_{\neg H}$) more intuitively represents the strength of evidence *against* the original claim.
+3.  **Machine Readability:** Provides a programmatic flag (`favorsNullHypothesis: true`) for UI systems to automatically render appropriate language and visual cues, ensuring consistent messaging.
+4.  **Bayesian Consistency:** Leverages the power of Bayesian inference to explicitly quantify support for the null, avoiding the limitations of frequentist "failure to reject."
+
+**Implementation:**
+
+* **Schema Update:** Add `favorsNullHypothesis: boolean` to the `probabilityProvenance` object. Default to `false`.
+* **Prose Standard:** When `favorsNullHypothesis` is `true`:
+    * The `calculation` field will explain the inverse BF and its categorization.
+    * The `factor` description and `conclusion.outcome.result` will use direct language such as "no effect found," "no benefit observed," or "evidence supports absence of difference."
+* **UI Recommendation:** Implement clear visual indicators (e.g., specific icons, color coding, or tooltips) that translate `favorsNullHypothesis: true` into easy-to-understand statements for the user.
+
+## 2025-11-06: Schema Version v1.2.0 Finalization & Evidence Rubric Update
+
+**Decision:** The domain-agnostic schema is finalized as **v1.2.0**. We are also revising the **Bayesian Factor (BF) Rubric** and adopting a standard for **Inverse BF Interpretation**.
+
+**Rationale:**
+1.  **Rigor:** The previous BF 10-30 threshold was mathematically too conservative for the degree of posterior update seen in strong claims.
+2.  **Clarity:** The Inverse BF standard eliminates confusion when evidence favors the null hypothesis (BF < 1).
+
+**Supersedes:** BF thresholds defined in `EVIDENCE_GRADING.md` (v1.0.0).
+
+**Implementation:**
+
+* **BF Threshold Update:**
+    * **BF 3-9** is **Moderate** (Previously 3-10).
+    * **BF 9-30** is **Strong** (Previously 10-30).
+* **Inverse BF Standard:** When evidence favors the null hypothesis ($\neg H$), the prose must refer to the **Inverse Bayes Factor** ($BF_{\neg H} > 1$) for categorization.
+* **Schema:** The `submittedBy` field will be formalized as a structured object (see separate motion).
+
+## 2025-11-06: Schema Refactoring for Fact-Checking Pivot
+
+**Decision:** Refactor the `core-knowledge-schema.json` to be domain-agnostic for the "Factual Claim" domain, specifically supporting the Wikipedia/WayBack Machine pivot.
+
+**Rationale:**
+
+1. **Decoupling from Legal Domain:** The original schema was heavily reliant on legal fields (`jurisdiction`, `remedy`, `entitled`, `legalBasis`). The new focus on **epistemic confidence** requires a neutral vocabulary.
+2. **Operationalizing Context:** The concept of tracking claims through time (like a WayBack Machine archive) requires a clear `context` field to replace the legal `jurisdiction`, defining the specific environment (time, source, revision number) under which the claim is being analyzed.
+3. **Enhancing Generality:** The updated schema uses generic terms like `claimBasis` and `factuality` to ensure the structure can handle legal, scientific, or historical claims equally well, supporting future domain expansion.
+4. **Maintaining Humility:** The core principle of probabilistic conclusions ($P(H) < 1.0$) is explicitly retained to differentiate the Bayesian approach from binary fact-checking.
+
+**Source:** Legis Ledger Team Meeting, 2025-11-05; Gemini Analysis, 2025-11-06
+
+**Status:** Adopted
+
+**Implementation:**
+
+* Removed `LegalRightKnowledge` from `@type` enum; added **`FactualClaimKnowledge`**.
+* Replaced `jurisdiction` block with generic **`context`** block.
+* Updated `conclusion` block to use **`factuality`** (`True`/`False`/`Uncertain`) instead of legal `entitled`/`remedy`.
+* Renamed `evidenceBasis` to **`claimBasis`**.
+
+## 2025-11-06: Schema Version v1.2.0 Finalization
+
+**Decision:** The domain-agnostic schema is finalized as **v1.2.0**, incorporating changes from the fact-checking pivot and explicitly adopting the **Bayesian Factor (BF) Thresholds** as defined in `EVIDENCE_GRADING.md`.
+
+**Rationale:**
+
+1. **Governance:** Formally versioning the schema to allow for future backward compatibility tracking.
+2. **Rigor:** Codifying the **BF 3-10 = Moderate** and **BF 10-30 = Strong** thresholds ensures all contributors use a consistent, high standard for evidence interpretation, moving away from subjective verbal descriptions.
+3. **Completion:** Integrates the required `context` and `claimBasis` blocks from the v1.1.0 development phase.
+
+**Source:** Gemini Analysis & User Feedback on BF interpretation, 2025-11-06; Schema Review 2025-11-06
+
+**Status:** Adopted
+
+**Implementation:**
+
+* Schema version officially set to `1.2.0`.
+* All future abstract generation must ensure BF-to-Interpretation mapping adheres strictly to the **BF 3-10 (Moderate)** rule.
+
+## 2025-11-05: Claim Granularity Architecture - One Abstract = One Claim
+
+**Decision:** One JSON abstract contains ONE primary claim with full Bayesian analysis. Related claims listed with summary info (confidence + evidence grade + funnel position) and pointer to their own full abstracts.
+
+**Rationale:**
+
+User feedback: Confusion about which metadata (evidence grade, funnel position) applies to which claim when multiple claims in one file
+Clarity: Each abstract tells one coherent story without ambiguity
+Independent updates: Can update bone health evidence without touching dementia claim
+Easier querying: APIs can filter by claim type cleanly
+Simpler for users: "Does vitamin D prevent dementia?" → get ONE focused answer
+
+**Source:** User review of vitamin-d-dementia-prevention-2025.json, 2025-11-05
+
+**Status:** Adopted
+
+**Implementation:**
+
+Each claim gets own JSON file (e.g., vitamin-d-bone-health-2025.json, vitamin-d-dementia-prevention-2025.json)
+relatedClaims section enhanced with evidenceGrade and funnelPosition fields
+Master index files (e.g., vitamin-d-master-index-2025.json) link related claims for topics with multiple claims
+Schema updated to formalize this structure
+
+**Trade-off:** More files to manage (7 vitamin D claims = 7 files), but Git handles this well. Master index provides navigation.
+
 ## 2025-01-26: Strategic Pivot to Bayesian Fact-Checker
 
 **Decision:** Build corpus of Wikipedia-derived Bayesian abstracts first, institutional partnerships later

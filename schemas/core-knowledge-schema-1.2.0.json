@@ -1,0 +1,292 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Legis Ledger Core Knowledge Schema (Fact-Checking & Provenance)",
+  "description": "Universal schema for structured knowledge claims, emphasizing fact-checking, Bayesian confidence, and provenance tracking.",
+  "version": "1.2.0",
+  "type": "object",
+  "required": [
+    "@context",
+    "@type",
+    "identifier",
+    "scenario",
+    "conclusion",
+    "bayesianAnalysis",
+    "sources",
+    "metadata",
+    "disclaimer",
+    "claimBasis",
+    "context"
+  ],
+  "properties": {
+    "@context": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "object"
+            ]
+          }
+        }
+      ],
+      "description": "JSON-LD context for semantic web compatibility"
+    },
+    "@type": {
+      "type": "string",
+      "enum": [
+        "KnowledgeClaim",
+        "ScientificKnowledge",
+        "PolicyKnowledge",
+        "FactualClaimKnowledge"
+      ],
+      "description": "Type of knowledge claim. Base type is KnowledgeClaim; domain-specific types inherit from it."
+    },
+    "identifier": {
+      "type": "string",
+      "pattern": "^[a-z0-9-]+$",
+      "description": "Unique identifier (kebab-case). Format: domain-topic-variant (e.g., 'climate-co2-warming-ipcc-2025', 'creatine-cognitive-function-2025')"
+    },
+    "scenario": {
+      "type": "object",
+      "required": [
+        "description",
+        "domain"
+      ],
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Plain language description of the claim or situation being analyzed"
+        },
+        "domain": {
+          "type": "string",
+          "enum": [
+            "legal",
+            "scientific",
+            "policy",
+            "medical",
+            "economic"
+          ],
+          "description": "Knowledge domain. Determines which extensions apply."
+        }
+      }
+    },
+    "conclusion": {
+      "$ref": "#/definitions/Conclusion"
+    },
+    "bayesianAnalysis": {
+      "$ref": "#/definitions/BayesianAnalysis"
+    },
+    "sources": {
+      "type": "array",
+      "description": "A list of all sources used for the claim and Bayesian analysis.",
+      "items": {
+        "$ref": "#/definitions/Source"
+      }
+    },
+    "metadata": {
+      "$ref": "#/definitions/Metadata"
+    },
+    "disclaimer": {
+      "$ref": "#/definitions/Disclaimer"
+    },
+    "claimBasis": {
+      "type": "array",
+      "description": "The foundational source(s) the primary claim rests on (e.g., the specific study, the historical document, the Wayback Machine URL).",
+      "items": {
+        "$ref": "#/definitions/Source"
+      }
+    },
+    "context": {
+      "type": "object",
+      "required": ["primaryFocus", "reasoning"],
+      "description": "Defines the scope, boundaries, and historical context of the claim.",
+      "properties": {
+        "primaryFocus": {
+          "type": "string",
+          "description": "The primary domain or scope of the claim (e.g., 'Wikipedia History/2018', 'US Public Health/Adults 40-60')."
+        },
+        "reasoning": {
+          "type": "string",
+          "description": "Explanation of why this context/scope was chosen for validity."
+        },
+        "validityConfidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Confidence (0-1) that the scope/context of the claim is correctly defined for analysis."
+        }
+      }
+    }
+  },
+  "definitions": {
+    "BayesianAnalysis": {
+      "$comment": "Defines the structure for Bayesian analysis components. This block remains unchanged as the math is domain-agnostic.",
+      "type": "object",
+      "required": ["prior", "evidence"],
+      "properties": {
+        "prior": {
+          "type": "object"
+        },
+        "evidence": {
+          "type": "array"
+        },
+        "posterior": {
+          "type": "number"
+        },
+        "howToChangeMyMind": {
+          "type": "array"
+        }
+      }
+    },
+    "Conclusion": {
+      "type": "object",
+      "required": [
+        "claim",
+        "confidence",
+        "factuality"
+      ],
+      "properties": {
+        "claim": {
+          "type": "string",
+          "description": "The final statement of the claim (e.g., 'Passenger entitled to €600 compensation' or 'CO2 is primary driver of warming')."
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "The final confidence score (0.0 to < 1.0)."
+        },
+        "factuality": {
+          "type": "string",
+          "enum": ["True", "False", "Neutral", "Uncertain"],
+          "description": "The final judgment on the factual claim (e.g., True, False, Neutral, or Highly Uncertain)."
+        }
+      }
+    },
+    "Source": {
+      "type": "object",
+      "required": ["type", "citation"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["statute", "case-law", "meta-analysis", "rct", "expert-opinion", "web-archive", "regulator-guidance", "other"],
+          "description": "Type of source."
+        },
+        "citation": {
+          "type": "string",
+          "description": "Full citation (e.g., APA, URL, or case name)."
+        },
+        "url": {
+          "type": "string",
+          "format": "uri"
+        }
+      }
+    },
+    "Metadata": {
+      "type": "object",
+      "properties": {
+        "createdDate": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "funnelPosition": {
+          "type": "string",
+          "enum": ["narrow-end-canonical", "narrow-end-confirmed", "approaching-narrow", "middle-funnel"],
+          "description": "Position in the Validation Funnel."
+        }
+      }
+    },
+    "Disclaimer": {
+      "type": "object",
+      "required": ["nature"],
+      "properties": {
+        "nature": {
+          "type": "string"
+        },
+        "domainSpecific": {
+          "type": "object"
+        },
+        "provenanceAndLimitations": {
+          "type": "object"
+        }
+      }
+    }
+  },
+  "examples": [
+    {
+      "comment": "Scientific domain example (creatine)",
+      "@type": "ScientificKnowledge",
+      "identifier": "creatine-cognitive-function-2025",
+      "scenario": {
+        "domain": "scientific",
+        "description": "Does creatine supplementation improve cognitive function in healthy adults?"
+      },
+      "conclusion": {
+        "claim": "Creatine supplementation improves cognitive function in healthy adults.",
+        "confidence": 0.9,
+        "factuality": "True"
+      },
+      "metadata": {
+        "submittedBy": {
+          "institution": "Academic Sports Nutrition Lab",
+          "institutionType": "academic"
+        },
+        "funnelPosition": "narrow-end-confirmed"
+      },
+      "disclaimer": {
+        "nature": "educational",
+        "domainSpecific": {
+          "notMedicalAdvice": true
+        },
+        "provenanceAndLimitations": {
+          "submittedBy": "Independent academic lab",
+          "notSubmittedByAuthority": "NOT submitted by FDA, NIH, or medical authority",
+          "potentialBiases": ["Some studies have industry funding", "Publication bias favors positive results"],
+          "howToVerify": ["Search PubMed for RCTs", "Consult physician", "Review cited studies"]
+        }
+      }
+    },
+    {
+      "comment": "Fact-Checking domain example (Wikipedia/WayBack Machine)",
+      "@type": "FactualClaimKnowledge",
+      "identifier": "wiki-claim-co2-warming-2018",
+      "scenario": {
+        "domain": "fact-checking",
+        "description": "Fact-checking the claim: 'Human CO2 emissions are the primary driver of global warming since 1950', as it appeared on Wikipedia in a 2018 revision."
+      },
+      "context": {
+        "primaryFocus": "Wikipedia Revision 849312122 (2018-07-10)",
+        "reasoning": "The claim is analyzed specifically within the epistemic context of that time/source.",
+        "validityConfidence": 0.99
+      },
+      "conclusion": {
+        "claim": "Human CO2 emissions are the primary driver of global warming since 1950.",
+        "confidence": 0.95,
+        "factuality": "True"
+      },
+      "metadata": {
+        "submittedBy": {
+          "institution": "Legis Ledger Fact-Check Pilot",
+          "institutionType": "independent-educational"
+        },
+        "funnelPosition": "narrow-end-canonical"
+      },
+      "disclaimer": {
+        "nature": "educational",
+        "domainSpecific": {
+          "notLegalAdvice": false
+        },
+        "provenanceAndLimitations": {
+          "submittedBy": "Independent educational project",
+          "notSubmittedByAuthority": "NOT submitted by IPCC or UN",
+          "potentialBiases": ["Analysis may be biased toward published consensus"],
+          "howToVerify": ["Check IPCC AR6 report", "Review cited studies"]
+        }
+      }
+    }
+  ]
+}
