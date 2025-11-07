@@ -26,6 +26,21 @@
 
 ---
 
+## 2025-11-06: Bayesian Documentation Integration
+
+**Decision:** Integrated three Bayesian documents (BAYESIAN_REASONING.md, 
+BAYESIAN_CALCULATION_METHOD.md, EVIDENCE_GRADING.md) into two-document 
+system: BAYESIAN_STANDARD.md (methodology) and BAYESIAN_CALCULATION_METHOD.md 
+(implementation).
+
+**Rationale:** 
+- Clearer separation: methodology vs. implementation
+- Reduced duplication
+- Added missing content (Inverse BF, conservative rounding, complete lookup tables)
+- Archived tutorial content (available for educational use)
+
+**Status:** Adopted
+
 ## 2025-11-06: Standardized Interpretation of Bayes Factors < 1 (Evidence Against Hypothesis)
 
 **Decision:** The schema will include a new boolean field, `favorsNullHypothesis`, within the `probabilityProvenance` object. This field will explicitly indicate when evidence supports the null hypothesis (i.e., when $BF_H < 1$), enabling clearer, human-friendly interpretations in the UI and prose.

@@ -24,3 +24,23 @@
 - Literature review automation
 - "Synthesize 500 studies into confidence estimate"
 - **Pricing**: $50k-150k/year subscription
+
+# Division of Labor
+
+## Gemini = Research Assistant
+- Evidence gathering
+- Source compilation
+- Wikipedia extraction
+- Repetitive formatting
+
+## Claude = Strategic Partner
+- Bayesian reasoning
+- Probability sourcing
+- Quality control
+- Architecture decisions
+
+## You = Director
+- Choose examples
+- Review outputs
+- Make final calls
+- Integrate into MVPs
