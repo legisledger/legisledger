@@ -618,7 +618,7 @@ See: [BAYESIAN_CALCULATION_METHOD.md](docs/BAYESIAN_CALCULATION_METHOD.md)
 
 **Last Updated:** 2025-11-07  
 **Version:** 2.0 (Investor-Ready)  
-**Contact:** [Your email]  
+**Contact:** damon.regan@gmail.com
 **Website:** legis-ledger.org (launching Q1 2026)
 
 ---

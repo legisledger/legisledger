@@ -25,16 +25,18 @@ function readAbstract(filename) {
 
 function getAllAbstracts() {
   const abstracts = [];
+
   const files = [
-    'creatine-lbm-resistance-training-2025.json',
-    'dark-chocolate-cardiovascular-2025.json',
-    'seed-oils-cardiovascular-2025.json',
-    'minimum-wage-employment-effects-2025.json',
-    'minimum-wage-poverty-reduction-2025.json',
-    'vitamin-d-filtered-mvp.json',
-    'vitamin-d-bone-health-2025.json',
-    'vitamin-d-cardiovascular-prevention-2025.json',
-    'vitamin-d-dementia-prevention-2025.json'
+  'health/creatine-lbm-resistance-training-2025.json',
+  'health/dark-chocolate-cardiovascular-2025.json',
+  'health/seed-oils-cardiovascular-2025.json',
+  'policy/minimum-wage-employment-effects-2025.json',
+  'policy/minimum-wage-poverty-reduction-2025.json',
+  'health/vitamin-d-bone-health-2025.json',
+  'health/vitamin-d-cardiovascular-prevention-2025.json',
+  'health/vitamin-d-dementia-prevention-2025.json',
+  'legal/eu-delay-mechanical-3hrs.json',
+  'legal/eu-delay-weather-3hrs.json'
   ];
   
   files.forEach(filename => {
@@ -109,17 +111,18 @@ app.get('/api/filter', (req, res) => {
 
 // ENDPOINT 4: Validate all abstracts
 app.get('/api/validate', (req, res) => {
-  const files = [
-    'creatine-lbm-resistance-training-2025.json',
-    'dark-chocolate-cardiovascular-2025.json',
-    'seed-oils-cardiovascular-2025.json',
-    'minimum-wage-employment-effects-2025.json',
-    'minimum-wage-poverty-reduction-2025.json',
-    'vitamin-d-filtered-mvp.json',
-    'vitamin-d-bone-health-2025.json',
-    'vitamin-d-cardiovascular-prevention-2025.json',
-    'vitamin-d-dementia-prevention-2025.json'
-  ];
+const files = [
+  'health/creatine-lbm-resistance-training-2025.json',
+  'health/dark-chocolate-cardiovascular-2025.json',
+  'health/seed-oils-cardiovascular-2025.json',
+  'policy/minimum-wage-employment-effects-2025.json',
+  'policy/minimum-wage-poverty-reduction-2025.json',
+  'health/vitamin-d-bone-health-2025.json',
+  'health/vitamin-d-cardiovascular-prevention-2025.json',
+  'health/vitamin-d-dementia-prevention-2025.json',
+  'legal/eu-delay-mechanical-3hrs.json',
+  'legal/eu-delay-weather-3hrs.json'
+];
   
   const results = [];
   let validCount = 0;

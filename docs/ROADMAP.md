@@ -84,7 +84,7 @@ Funding: Series A prep ($5-10M)
 - Quality control (conservative bias checking)
 - Architecture decisions (schema, governance)
 
-**You (Director):**
+**Damon (Director):**
 - Example selection (strategic coverage)
 - Final review (quality standards)
 - Integration (filtered Wikipedia HTML)

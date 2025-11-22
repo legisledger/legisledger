@@ -3,6 +3,8 @@
   "@type": "KnowledgeClaim",
   "@id": "creatine-lbm-resistance-training-2025",
   
+  "identifier": "creatine-lbm-resistance-training-2025",
+
   "scenario": {
     "description": "Does creatine monohydrate supplementation increase lean body mass in adults performing resistance training?",
     "domain": "scientific",

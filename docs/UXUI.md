@@ -117,17 +117,17 @@ Could be wrong: ████░░░░░░ 28%
 
 **Why**: We identified that an "inverse" Bayes Factor (like BF=0.444) is confusing. The UI must solve this.
 
-UXUI.md Implementation: Add a component called "The Null Hypothesis Indicator."
+**UXUI.md Implementation**: Add a component called "The Null Hypothesis Indicator."
 
 **Logic**: When favorsNullHypothesis: true, the UI should not just show a low confidence score. It must visually change state.
 
-**Example**: The "Confidence Bar" could turn grey, and the "Verdict" text should change from "Confidence: 40%" to "Evidence Favors No Effect (Confidence: 40%)." This makes the "nothing here" conclusion an active, clear finding, not a passive failure.
+**Example**: The "Confidence Bar" could turn grey, and the "The Confidence Readout" text should change from "Confidence: 40%" to "Evidence Favors No Effect (Confidence: 40%)." This makes the "nothing here" conclusion an active, clear finding, not a passive failure.
 
 ### 7. Instant Auditability (Data Quality Badge)
 
 **Why**: A user needs to know why they should trust a calculation. The EVIDENCE_GRADING.md gives us Grade A, B, and C provenance.
 
-UXUI.md Implementation: Add a component called the "Provenance Badge."
+**UXUI.md Implementation**: Add a component called the "Provenance Badge."
 
 **Logic**: In the "Tug-of-War" (Bayesian path) visual, each piece of evidence (evidence[].factor) should display its probabilityProvenance.evidenceGrade (A, B, C) as a small, color-coded badge.
 
