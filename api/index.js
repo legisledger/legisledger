@@ -34,9 +34,7 @@ function getAllAbstracts() {
   'policy/minimum-wage-poverty-reduction-2025.json',
   'health/vitamin-d-bone-health-2025.json',
   'health/vitamin-d-cardiovascular-prevention-2025.json',
-  'health/vitamin-d-dementia-prevention-2025.json',
-  'legal/eu-delay-mechanical-3hrs.json',
-  'legal/eu-delay-weather-3hrs.json'
+  'health/vitamin-d-dementia-prevention-2025.json'
   ];
   
   files.forEach(filename => {
@@ -119,9 +117,7 @@ const files = [
   'policy/minimum-wage-poverty-reduction-2025.json',
   'health/vitamin-d-bone-health-2025.json',
   'health/vitamin-d-cardiovascular-prevention-2025.json',
-  'health/vitamin-d-dementia-prevention-2025.json',
-  'legal/eu-delay-mechanical-3hrs.json',
-  'legal/eu-delay-weather-3hrs.json'
+  'health/vitamin-d-dementia-prevention-2025.json'
 ];
   
   const results = [];
