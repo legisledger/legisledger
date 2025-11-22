@@ -183,7 +183,7 @@ const files = [
     }
     
     // Schema version check
-    if (abstract['@context'] && !abstract['@context'].includes('schema.org')) {
+    if (String(abstract['@context']).includes('https://schema.org')){
       validation.warnings.push('Non-standard @context');
       warningCount++;
     }
