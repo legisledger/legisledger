@@ -27,13 +27,14 @@ function getAllAbstracts() {
   const abstracts = [];
   const files = [
     'creatine-lbm-resistance-training-2025.json',
+    'dark-chocolate-cardiovascular-2025.json',
+    'seed-oils-cardiovascular-2025.json',
     'minimum-wage-employment-effects-2025.json',
     'minimum-wage-poverty-reduction-2025.json',
+    'vitamin-d-filtered-mvp.json',
     'vitamin-d-bone-health-2025.json',
     'vitamin-d-cardiovascular-prevention-2025.json',
     'vitamin-d-dementia-prevention-2025.json'
-    // Excluded: master collections, indexes, and demo files
-    // These are metadata/navigation, not individual abstracts
   ];
   
   files.forEach(filename => {
