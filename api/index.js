@@ -217,6 +217,35 @@ app.get('/api/validate', (req, res) => {
   });
 });
 
+// ENDPOINT 5: Search abstracts by claim text
+app.get('/api/search', (req, res) => {
+  const query = req.query.q || req.query.query;
+  
+  if (!query) {
+    return res.status(400).json({ 
+      error: 'Missing search query. Use ?q=your+search+terms' 
+    });
+  }
+  
+  const searchTerm = query.toLowerCase();
+  const allAbstracts = getAllAbstracts();
+  
+  // Search in claim text, domain, and identifier
+  const results = allAbstracts.filter(abstract => {
+    const claimMatch = abstract.claim?.toLowerCase().includes(searchTerm);
+    const domainMatch = abstract.domain?.toLowerCase().includes(searchTerm);
+    const idMatch = abstract.id?.toLowerCase().includes(searchTerm);
+    
+    return claimMatch || domainMatch || idMatch;
+  });
+  
+  res.json({
+    query: query,
+    count: results.length,
+    results: results
+  });
+});
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Legis Ledger API is running' });
