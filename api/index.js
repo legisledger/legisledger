@@ -64,6 +64,63 @@ function getAllAbstracts() {
   return abstracts;
 }
 
+// Root API documentation endpoint
+app.get('/api', (req, res) => {
+  res.json({
+    name: "Legis Ledger API",
+    version: "1.0.0",
+    description: "Bayesian fact-checker with quantified confidence levels",
+    documentation: "https://github.com/damonregan/legis-ledger",
+    
+    endpoints: {
+      "GET /api": {
+        description: "This documentation page"
+      },
+      "GET /api/abstracts": {
+        description: "List all available abstracts with metadata",
+        example: "https://legis-ledger.vercel.app/api/abstracts"
+      },
+      "GET /api/abstracts/:id": {
+        description: "Get a specific abstract by identifier",
+        example: "https://legis-ledger.vercel.app/api/abstracts/seed-oils-cardiovascular-2025",
+        parameters: {
+          "id": "Abstract identifier (e.g., 'creatine-lbm-resistance-training-2025')"
+        }
+      },
+      "GET /api/filter": {
+        description: "Filter abstracts by confidence threshold",
+        example: "https://legis-ledger.vercel.app/api/filter?threshold=0.70",
+        parameters: {
+          "threshold": "Minimum confidence level (0.0 to 1.0)"
+        }
+      },
+      "GET /api/search": {
+        description: "Search abstracts by text query",
+        example: "https://legis-ledger.vercel.app/api/search?q=chocolate",
+        parameters: {
+          "q": "Search query (searches claim, domain, and identifier)"
+        }
+      },
+      "GET /api/validate": {
+        description: "Validate all abstracts against schema requirements",
+        example: "https://legis-ledger.vercel.app/api/validate"
+      }
+    },
+    
+    stats: {
+      totalAbstracts: 8,
+      domains: ["health", "policy"],
+      confidenceRange: "0.40 - 0.90"
+    },
+    
+    contact: {
+      project: "Legis Ledger",
+      purpose: "Knowledge infrastructure for democracy with epistemic humility",
+      status: "Pre-launch development"
+    }
+  });
+});
+
 // ENDPOINT 1: List all abstracts
 app.get('/api/abstracts', (req, res) => {
   const abstracts = getAllAbstracts();
