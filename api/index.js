@@ -133,14 +133,25 @@ app.get('/api/abstracts', (req, res) => {
 // ENDPOINT 2: Get single abstract by ID
 app.get('/api/abstracts/:id', (req, res) => {
   const id = req.params.id;
-  const filename = `${id}.json`;
-  const abstract = readAbstract(filename);
   
-  if (abstract) {
-    res.json(abstract);
-  } else {
-    res.status(404).json({ error: 'Abstract not found' });
+  // Try each subdirectory
+  const subdirs = ['health', 'policy'];
+  let abstract = null;
+  
+  for (const subdir of subdirs) {
+    try {
+      abstract = readAbstract(`${subdir}/${id}.json`);
+      if (abstract) break;
+    } catch (e) {
+      continue;
+    }
   }
+  
+  if (!abstract) {
+    return res.status(404).json({ error: 'Abstract not found' });
+  }
+  
+  res.json(abstract);
 });
 
 // ENDPOINT 3: Filter by confidence threshold
