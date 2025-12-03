@@ -1,31 +1,21 @@
 {
-  "version": 2,
-  "builds": [
+  "buildCommand": "echo 'No build needed'",
+  "rewrites": [
     {
-      "src": "api/index.js",
-      "use": "@vercel/node"
+      "source": "/api/:path*",
+      "destination": "/api/index.js"
     },
     {
-      "src": "ui-prototypes/**",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "api/index.js"
+      "source": "/prototype",
+      "destination": "/ui-prototypes/confidence-slider-prototype.html"
     },
     {
-      "src": "/prototype",
-      "dest": "/ui-prototypes/confidence-slider-prototype.html"
+      "source": "/ui/:path*",
+      "destination": "/ui-prototypes/:path*"
     },
     {
-      "src": "/ui/(.*)",
-      "dest": "/ui-prototypes/$1"
-    },
-    {
-      "src": "/",
-      "dest": "/ui-prototypes/confidence-slider-prototype.html"
+      "source": "/",
+      "destination": "/ui-prototypes/confidence-slider-prototype.html"
     }
   ],
   "headers": [
