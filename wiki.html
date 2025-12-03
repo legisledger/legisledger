@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Legis Ledger - Filtered Wikipedia</title>
+    <title>Legis Ledger - Wikipedia Filtered by Confidence</title>
     <style>
         * {
             margin: 0;
@@ -38,218 +38,249 @@
             margin-bottom: 10px;
         }
         
-        .header p {
+        .header .subtitle {
             opacity: 0.9;
             font-size: 14px;
+            margin-top: 10px;
         }
         
-        /* Confidence Slider */
-        .slider-container {
-            background: white;
+        /* THE CONFIDENCE SPONGE */
+        .confidence-sponge {
+            background: linear-gradient(135deg, #e8f4f8 0%, #f0e8f8 100%);
             padding: 30px;
-            border-bottom: 2px solid #eee;
+            border-bottom: 3px solid #667eea;
         }
         
-        .slider-label {
-            font-weight: 600;
+        .sponge-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .sponge-title::before {
+            content: "🧽";
+            font-size: 28px;
+        }
+        
+        .sponge-metaphor {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        
+        .sponge-value {
+            font-size: 36px;
+            font-weight: 800;
+            color: #667eea;
             margin-bottom: 15px;
-            font-size: 16px;
         }
         
-        .slider-wrapper {
+        .slider-track {
             position: relative;
-            padding: 20px 0;
+            padding: 15px 0;
         }
         
         input[type="range"] {
             width: 100%;
-            height: 8px;
-            border-radius: 4px;
-            background: linear-gradient(to right, #ffc107 0%, #4caf50 50%, #2196f3 100%);
+            height: 12px;
+            border-radius: 6px;
+            background: linear-gradient(to right, 
+                #dc3545 0%, 
+                #ffc107 25%, 
+                #4caf50 50%, 
+                #2196f3 75%, 
+                #667eea 100%);
             outline: none;
             -webkit-appearance: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="range"].animating {
+            box-shadow: 0 0 20px rgba(102, 126, 234, 0.5);
         }
         
         input[type="range"]::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 24px;
-            height: 24px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            background: #667eea;
+            background: white;
+            border: 4px solid #667eea;
             cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: all 0.2s;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3);
         }
         
         input[type="range"]::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            background: #667eea;
+            background: white;
+            border: 4px solid #667eea;
             cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
         }
         
-        .slider-value {
-            text-align: center;
-            font-size: 24px;
-            font-weight: 700;
-            color: #667eea;
-            margin-top: 10px;
-        }
-        
-        .claims-count {
-            text-align: center;
-            color: #666;
-            margin-top: 10px;
-            font-size: 14px;
-        }
-        
-        /* Tabs */
-        .tabs {
+        .slider-markers {
             display: flex;
-            background: #f8f9fa;
-            padding: 0 30px;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 12px;
+            color: #666;
         }
         
-        .tab {
-            padding: 15px 30px;
-            cursor: pointer;
-            border-bottom: 3px solid transparent;
-            font-weight: 500;
-            transition: all 0.3s;
+        .claims-summary {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            border: 2px solid #667eea;
         }
         
-        .tab:hover {
-            background: #e9ecef;
+        .claims-summary-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
         }
         
-        .tab.active {
-            border-bottom-color: #667eea;
-            color: #667eea;
+        .claims-summary-detail {
+            color: #666;
+            font-size: 14px;
+            margin-top: 8px;
         }
         
         /* Content */
         .content {
-            padding: 40px;
-            line-height: 1.8;
+            padding: 30px;
+        }
+        
+        .claim-card {
+            background: #f8f9fa;
+            border-left: 4px solid #4caf50;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+        
+        .claim-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+        
+        .claim-text {
             font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 10px;
         }
         
-        .content h2 {
-            font-size: 22px;
-            margin: 30px 0 15px 0;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 8px;
+        .claim-meta {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-top: 10px;
         }
         
-        .content p {
+        .confidence-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        
+        .confidence-high {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .confidence-moderate {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .confidence-low {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .hidden-claims-section {
+            background: #fff3cd;
+            border: 2px dashed #ffc107;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+        
+        .hidden-claims-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #856404;
             margin-bottom: 15px;
         }
         
-        /* Claim styling */
-        .superscript-view .claim {
-            background: #e3f2fd;
-            padding: 2px 4px;
-            border-radius: 3px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .superscript-view .claim:hover {
-            background: #bbdefb;
-        }
-        
-        .superscript-view .confidence {
-            font-size: 11px;
-            font-weight: 700;
-            color: #1976d2;
-            vertical-align: super;
-            margin-left: 2px;
-        }
-        
-        .highlight-view .claim {
-            background: linear-gradient(120deg, #e3f2fd 0%, #fff 100%);
-            border-left: 3px solid #2196f3;
-            padding: 2px 6px;
-            margin: 0 2px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        .highlight-view .claim:hover {
-            background: #e3f2fd;
-        }
-        
-        .highlight-view .confidence {
-            display: none;
-        }
-        
-        .claim.hidden {
-            opacity: 0.3;
-            pointer-events: none;
-            text-decoration: line-through;
-        }
-        
-        /* Claim details */
-        .claim-details {
-            display: none;
-            background: #f8f9fa;
-            border-left: 4px solid #667eea;
-            padding: 20px;
-            margin: 15px 0;
+        .hidden-claim-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
             border-radius: 4px;
+            border-left: 3px solid #ffc107;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
         }
         
-        .claim-details.visible {
-            display: block;
-            animation: slideDown 0.3s ease;
+        .hidden-claim-item:hover {
+            background: #fffef0;
+            border-left-color: #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
         }
         
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .hidden-claim-item::after {
+            content: "👆 Hover to see where slider needs to be";
+            position: absolute;
+            bottom: 5px;
+            right: 10px;
+            font-size: 11px;
+            color: #999;
+            opacity: 0;
+            transition: opacity 0.3s;
         }
         
-        .claim-details h3 {
-            font-size: 16px;
-            margin-bottom: 10px;
-            color: #667eea;
+        .hidden-claim-item:hover::after {
+            opacity: 1;
         }
         
-        .claim-details .meta {
-            font-size: 13px;
-            color: #666;
-            margin-bottom: 10px;
+        .slider-ghost {
+            position: absolute;
+            top: 15px;
+            height: 12px;
+            background: rgba(102, 126, 234, 0.3);
+            border-radius: 6px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+            z-index: 10;
         }
         
-        /* Hidden claims section */
-        .hidden-claims-section {
-            margin-top: 30px;
-            padding: 20px;
-            background: #fff3cd;
-            border-radius: 8px;
-            border-left: 4px solid #ffc107;
+        .slider-ghost.visible {
+            opacity: 1;
         }
         
-        .hidden-claims-section h3 {
-            font-size: 16px;
-            margin-bottom: 10px;
-        }
-        
-        .hidden-claims-section ul {
-            font-size: 14px;
-            color: #666;
-            margin-left: 20px;
-        }
-        
-        /* Loading/Error states */
-        .loading, .error {
+        /* Loading */
+        .loading {
             text-align: center;
             padding: 60px 40px;
         }
@@ -269,40 +300,53 @@
             100% { transform: rotate(360deg); }
         }
         
-        .error {
-            color: #dc3545;
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Header (dynamic) -->
+        <!-- Header -->
         <div class="header">
             <h1 id="pageTitle">Loading...</h1>
-            <p id="pageSubtitle">Filtered Wikipedia - Adjust confidence threshold</p>
+            <p class="subtitle">Wikipedia Filtered by Confidence | <a href="/" style="color: white; text-decoration: underline;">← Back to Home</a></p>
         </div>
         
-        <!-- Confidence Slider -->
-        <div class="slider-container">
-            <div class="slider-label">Confidence Threshold</div>
-            <div class="slider-wrapper">
+        <!-- THE CONFIDENCE SPONGE -->
+        <div class="confidence-sponge">
+            <div class="sponge-title">The Confidence Sponge</div>
+            <div class="sponge-metaphor">
+                💧 Squeeze harder (higher threshold) → fewer claims remain | Release (lower threshold) → more claims appear
+            </div>
+            <div class="sponge-value"><span id="thresholdValue">70</span>% Confidence Threshold</div>
+            
+            <div class="slider-track">
+                <div class="slider-ghost" id="sliderGhost"></div>
                 <input type="range" id="confidenceSlider" min="0" max="100" value="70" step="5">
-                <div class="slider-value" id="sliderValue">70%</div>
-                <div class="claims-count" id="claimsCount">Loading...</div>
+                <div class="slider-markers">
+                    <span>0% (All)</span>
+                    <span>50%</span>
+                    <span>70% (Default)</span>
+                    <span>90%</span>
+                    <span>100%</span>
+                </div>
+            </div>
+            
+            <div class="claims-summary">
+                <div class="claims-summary-text" id="claimsSummary">Loading...</div>
+                <div class="claims-summary-detail">
+                    💡 <strong>Try it:</strong> Hover over hidden claims below to see where the slider needs to be!
+                </div>
             </div>
         </div>
         
-        <!-- Tab Switching -->
-        <div class="tabs">
-            <div class="tab active" data-view="superscript">Superscript Notation</div>
-            <div class="tab" data-view="highlight">Highlight View</div>
-        </div>
-        
-        <!-- Content (dynamic) -->
+        <!-- Content -->
         <div class="content" id="content">
             <div class="loading">
                 <div class="spinner"></div>
-                <p>Loading abstract from API...</p>
+                <p>Loading from API...</p>
             </div>
         </div>
     </div>
@@ -312,272 +356,242 @@
     const API_BASE = 'https://demo.legisledger.org/api';
     
     // State
-    let allClaims = [];
+    let abstractData = null;
     let currentThreshold = 70;
-    let currentView = 'superscript';
-    let currentAbstract = null;
+    let isAnimating = false;
     
     // Get abstract ID from URL
-    function getAbstractIdFromUrl() {
+    function getAbstractId() {
         const params = new URLSearchParams(window.location.search);
-        return params.get('id') || 'vitamin-d-filtered-mvp'; // Default to vitamin D
+        return params.get('id');
     }
     
-    // Load abstract from API
-    async function loadAbstract() {
-        const abstractId = getAbstractIdFromUrl();
+    // Update threshold display
+    function updateThresholdDisplay() {
+        document.getElementById('thresholdValue').textContent = currentThreshold;
+    }
+    
+    // Animate slider to target threshold
+    function animateSliderTo(targetThreshold, duration = 500) {
+        if (isAnimating) return;
         
-        try {
-            console.log('Loading abstract:', abstractId);
+        isAnimating = true;
+        const slider = document.getElementById('confidenceSlider');
+        const startThreshold = currentThreshold;
+        const diff = targetThreshold - startThreshold;
+        const startTime = Date.now();
+        
+        slider.classList.add('animating');
+        
+        function animate() {
+            const elapsed = Date.now() - startTime;
+            const progress = Math.min(elapsed / duration, 1);
             
-            // Try to fetch specific abstract
-            let response = await fetch(`${API_BASE}/abstracts/${abstractId}`);
-            let data = await response.json();
+            // Ease-in-out cubic
+            const eased = progress < 0.5 
+                ? 4 * progress * progress * progress 
+                : 1 - Math.pow(-2 * progress + 2, 3) / 2;
             
-            // If not found, try searching
-            if (!response.ok || data.error) {
-                console.log('Direct fetch failed, trying search...');
-                response = await fetch(`${API_BASE}/search?q=${abstractId}`);
-                data = await response.json();
-                
-                if (data.results && data.results.length > 0) {
-                    // Use first search result
-                    const firstResult = data.results[0];
-                    response = await fetch(`${API_BASE}/abstracts/${firstResult.identifier}`);
-                    data = await response.json();
-                }
+            currentThreshold = Math.round(startThreshold + (diff * eased));
+            slider.value = currentThreshold;
+            updateThresholdDisplay();
+            renderClaims();
+            
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                slider.classList.remove('animating');
+                isAnimating = false;
             }
-            
-            if (!data || data.error) {
-                showError('Abstract not found', `Could not find abstract: ${abstractId}`);
-                return;
-            }
-            
-            currentAbstract = data;
-            parseAbstract(data);
-            updateTitle(data);
-            renderContent();
-            
-        } catch (error) {
-            console.error('Error loading abstract:', error);
-            showError('Failed to load abstract', error.message);
         }
+        
+        animate();
     }
     
-    // Parse abstract into claims array
-    function parseAbstract(abstract) {
-        allClaims = [];
+    // Show ghost slider
+    function showGhostSlider(targetThreshold) {
+        const ghost = document.getElementById('sliderGhost');
+        const slider = document.getElementById('confidenceSlider');
+        const sliderRect = slider.getBoundingClientRect();
+        const sliderTrack = slider.parentElement;
+        const trackRect = sliderTrack.getBoundingClientRect();
+        
+        // Calculate position
+        const percentage = targetThreshold / 100;
+        const left = 0;
+        const width = (trackRect.width * percentage);
+        
+        ghost.style.left = left + 'px';
+        ghost.style.width = width + 'px';
+        ghost.classList.add('visible');
+    }
+    
+    // Hide ghost slider
+    function hideGhostSlider() {
+        const ghost = document.getElementById('sliderGhost');
+        ghost.classList.remove('visible');
+    }
+    
+    // Filter and render claims
+    function renderClaims() {
+        if (!abstractData) return;
+        
+        const content = document.getElementById('content');
+        let visibleClaims = [];
+        let hiddenClaims = [];
+        
+        // Extract claims based on structure
+        let allClaims = [];
         
         // Handle vitamin D filtered structure
-        if (abstract.retainedClaims && abstract.removedClaims) {
-            [...abstract.retainedClaims, ...abstract.removedClaims].forEach(claim => {
-                allClaims.push({
-                    id: claim.claimId,
-                    claim: claim.claim,
-                    confidence: claim.confidence * 100,
-                    evidenceGrade: claim.evidenceGrade,
-                    evidenceSummary: claim.evidenceSummary
-                });
-            });
+        if (abstractData.retainedClaims || abstractData.removedClaims) {
+            allClaims = [
+                ...(abstractData.retainedClaims || []),
+                ...(abstractData.removedClaims || [])
+            ];
         }
-        // Handle standard schema structure
-        else if (abstract.conclusion) {
-            allClaims.push({
-                id: abstract.identifier || abstract['@id'],
-                claim: abstract.conclusion.claim,
-                confidence: (abstract.conclusion.confidence || 0.5) * 100,
-                evidenceGrade: 'See abstract',
-                evidenceSummary: abstract.scenario?.description || 'View full abstract for details'
-            });
-        }
-        // Handle if it's already a single claim
-        else if (abstract.claim) {
-            allClaims.push({
-                id: abstract.claimId || abstract.identifier,
-                claim: abstract.claim,
-                confidence: (abstract.confidence || 0.5) * 100,
-                evidenceGrade: abstract.evidenceGrade || 'N/A',
-                evidenceSummary: abstract.evidenceSummary || 'View full abstract'
-            });
+        // Handle standard structure
+        else if (abstractData.conclusion) {
+            allClaims = [{
+                claim: abstractData.conclusion.claim,
+                confidence: abstractData.conclusion.confidence,
+                claimId: abstractData.identifier
+            }];
         }
         
-        console.log('Parsed claims:', allClaims);
+        // Filter by threshold
+        allClaims.forEach(claim => {
+            const confidencePercent = Math.round(claim.confidence * 100);
+            if (confidencePercent >= currentThreshold) {
+                visibleClaims.push(claim);
+            } else {
+                hiddenClaims.push({ ...claim, confidencePercent });
+            }
+        });
+        
+        // Update summary
+        const dropsRemaining = visibleClaims.length;
+        const dropsSqueezed = hiddenClaims.length;
+        document.getElementById('claimsSummary').innerHTML = `
+            <strong>💧 ${dropsRemaining} claims remain</strong> (${dropsSqueezed} squeezed out at ${currentThreshold}% threshold)
+        `;
+        
+        // Render visible claims
+        let html = '';
+        
+        if (visibleClaims.length > 0) {
+            html += '<h2 style="margin-bottom: 20px;">✅ Claims Meeting Threshold</h2>';
+            visibleClaims.forEach(claim => {
+                const confidencePercent = Math.round(claim.confidence * 100);
+                const confidenceClass = confidencePercent >= 80 ? 'confidence-high' : 
+                                       confidencePercent >= 60 ? 'confidence-moderate' : 
+                                       'confidence-low';
+                
+                html += `
+                    <div class="claim-card">
+                        <div class="claim-text">${claim.claim}</div>
+                        <div class="claim-meta">
+                            <span class="confidence-badge ${confidenceClass}">${confidencePercent}% confidence</span>
+                        </div>
+                    </div>
+                `;
+            });
+        } else {
+            html += `
+                <div style="text-align: center; padding: 40px; color: #666;">
+                    <h3>🧽 Sponge too dry! (${currentThreshold}% threshold)</h3>
+                    <p style="margin-top: 10px;">Release the squeeze to see less certain claims.</p>
+                    <p style="margin-top: 10px; font-size: 14px; color: #999;">
+                        (This is honest uncertainty, not system failure)
+                    </p>
+                </div>
+            `;
+        }
+        
+        // Render hidden claims with hover-to-animate
+        if (hiddenClaims.length > 0) {
+            html += `
+                <div class="hidden-claims-section">
+                    <div class="hidden-claims-title">💦 ${hiddenClaims.length} Claims Squeezed Out</div>
+                    <p style="color: #856404; margin-bottom: 15px;">
+                        These claims didn't survive the ${currentThreshold}% squeeze. <strong>Hover over them to see where the threshold needs to be!</strong>
+                    </p>
+            `;
+            
+            hiddenClaims.forEach(claim => {
+                const confidencePercent = claim.confidencePercent;
+                html += `
+                    <div class="hidden-claim-item" 
+                         data-confidence="${confidencePercent}"
+                         onmouseenter="showGhostSlider(${confidencePercent})"
+                         onmouseleave="hideGhostSlider()"
+                         onclick="animateSliderTo(${confidencePercent})">
+                        <div class="claim-text" style="opacity: 0.7;">${claim.claim}</div>
+                        <div class="claim-meta">
+                            <span class="confidence-badge confidence-low">${confidencePercent}% confidence</span>
+                            <span style="font-size: 12px; color: #999;">← Click to adjust threshold</span>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+        }
+        
+        content.innerHTML = html;
     }
     
-    // Update page title
-    function updateTitle(abstract) {
-        let title = 'Unknown Topic';
-        let icon = '📄';
+    // Load abstract
+    async function loadAbstract() {
+        const abstractId = getAbstractId();
         
-        if (abstract.scenario?.description) {
-            title = abstract.scenario.description.split('?')[0].split(':')[0].trim();
-        } else if (abstract.identifier) {
-            title = abstract.identifier
-                .replace(/-/g, ' ')
-                .replace(/\b\w/g, l => l.toUpperCase());
-        }
-        
-        // Add domain-specific icons
-        const domain = abstract.scenario?.domain || abstract.domain;
-        switch(domain) {
-            case 'scientific': icon = '🔬'; break;
-            case 'health': icon = '🏥'; break;
-            case 'medical': icon = '⚕️'; break;
-            case 'policy': icon = '📊'; break;
-            case 'legal': icon = '⚖️'; break;
-            case 'economic': icon = '💰'; break;
-        }
-        
-        document.getElementById('pageTitle').textContent = `${icon} ${title}`;
-        document.title = `${title} - Legis Ledger`;
-    }
-    
-    // Render content
-    function renderContent() {
-        const content = document.getElementById('content');
-        
-        if (allClaims.length === 0) {
-            content.innerHTML = '<div class="error"><p>No claims found in this abstract.</p></div>';
+        if (!abstractId) {
+            document.getElementById('content').innerHTML = `
+                <div style="text-align: center; padding: 60px 40px;">
+                    <h2>No abstract specified</h2>
+                    <p style="margin-top: 10px;"><a href="/" style="color: #667eea; text-decoration: none;">← Back to Home</a></p>
+                </div>
+            `;
             return;
         }
         
-        const visibleClaims = allClaims.filter(c => c.confidence >= currentThreshold);
-        const hiddenClaims = allClaims.filter(c => c.confidence < currentThreshold);
-        
-        // Update claims count
-        document.getElementById('claimsCount').textContent = 
-            `Showing ${visibleClaims.length} of ${allClaims.length} claims at ${currentThreshold}% threshold`;
-        
-        // Generate prose
-        const prose = generateProse(allClaims);
-        
-        content.innerHTML = `
-            <h2>${currentAbstract.scenario?.domain || 'Information'}</h2>
-            <p>${prose}</p>
+        try {
+            const response = await fetch(`${API_BASE}/abstracts/${abstractId}`);
+            if (!response.ok) throw new Error('Abstract not found');
             
-            ${hiddenClaims.length > 0 ? `
-                <div class="hidden-claims-section">
-                    <h3>⚠️ ${hiddenClaims.length} Claims Below ${currentThreshold}% Threshold</h3>
-                    <p style="font-size: 14px; color: #856404; margin-bottom: 10px;">
-                        These claims did not meet your confidence threshold. Adjust the slider to see them.
-                    </p>
-                    <ul>
-                        ${hiddenClaims.map(c => `<li>${c.claim} (${Math.round(c.confidence)}%)</li>`).join('')}
-                    </ul>
-                </div>
-            ` : ''}
-        `;
-        
-        // Apply view style
-        content.classList.remove('superscript-view', 'highlight-view');
-        content.classList.add(`${currentView}-view`);
-        
-        // Add click handlers
-        document.querySelectorAll('.claim').forEach(el => {
-            el.addEventListener('click', () => toggleClaimDetails(el));
-        });
-    }
-    
-    // Generate prose from claims
-    function generateProse(claims) {
-        if (claims.length === 0) return 'No information available.';
-        
-        const sortedClaims = [...claims].sort((a, b) => b.confidence - a.confidence);
-        
-        // Start with generic intro
-        let prose = 'Current evidence suggests that ';
-        
-        sortedClaims.forEach((claim, index) => {
-            const isHidden = claim.confidence < currentThreshold;
-            const claimClass = isHidden ? 'claim hidden' : 'claim';
+            abstractData = await response.json();
             
-            // Simplify claim text for prose
-            let simplePhrase = claim.claim.toLowerCase()
-                .replace(/^(vitamin d|creatine|minimum wage increases?)\s+/i, '')
-                .replace(/supplementation/i, 'it')
-                .substring(0, 100);
-            
-            // Add connectors
-            if (index > 0) {
-                if (index === sortedClaims.length - 1) {
-                    prose += ', and ';
-                } else {
-                    prose += ', ';
-                }
+            // Update title
+            let title = abstractData.scenario?.description || abstractId;
+            if (abstractData.retainedClaims) {
+                title = abstractData.scenario?.description || 'Vitamin D Health Effects';
             }
+            document.getElementById('pageTitle').textContent = title;
             
-            // Add claim
-            if (currentView === 'superscript') {
-                prose += `<span class="${claimClass}" data-id="${claim.id}">${simplePhrase}<span class="confidence">${Math.round(claim.confidence)}%</span></span>`;
-            } else {
-                prose += `<span class="${claimClass}" data-id="${claim.id}">${simplePhrase}</span>`;
-            }
-        });
-        
-        prose += '.';
-        return prose;
-    }
-    
-    // Toggle claim details
-    function toggleClaimDetails(element) {
-        const claimId = element.dataset.id;
-        const existingDetails = element.nextElementSibling;
-        
-        if (existingDetails && existingDetails.classList.contains('claim-details')) {
-            existingDetails.remove();
-        } else {
-            const claim = allClaims.find(c => c.id === claimId);
-            const details = document.createElement('div');
-            details.className = 'claim-details visible';
-            details.innerHTML = `
-                <h3>${claim.claim}</h3>
-                <div class="meta">
-                    <strong>Confidence:</strong> ${Math.round(claim.confidence)}% | 
-                    <strong>Evidence Grade:</strong> ${claim.evidenceGrade}
+            // Render claims
+            renderClaims();
+            
+        } catch (error) {
+            console.error('Error loading abstract:', error);
+            document.getElementById('content').innerHTML = `
+                <div style="text-align: center; padding: 60px 40px; color: #dc3545;">
+                    <h2>Error Loading Abstract</h2>
+                    <p style="margin-top: 10px;">${error.message}</p>
+                    <p style="margin-top: 20px;"><a href="/" style="color: #667eea; text-decoration: none;">← Back to Home</a></p>
                 </div>
-                <p><strong>Evidence:</strong> ${claim.evidenceSummary}</p>
-                <p style="margin-top: 10px;">
-                    <a href="${API_BASE}/abstracts/${currentAbstract.identifier || currentAbstract['@id']}" target="_blank">
-                        View complete Bayesian analysis →
-                    </a>
-                </p>
             `;
-            element.parentNode.insertBefore(details, element.nextSibling);
         }
     }
     
-    // Show error
-    function showError(title, message) {
-        document.getElementById('content').innerHTML = `
-            <div class="error">
-                <h3>${title}</h3>
-                <p>${message}</p>
-                <p style="margin-top: 20px;">
-                    <a href="?id=vitamin-d-filtered-mvp">Try vitamin D example</a>
-                </p>
-            </div>
-        `;
-    }
-    
-    // Event handlers
+    // Slider event listener
     document.getElementById('confidenceSlider').addEventListener('input', (e) => {
         currentThreshold = parseInt(e.target.value);
-        document.getElementById('sliderValue').textContent = `${currentThreshold}%`;
-        renderContent();
+        updateThresholdDisplay();
+        renderClaims();
     });
     
-    document.querySelectorAll('.tab').forEach(tab => {
-        tab.addEventListener('click', () => {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            currentView = tab.dataset.view;
-            renderContent();
-        });
-    });
-    
-    // Initialize
+    // Load on page load
     loadAbstract();
 </script>
-
 </body>
 </html>
