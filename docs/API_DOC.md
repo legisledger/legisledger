@@ -1,6 +1,6 @@
 # Legis Ledger API
 
-Base URL: https://legis-ledger.vercel.app/api
+Base URL: https://demo.legisledger.org/api/
 
 ## Endpoints
 
