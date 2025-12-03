@@ -1,5 +1,6 @@
 {
   "buildCommand": "echo 'No build needed'",
+  "outputDirectory": "ui-prototypes",
   "rewrites": [
     {
       "source": "/api/:path*",
@@ -7,15 +8,11 @@
     },
     {
       "source": "/prototype",
-      "destination": "/ui-prototypes/confidence-slider-prototype.html"
-    },
-    {
-      "source": "/ui/:path*",
-      "destination": "/ui-prototypes/:path*"
+      "destination": "/confidence-slider-prototype.html"
     },
     {
       "source": "/",
-      "destination": "/ui-prototypes/confidence-slider-prototype.html"
+      "destination": "/confidence-slider-prototype.html"
     }
   ],
   "headers": [
