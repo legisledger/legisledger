@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legis Ledger API - Health Check</title>
+    <meta name="description" content="Live API health monitoring for Legis Ledger - Bayesian fact-checker with quantified confidence">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+        
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .test-section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .test-section h2 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .endpoint {
+            font-family: 'Courier New', monospace;
+            background: #f1f3f5;
+            padding: 8px 12px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            word-break: break-all;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-right: 10px;
+        }
+        
+        button:hover {
+            background: #5568d3;
+        }
+        
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 6px;
+            font-size: 14px;
+            max-height: 400px;
+            overflow: auto;
+        }
+        
+        .result.success {
+            background: #d4edda;
+            border-left: 4px solid #28a745;
+        }
+        
+        .result.error {
+            background: #f8d7da;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .result.loading {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+        }
+        
+        pre {
+            margin: 10px 0 0 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 4px;
+            overflow: auto;
+            font-size: 12px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .status-badge.success {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-badge.error {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .status-badge.pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .summary {
+            background: #e7f3ff;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        
+        .summary h3 {
+            margin-top: 0;
+            color: #2196f3;
+        }
+        
+        .info-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Legis Ledger API Health Check</h1>
+    <p class="subtitle">Live monitoring and testing for the Bayesian fact-checker API</p>
+    
+    <div class="info-box">
+        <strong>ℹ️ About This Page</strong><br>
+        This is a live health check for the Legis Ledger API. All tests run directly in your browser against the production API at <code>demo.legisledger.org</code>. 
+        This page demonstrates API transparency and helps developers verify functionality.
+    </div>
+    
+    <div class="summary">
+        <h3>API Base URL</h3>
+        <div class="endpoint">https://demo.legisledger.org/api</div>
+        <p style="margin-top: 10px; font-size: 14px;">
+            <strong>Status:</strong> <span id="overall-status">Click "Run All Tests" to check</span>
+        </p>
+    </div>
+    
+    <!-- Test 1: API Root -->
+    <div class="test-section">
+        <h2>Test 1: API Documentation <span class="status-badge pending" id="status-1">Pending</span></h2>
+        <div class="endpoint">GET /api</div>
+        <p style="font-size: 14px; color: #666; margin-bottom: 10px;">Verifies the API is online and returns documentation.</p>
+        <button onclick="testApiRoot()">Run Test</button>
+        <div id="result-1"></div>
+    </div>
+    
+    <!-- Test 2: List All Abstracts -->
+    <div class="test-section">
+        <h2>Test 2: List All Abstracts <span class="status-badge pending" id="status-2">Pending</span></h2>
+        <div class="endpoint">GET /api/abstracts</div>
+        <p style="font-size: 14px; color: #666; margin-bottom: 10px;">Lists all available knowledge abstracts with metadata.</p>
+        <button onclick="testListAbstracts()">Run Test</button>
+        <div id="result-2"></div>
+    </div>
+    
+    <!-- Test 3: Search for Vitamin D -->
+    <div class="test-section">
+        <h2>Test 3: Search Functionality <span class="status-badge pending" id="status-3">Pending</span></h2>
+        <div class="endpoint">GET /api/search?q=vitamin</div>
+        <p style="font-size: 14px; color: #666; margin-bottom: 10px;">Tests text search across claims and identifiers.</p>
+        <button onclick="testSearchVitamin()">Run Test</button>
+        <div id="result-3"></div>
+    </div>
+    
+    <!-- Test 4: Filter by Confidence -->
+    <div class="test-section">
+        <h2>Test 4: Confidence Filtering <span class="status-badge pending" id="status-4">Pending</span></h2>
+        <div class="endpoint">GET /api/filter?threshold=0.70</div>
+        <p style="font-size: 14px; color: #666; margin-bottom: 10px;">Filters abstracts by minimum confidence level (≥70%).</p>
+        <button onclick="testFilterConfidence()">Run Test</button>
+        <div id="result-4"></div>
+    </div>
+    
+    <!-- Test 5: Get Specific Abstract -->
+    <div class="test-section">
+        <h2>Test 5: Individual Abstract Retrieval <span class="status-badge pending" id="status-5">Pending</span></h2>
+        <div class="endpoint">GET /api/abstracts/vitamin-d-rickets-prevention</div>
+        <p style="font-size: 14px; color: #666; margin-bottom: 10px;">Retrieves a specific abstract by identifier.</p>
+        <button onclick="testVitaminDAbstract()">Run Test</button>
+        <div id="result-5"></div>
+    </div>
+    
+    <!-- Test 6: Validate Schema -->
+    <div class="test-section">
+        <h2>Test 6: Schema Validation <span class="status-badge pending" id="status-6">Pending</span></h2>
+        <div class="endpoint">GET /api/validate</div>
+        <p style="font-size: 14px; color: #666; margin-bottom: 10px;">Validates all abstracts against schema requirements.</p>
+        <button onclick="testValidate()">Run Test</button>
+        <div id="result-6"></div>
+    </div>
+    
+    <!-- Run All Button -->
+    <div style="margin-top: 30px; text-align: center;">
+        <button onclick="runAllTests()" style="padding: 15px 40px; font-size: 16px;">▶ Run All Tests</button>
+        <p style="margin-top: 10px; color: #666; font-size: 14px;">Tests run entirely in your browser. Results update live.</p>
+    </div>
+    
+    <div class="footer">
+        <strong>Legis Ledger</strong> - Knowledge infrastructure for democracy with epistemic humility<br>
+        <a href="https://demo.legisledger.org/api">API Documentation</a> | 
+        <a href="https://github.com/damonregan/legis-ledger">GitHub</a> | 
+        Status: Pre-launch Development
+    </div>
+
+<script>
+    const API_BASE = 'https://demo.legisledger.org/api';
+    let testResults = { pass: 0, fail: 0, total: 6 };
+    
+    function updateOverallStatus() {
+        const statusEl = document.getElementById('overall-status');
+        const passRate = testResults.total > 0 ? (testResults.pass / testResults.total * 100).toFixed(0) : 0;
+        
+        if (testResults.pass === testResults.total && testResults.total === 6) {
+            statusEl.innerHTML = `<span style="color: #28a745; font-weight: 600;">✓ All Systems Operational (6/6 tests passing)</span>`;
+        } else if (testResults.fail > 0) {
+            statusEl.innerHTML = `<span style="color: #dc3545; font-weight: 600;">⚠️ ${testResults.fail} test(s) failing (${testResults.pass}/${testResults.total} passing)</span>`;
+        } else {
+            statusEl.textContent = 'Testing in progress...';
+        }
+    }
+    
+    function setStatus(testId, status) {
+        const badge = document.getElementById(`status-${testId}`);
+        badge.className = `status-badge ${status}`;
+        badge.textContent = status === 'success' ? 'Pass ✓' : status === 'error' ? 'Fail ✗' : 'Testing...';
+        
+        // Update counters
+        if (status === 'success') {
+            testResults.pass++;
+        } else if (status === 'error') {
+            testResults.fail++;
+        }
+        updateOverallStatus();
+    }
+    
+    function showResult(testId, success, message, data = null) {
+        const resultDiv = document.getElementById(`result-${testId}`);
+        resultDiv.className = `result ${success ? 'success' : 'error'}`;
+        
+        let html = `<strong>${message}</strong>`;
+        
+        if (data) {
+            // Show summary info
+            if (data.abstracts && Array.isArray(data.abstracts)) {
+                html += `<br><br><strong>Summary:</strong> Found ${data.abstracts.length} abstracts`;
+                const domains = [...new Set(data.abstracts.map(a => a.domain || 'unknown'))];
+                html += `<br>Domains: ${domains.join(', ')}`;
+            }
+            if (data.results && Array.isArray(data.results)) {
+                html += `<br><br><strong>Summary:</strong> Found ${data.results.length} matching results`;
+            }
+            if (data.totalAbstracts !== undefined) {
+                html += `<br><br><strong>Total abstracts:</strong> ${data.totalAbstracts}`;
+            }
+            
+            html += `<details style="margin-top: 10px;"><summary style="cursor: pointer; color: #667eea; font-weight: 600;">View Full Response</summary><pre>${JSON.stringify(data, null, 2)}</pre></details>`;
+        }
+        
+        resultDiv.innerHTML = html;
+        setStatus(testId, success ? 'success' : 'error');
+    }
+    
+    function showLoading(testId) {
+        const resultDiv = document.getElementById(`result-${testId}`);
+        resultDiv.className = 'result loading';
+        resultDiv.innerHTML = '<strong>Testing...</strong>';
+        setStatus(testId, 'pending');
+    }
+    
+    async function testApiRoot() {
+        showLoading(1);
+        try {
+            const response = await fetch(`${API_BASE}`);
+            const data = await response.json();
+            
+            if (response.ok && data.name) {
+                showResult(1, true, `✓ API is online (${data.name} v${data.version})`, data);
+            } else {
+                showResult(1, false, '✗ API returned unexpected response', data);
+            }
+        } catch (error) {
+            showResult(1, false, `✗ Failed to connect: ${error.message}`);
+        }
+    }
+    
+    async function testListAbstracts() {
+        showLoading(2);
+        try {
+            const response = await fetch(`${API_BASE}/abstracts`);
+            const data = await response.json();
+            
+            if (response.ok && (data.abstracts || Array.isArray(data))) {
+                const abstracts = data.abstracts || data;
+                const vitaminAbstracts = abstracts.filter(a => 
+                    JSON.stringify(a).toLowerCase().includes('vitamin')
+                );
+                
+                let message = `✓ Successfully retrieved ${abstracts.length} abstracts`;
+                if (vitaminAbstracts.length > 0) {
+                    message += ` (including ${vitaminAbstracts.length} vitamin D claims)`;
+                }
+                
+                showResult(2, true, message, data);
+            } else {
+                showResult(2, false, '✗ Failed to list abstracts', data);
+            }
+        } catch (error) {
+            showResult(2, false, `✗ Request failed: ${error.message}`);
+        }
+    }
+    
+    async function testSearchVitamin() {
+        showLoading(3);
+        try {
+            const response = await fetch(`${API_BASE}/search?q=vitamin`);
+            const data = await response.json();
+            
+            if (response.ok) {
+                const results = data.results || data;
+                const count = Array.isArray(results) ? results.length : 0;
+                
+                if (count > 0) {
+                    showResult(3, true, `✓ Search returned ${count} vitamin-related results`, data);
+                } else {
+                    showResult(3, false, '⚠️ Search returned 0 results for "vitamin"', data);
+                }
+            } else {
+                showResult(3, false, '✗ Search endpoint failed', data);
+            }
+        } catch (error) {
+            showResult(3, false, `✗ Request failed: ${error.message}`);
+        }
+    }
+    
+    async function testFilterConfidence() {
+        showLoading(4);
+        try {
+            const response = await fetch(`${API_BASE}/filter?threshold=0.70`);
+            const data = await response.json();
+            
+            if (response.ok) {
+                const filtered = data.filtered || data.results || data;
+                const count = Array.isArray(filtered) ? filtered.length : 0;
+                
+                showResult(4, true, `✓ Filter returned ${count} abstracts with ≥70% confidence`, data);
+            } else {
+                showResult(4, false, '✗ Filter endpoint failed', data);
+            }
+        } catch (error) {
+            showResult(4, false, `✗ Request failed: ${error.message}`);
+        }
+    }
+    
+    async function testVitaminDAbstract() {
+        showLoading(5);
+        try {
+            const response = await fetch(`${API_BASE}/abstracts/vitamin-d-rickets-prevention`);
+            const data = await response.json();
+            
+            if (response.ok && !data.error) {
+                showResult(5, true, '✓ Successfully retrieved vitamin D abstract', data);
+            } else if (response.status === 404 || data.error) {
+                showResult(5, false, '⚠️ Abstract not found (404)', data);
+            } else {
+                showResult(5, false, '✗ Unexpected response', data);
+            }
+        } catch (error) {
+            showResult(5, false, `✗ Request failed: ${error.message}`);
+        }
+    }
+    
+    async function testValidate() {
+        showLoading(6);
+        try {
+            const response = await fetch(`${API_BASE}/validate`);
+            const data = await response.json();
+            
+            if (response.ok) {
+                const valid = data.valid || data.allValid;
+                
+                if (valid) {
+                    showResult(6, true, `✓ All ${data.totalAbstracts || 0} abstracts pass validation`, data);
+                } else {
+                    const errors = data.errors || [];
+                    showResult(6, false, `⚠️ Found ${errors.length} validation errors`, data);
+                }
+            } else {
+                showResult(6, false, '✗ Validate endpoint failed', data);
+            }
+        } catch (error) {
+            showResult(6, false, `✗ Request failed: ${error.message}`);
+        }
+    }
+    
+    async function runAllTests() {
+        console.log('Running all tests...');
+        testResults = { pass: 0, fail: 0, total: 6 };
+        
+        await testApiRoot();
+        await new Promise(resolve => setTimeout(resolve, 500));
+        await testListAbstracts();
+        await new Promise(resolve => setTimeout(resolve, 500));
+        await testSearchVitamin();
+        await new Promise(resolve => setTimeout(resolve, 500));
+        await testFilterConfidence();
+        await new Promise(resolve => setTimeout(resolve, 500));
+        await testVitaminDAbstract();
+        await new Promise(resolve => setTimeout(resolve, 500));
+        await testValidate();
+        
+        console.log('All tests complete!');
+    }
+</script>
+
+</body>
+</html>
