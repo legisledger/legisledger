@@ -3,1174 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Legis Ledger: Knowledge Infrastructure for Democracy</title>
-    <meta name="description" content="Structured knowledge with Bayesian confidence and provenance transparency. Enabling cooperation through structured disagreement.">
-    
-    <!-- Work Sans Font (as specified in LOGO.md) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <title>Legis Ledger - Prototypes</title>
     <style>
-        :root {
-            --primary: #2563eb;
-            --primary-dark: #1e40af;
-            --secondary: #64748b;
-            --success: #10b981;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-            --background: #ffffff;
-            --surface: #f8fafc;
-            --border: #e2e8f0;
-            --text: #1e293b;
-            --text-secondary: #475569;
-            --confidence-low: #ef4444;
-            --confidence-mid: #f59e0b;
-            --confidence-high: #10b981;
-            --confidence-canonical: #059669;
-        }
-        
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Work Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            line-height: 1.6;
-            color: var(--text);
-            background: var(--background);
-        }
-        
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        
-        header {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            padding: 60px 20px;
-            text-align: center;
-            margin-bottom: 40px;
-        }
-        
-        header h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            font-weight: 700;
-        }
-        
-        header .tagline {
-            font-size: 1.25rem;
-            opacity: 0.95;
-            margin-bottom: 10px;
-        }
-        
-        header .mission {
-            font-size: 1rem;
-            opacity: 0.85;
-            font-style: italic;
-        }
-        
-        .intro-section {
-            background: var(--surface);
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 40px;
-            border: 1px solid var(--border);
-        }
-        
-        .intro-section h2 {
-            color: var(--primary);
-            margin-bottom: 15px;
-        }
-        
-        .intro-section p {
-            color: var(--text-secondary);
-            margin-bottom: 15px;
-        }
-        
-        .principle-box {
-            background: white;
-            border-left: 4px solid var(--primary);
-            padding: 20px;
-            margin: 20px 0;
-            border-radius: 8px;
-        }
-        
-        .principle-box strong {
-            color: var(--primary);
-            display: block;
-            margin-bottom: 8px;
-        }
-        
-        .mvp-selector {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-        
-        .mvp-card {
-            flex: 1;
-            min-width: 280px;
-            background: white;
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            padding: 25px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .mvp-card:hover {
-            border-color: var(--primary);
-            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
-            transform: translateY(-2px);
-        }
-        
-        .mvp-card.active {
-            border-color: var(--primary);
-            background: linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(37, 99, 235, 0.02) 100%);
-        }
-        
-        .mvp-card h3 {
-            color: var(--primary);
-            margin-bottom: 10px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            padding: 20px;
         }
-        
-        .mvp-badge {
-            display: inline-block;
-            padding: 4px 8px;
-            background: var(--success);
-            color: white;
-            font-size: 0.7rem;
-            border-radius: 4px;
-            font-weight: 600;
-        }
-        
-        .mvp-card .domain {
-            display: inline-block;
-            padding: 4px 12px;
-            background: var(--surface);
-            color: var(--text-secondary);
-            font-size: 0.85rem;
-            border-radius: 20px;
-            margin-bottom: 12px;
-        }
-        
-        .mvp-card p {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-        
-        .examples-container {
-            display: none;
-        }
-        
-        .examples-container.active {
-            display: block;
-        }
-        
-        .example-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px;
-            margin-bottom: 30px;
-        }
-        
-        .knowledge-card {
+
+        .container {
             background: white;
-            border-radius: 12px;
-            padding: 25px;
-            border: 1px solid var(--border);
-            transition: box-shadow 0.3s ease;
+            border-radius: 16px;
+            padding: 60px 40px;
+            max-width: 700px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
-        
-        .knowledge-card:hover {
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+        h1 {
+            font-size: 3em;
+            color: #667eea;
+            margin-bottom: 10px;
         }
-        
-        .knowledge-card h3 {
-            color: var(--text);
-            margin-bottom: 15px;
-            font-size: 1.1rem;
+
+        .tagline {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 40px;
         }
-        
-        .confidence-section {
-            background: var(--surface);
+
+        .status {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
             border-radius: 8px;
             padding: 15px;
-            margin: 15px 0;
+            margin-bottom: 40px;
+            color: #856404;
         }
-        
-        .confidence-bar-container {
-            margin: 10px 0;
+
+        .prototypes {
+            margin-top: 30px;
         }
-        
-        .confidence-bar {
-            height: 12px;
-            background: var(--border);
-            border-radius: 6px;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        .confidence-fill {
-            height: 100%;
-            border-radius: 6px;
-            transition: width 0.5s ease;
-        }
-        
-        .confidence-labels {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.75rem;
-            color: var(--text-secondary);
-            margin-top: 5px;
-        }
-        
-        .confidence-value {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-        
-        .funnel-position {
-            display: inline-block;
-            padding: 6px 12px;
-            background: var(--success);
-            color: white;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-top: 8px;
-        }
-        
-        .details-section {
-            margin: 20px 0;
-        }
-        
-        .details-section h4 {
-            color: var(--primary);
-            margin-bottom: 10px;
-            font-size: 0.95rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .detail-item {
-            background: var(--surface);
-            padding: 12px;
-            margin: 8px 0;
-            border-radius: 6px;
-            border-left: 3px solid var(--primary);
-        }
-        
-        .detail-item strong {
-            color: var(--text);
+
+        .prototype-card {
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+            text-decoration: none;
             display: block;
-            margin-bottom: 4px;
+            color: inherit;
         }
-        
-        .detail-item p {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
+
+        .prototype-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
         }
-        
-        .evidence-list {
-            list-style: none;
+
+        .prototype-card h2 {
+            color: #667eea;
+            font-size: 1.5em;
+            margin-bottom: 10px;
         }
-        
-        .evidence-item {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 12px;
-            margin: 8px 0;
+
+        .prototype-card .icon {
+            font-size: 2em;
+            margin-bottom: 10px;
         }
-        
-        .evidence-grade {
+
+        .prototype-card .description {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 10px;
+        }
+
+        .prototype-card .meta {
+            color: #999;
+            font-size: 0.9em;
+        }
+
+        .badge {
             display: inline-block;
-            padding: 2px 8px;
-            background: var(--success);
-            color: white;
-            font-size: 0.75rem;
-            border-radius: 4px;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.85em;
             font-weight: 600;
             margin-right: 8px;
         }
-        
-        .evidence-grade.grade-a-plus {
-            background: var(--confidence-canonical);
+
+        .badge.new {
+            background: #d4edda;
+            color: #155724;
         }
-        
-        .evidence-grade.grade-a {
-            background: var(--confidence-high);
+
+        .badge.alpha {
+            background: #fff3cd;
+            color: #856404;
         }
-        
-        .evidence-grade.grade-b {
-            background: var(--warning);
-        }
-        
-        .bayesian-path {
-            background: white;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 15px;
-            margin: 15px 0;
-        }
-        
-        .bayesian-step {
-            display: flex;
-            align-items: center;
-            margin: 10px 0;
-            padding: 10px;
-            background: var(--surface);
-            border-radius: 6px;
-        }
-        
-        .bayesian-step .confidence-point {
-            font-weight: 700;
-            font-size: 1.1rem;
-            color: var(--primary);
-            min-width: 60px;
-        }
-        
-        .bayesian-step .arrow {
-            margin: 0 15px;
-            color: var(--secondary);
-        }
-        
-        .bayesian-step .reasoning {
-            flex: 1;
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-        }
-        
-        .provenance-section {
-            background: #fff9db;
-            border: 2px solid #f59e0b;
-            border-radius: 8px;
-            padding: 20px;
-            margin: 20px 0;
-        }
-        
-        .provenance-section h4 {
-            color: #92400e;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .provenance-section h4::before {
-            content: "⚠️";
-        }
-        
-        .provenance-item {
-            margin: 10px 0;
-            padding: 10px;
-            background: white;
-            border-radius: 6px;
-        }
-        
-        .provenance-item strong {
-            color: #92400e;
-            display: block;
-            margin-bottom: 5px;
-        }
-        
-        .provenance-item ul {
-            margin-left: 20px;
-            color: #78350f;
-        }
-        
-        .provenance-item li {
-            margin: 5px 0;
-        }
-        
-        .disclaimer-box {
-            background: #fef3c7;
-            border: 1px solid #f59e0b;
-            border-radius: 8px;
-            padding: 15px;
-            margin: 20px 0;
-        }
-        
-        .disclaimer-box p {
-            color: #78350f;
-            font-size: 0.9rem;
-            margin: 8px 0;
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 12px 24px;
-            background: var(--primary);
-            color: white;
-            text-decoration: none;
-            border-radius: 6px;
-            font-weight: 600;
-            transition: background 0.3s ease;
-            border: none;
-            cursor: pointer;
-        }
-        
-        .btn:hover {
-            background: var(--primary-dark);
-        }
-        
-        .btn-secondary {
-            background: var(--secondary);
-        }
-        
-        .btn-secondary:hover {
-            background: #475569;
-        }
-        
+
         footer {
-            background: var(--surface);
-            padding: 40px 20px;
-            margin-top: 60px;
-            border-top: 1px solid var(--border);
+            margin-top: 40px;
             text-align: center;
+            color: #999;
+            font-size: 0.9em;
         }
-        
-        footer p {
-            color: var(--text-secondary);
-            margin: 10px 0;
-        }
-        
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
-        
-        .footer-links a {
-            color: var(--primary);
+
+        footer a {
+            color: #667eea;
             text-decoration: none;
         }
-        
-        .footer-links a:hover {
+
+        footer a:hover {
             text-decoration: underline;
-        }
-        
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 2rem;
-            }
-            
-            .example-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .mvp-selector {
-                flex-direction: column;
-            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <!-- Logo + Wordmark -->
-            <div style="display: flex; align-items: center; justify-content: center; margin-bottom:20px;">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 230" width="80" height="92" aria-label="Legis Ledger logo: Doric column with knowledge accumulation bars">
-                    <!-- Column capital - Doric style (simple, strong) -->
-                    <!-- Abacus (top square slab) -->
-                    <rect x="55" y="50" width="90" height="8" fill="#ffffff" rx="1"/>
-                    
-                    <!-- Echinus (curved cushion) -->
-                    <path d="M 60 58 L 60 66 Q 100 70, 140 66 L 140 58 Z" fill="#ffffff"/>
-                    
-                    <!-- Light bulb (knowledge/insight) -->
-                    <circle cx="100" cy="65" r="6" fill="none" stroke="#2c3e50" stroke-width="2"/>
-                    <path d="M 100 71 L 100 74" stroke="#2c3e50" stroke-width="2"/>
-                    <line x1="97" y1="74" x2="103" y2="74" stroke="#2c3e50" stroke-width="2"/>
-                    <!-- Light rays -->
-                    <line x1="92" y1="58" x2="89" y2="55" stroke="#ffffff" stroke-width="1.5"/>
-                    <line x1="108" y1="58" x2="111" y2="55" stroke="#ffffff" stroke-width="1.5"/>
-                    
-                    <!-- Necking band (transition) -->
-                    <rect x="65" y="70" width="70" height="4" fill="#e8e8e8"/>
-                    
-                    <!-- Column shaft (with subtle entasis - slight bulge) -->
-                    <path d="M 70 74 Q 68 130, 70 210 L 130 210 Q 132 130, 130 74 Z" fill="#ffffff"/>
-                    
-                    <!-- Data bars (knowledge accumulation) - left to right, short to tall -->
-                    <rect x="75" y="124" width="8" height="76" fill="#aed581" rx="1"/>
-                    <rect x="85" y="114" width="8" height="86" fill="#9ccc65" rx="1"/>
-                    <rect x="95" y="104" width="8" height="96" fill="#8bc34a" rx="1"/>
-                    <rect x="105" y="94" width="8" height="106" fill="#7cb342" rx="1"/>
-                    <rect x="115" y="84" width="8" height="116" fill="#7cb342" rx="1"/>
-                    
-                    <!-- Base (stylobate) -->
-                    <rect x="60" y="210" width="80" height="8" fill="#ffffff" rx="1"/>
-                    <rect x="50" y="218" width="100" height="10" fill="#ffffff" rx="1"/>
-                </svg>
-                <div style="line-height: 1; align-items:center; text-align: left; margin-top:20px;">
-                    <div style="font-weight: 300; font-size: 2rem; letter-spacing: 0.5px;">Legis</div>
-                    <div style="font-weight: 300; font-size: 2rem; letter-spacing: 0.5px; margin-top: -1px;">Ledger</div>
-                </div>
-            </div>
-            <p class="tagline">Knowledge Infrastructure for Democracy</p>
-            <p class="mission"><em>Mission: To bring about understanding with epistemic humility</em></p>
-        </div>
-    </header>
-
     <div class="container">
-        <section class="intro-section">
-            <h2>Cooperation Through Structured Disagreement</h2>
-            <p>
-                Like Madison's Constitution provides a framework for political disagreement, Legis Ledger provides 
-                infrastructure for <strong>epistemic disagreement</strong>—preserving sharp differences (pluralism) 
-                while encouraging convergence as evidence accumulates (Bayesian updating).
-            </p>
-            
-            <div class="principle-box">
-                <strong>Wikipedia enables cooperation through exhaustive debate and eventual consensus.</strong>
-                <p>This works for settled facts, but breaks down for contested facts, situational judgments, 
-                probabilistic claims, and health interventions.</p>
-            </div>
-            
-            <div class="principle-box">
-                <strong>We enable cooperation through structured disagreement and Bayesian convergence.</strong>
-                <p>Sharp differences are preserved (stability through plurality), while confidence converges 
-                as evidence accumulates (dynamism through updating). No central authority decrees "the right answer"—evidence 
-                and formal validation determine confidence.</p>
-            </div>
-            
-            <p>
-                Every knowledge claim includes <strong>transparent provenance</strong>: who submitted it, 
-                what biases might exist, how to verify independently, and explicit acknowledgment of uncertainty.
-            </p>
-        </section>
-
-        <section>
-            <h2 style="margin-bottom: 20px;">Working MVPs</h2>
-            <div class="mvp-selector">
-                <div class="mvp-card active" data-mvp="legal" onclick="switchMVP('legal')">
-                    <h3>
-                        Passenger Rights MVP
-                        <span class="mvp-badge">✓ Complete</span>
-                    </h3>
-                    <span class="domain">Legal Domain</span>
-                    <p>
-                        Clear legal frameworks demonstrating structured knowledge with Bayesian confidence 
-                        and real-world outcome tracking. Proves the architecture works.
-                    </p>
-                </div>
-                
-                <div class="mvp-card" data-mvp="scientific" onclick="switchMVP('scientific')">
-                    <h3>
-                        Creatine Supplementation
-                        <span class="mvp-badge">✓ Grade A</span>
-                    </h3>
-                    <span class="domain">Scientific Domain</span>
-                    <p>
-                        Canonical scientific knowledge (0.90 confidence) with evidence hierarchy, 
-                        industry funding disclosure, and comprehensive provenance transparency.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Legal Domain Examples -->
-        <section id="legal-examples" class="examples-container active">
-            <h2 style="margin-bottom: 20px;">Passenger Rights Knowledge Base</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 30px;">
-                Three examples demonstrating how the same legal framework yields different confidence levels 
-                based on evidence strength and enforcement history.
-            </p>
-            
-            <div class="example-grid">
-                <!-- EU Mechanical Delay Example -->
-                <div class="knowledge-card">
-                    <h3>EU Flight Delay: Mechanical Issue</h3>
-                    
-                    <div class="confidence-section">
-                        <div class="confidence-value" style="color: var(--confidence-high);">85%</div>
-                        <div style="font-size: 0.9rem; color: var(--text-secondary);">
-                            Confidence (15% chance wrong)
-                        </div>
-                        <div class="confidence-bar-container">
-                            <div class="confidence-bar">
-                                <div class="confidence-fill" style="width: 85%; background: var(--confidence-high);"></div>
-                            </div>
-                            <div class="confidence-labels">
-                                <span>0%</span>
-                                <span>25%</span>
-                                <span>50%</span>
-                                <span>75%</span>
-                                <span>100%</span>
-                            </div>
-                        </div>
-                        <span class="funnel-position">Narrow End - Confirmed</span>
-                    </div>
-                    
-                    <div class="details-section">
-                        <h4>Scenario</h4>
-                        <div class="detail-item">
-                            <strong>Flight from Paris (CDG) to New York (JFK)</strong>
-                            <p>Delay: 4 hours | Cause: Mechanical issue | Jurisdiction: EU</p>
-                        </div>
-                    </div>
-                    
-                    <div class="details-section">
-                        <h4>Conclusion</h4>
-                        <div class="detail-item">
-                            <strong>Entitled to €600 compensation</strong>
-                            <p>Based on EU Regulation 261/2004 Article 7. Mechanical issues are not extraordinary 
-                            circumstances. 20+ years of consistent enforcement.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="provenance-section">
-                        <h4>Provenance & Limitations</h4>
-                        <div class="provenance-item">
-                            <strong>⚠️ NOT Official Legal Authority</strong>
-                            <p>Submitted by: Passenger Rights Knowledge Base Project (independent educational initiative)<br>
-                            NOT submitted by: DGAC, European Commission, or official enforcement body</p>
-                        </div>
-                        <div class="provenance-item">
-                            <strong>Potential Biases</strong>
-                            <ul>
-                                <li>May favor passenger interests due to project mission</li>
-                                <li>Analysis based on public cases (settlement outcomes not visible)</li>
-                            </ul>
-                        </div>
-                        <div class="provenance-item">
-                            <strong>How to Verify</strong>
-                            <ul>
-                                <li>Read EU Regulation 261/2004 directly (official EUR-Lex)</li>
-                                <li>Check DGAC official guidance website</li>
-                                <li>Consult aviation rights attorney</li>
-                                <li>Review ECJ case law (C-549/07 Wallentin-Hermann)</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="disclaimer-box">
-                        <p><strong>⚠️ Not Legal Advice</strong></p>
-                        <p>This is educational information only. 85% confidence means 15% chance this conclusion 
-                        is wrong. Consult qualified legal counsel for your specific situation.</p>
-                    </div>
-                </div>
-                
-                <!-- EU Weather Delay Example -->
-                <div class="knowledge-card">
-                    <h3>EU Flight Delay: Weather</h3>
-                    
-                    <div class="confidence-section">
-                        <div class="confidence-value" style="color: var(--warning);">55%</div>
-                        <div style="font-size: 0.9rem; color: var(--text-secondary);">
-                            Confidence (45% chance wrong)
-                        </div>
-                        <div class="confidence-bar-container">
-                            <div class="confidence-bar">
-                                <div class="confidence-fill" style="width: 55%; background: var(--warning);"></div>
-                            </div>
-                            <div class="confidence-labels">
-                                <span>0%</span>
-                                <span>25%</span>
-                                <span>50%</span>
-                                <span>75%</span>
-                                <span>100%</span>
-                            </div>
-                        </div>
-                        <span class="funnel-position" style="background: var(--warning);">Middle Funnel - Testing</span>
-                    </div>
-                    
-                    <div class="details-section">
-                        <h4>Scenario</h4>
-                        <div class="detail-item">
-                            <strong>Flight from London (LHR) to Rome (FCO)</strong>
-                            <p>Delay: 5 hours | Cause: Thunderstorm + crew shortage | Jurisdiction: EU</p>
-                        </div>
-                    </div>
-                    
-                    <div class="details-section">
-                        <h4>Conclusion</h4>
-                        <div class="detail-item">
-                            <strong>Likely entitled to €400 compensation</strong>
-                            <p>Weather alone qualifies as extraordinary circumstance, BUT airline must prove 
-                            storm directly caused THIS delay. Crew shortage is NOT extraordinary. Courts split 
-                            on mixed-cause cases.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="details-section">
-                        <h4>Why Lower Confidence?</h4>
-                        <ul class="evidence-list">
-                            <li class="evidence-item">
-                                <strong>Fact-intensive</strong>: Outcome depends on airline's documentation 
-                                of weather impact vs. crew issue timing
-                            </li>
-                            <li class="evidence-item">
-                                <strong>Mixed precedent</strong>: Some courts find for passengers, others for airlines 
-                                in similar mixed-cause scenarios
-                            </li>
-                            <li class="evidence-item">
-                                <strong>Burden of proof</strong>: Airline must prove extraordinary circumstances, 
-                                but passengers must challenge insufficient proof
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <div class="provenance-section">
-                        <h4>Provenance & Limitations</h4>
-                        <div class="provenance-item">
-                            <strong>⚠️ NOT Official Legal Authority</strong>
-                            <p>Submitted by: Passenger Rights Knowledge Base Project<br>
-                            NOT submitted by: DGAC, European Commission, or courts</p>
-                        </div>
-                        <div class="provenance-item">
-                            <strong>Special Considerations</strong>
-                            <p>Weather cases are highly fact-specific. This 55% confidence reflects significant 
-                            uncertainty about how courts will weigh mixed causes. Individual outcomes vary widely.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="disclaimer-box">
-                        <p><strong>⚠️ High Uncertainty Case</strong></p>
-                        <p>55% confidence means nearly a coin flip. Weather + operational issues create complex 
-                        legal questions. Legal representation strongly recommended for disputed claims.</p>
-                    </div>
-                </div>
-                
-                <!-- US Denied Boarding Example -->
-                <div class="knowledge-card">
-                    <h3>US Denied Boarding: Oversold Flight</h3>
-                    
-                    <div class="confidence-section">
-                        <div class="confidence-value" style="color: var(--confidence-canonical);">90%</div>
-                        <div style="font-size: 0.9rem; color: var(--text-secondary);">
-                            Confidence (10% chance wrong)
-                        </div>
-                        <div class="confidence-bar-container">
-                            <div class="confidence-bar">
-                                <div class="confidence-fill" style="width: 90%; background: var(--confidence-canonical);"></div>
-                            </div>
-                            <div class="confidence-labels">
-                                <span>0%</span>
-                                <span>25%</span>
-                                <span>50%</span>
-                                <span>75%</span>
-                                <span>100%</span>
-                            </div>
-                        </div>
-                        <span class="funnel-position" style="background: var(--confidence-canonical);">Narrow End - Canonical</span>
-                    </div>
-                    
-                    <div class="details-section">
-                        <h4>Scenario</h4>
-                        <div class="detail-item">
-                            <strong>Domestic US Flight (Chicago to Los Angeles)</strong>
-                            <p>Involuntarily denied boarding | Oversold flight | Arrival delay: 3 hours</p>
-                        </div>
-                    </div>
-                    
-                    <div class="details-section">
-                        <h4>Conclusion</h4>
-                        <div class="detail-item">
-                            <strong>Entitled to 200% of one-way fare (max $775)</strong>
-                            <p>Based on 14 CFR 250.5. Crystal clear regulation, 45+ years of consistent enforcement. 
-                            Airlines routinely comply. This is about as certain as legal claims get.</p>
-                        </div>
-                    </div>
-                    
-                    <div class="details-section">
-                        <h4>Why Highest Confidence?</h4>
-                        <ul class="evidence-list">
-                            <li class="evidence-item">
-                                <span class="evidence-grade grade-a-plus">Canonical</span>
-                                <strong>Regulation crystal clear</strong>: No ambiguity in 14 CFR 250.5
-                            </li>
-                            <li class="evidence-item">
-                                <span class="evidence-grade grade-a-plus">Canonical</span>
-                                <strong>45+ years enforcement</strong>: Regulation established 1978, unchanged
-                            </li>
-                            <li class="evidence-item">
-                                <span class="evidence-grade grade-a">Strong</span>
-                                <strong>High compliance rate</strong>: Airlines routinely pay without dispute
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <div class="provenance-section">
-                        <h4>Provenance & Limitations</h4>
-                        <div class="provenance-item">
-                            <strong>⚠️ NOT Official DOT Guidance</strong>
-                            <p>Submitted by: Passenger Rights Knowledge Base Project<br>
-                            NOT submitted by: Department of Transportation or FAA</p>
-                        </div>
-                        <div class="provenance-item">
-                            <strong>How to Verify</strong>
-                            <ul>
-                                <li>Read 14 CFR Part 250 on ecfr.gov (official source)</li>
-                                <li>Check DOT Aviation Consumer Protection website</li>
-                                <li>Review airline's Contract of Carriage</li>
-                            </ul>
-                        </div>
-                    </div>
-                    
-                    <div class="disclaimer-box">
-                        <p><strong>⚠️ Not Legal Advice</strong></p>
-                        <p>90% confidence reflects decades of clear enforcement. The 10% uncertainty accounts 
-                        for edge cases (safety-related denials, voluntary bumping misunderstandings, etc.).</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Scientific Domain Examples -->
-        <section id="scientific-examples" class="examples-container">
-            <h2 style="margin-bottom: 20px;">Scientific Knowledge: Creatine Supplementation</h2>
-            <p style="color: var(--text-secondary); margin-bottom: 30px;">
-                Demonstrating canonical scientific knowledge (0.90 confidence) with comprehensive evidence hierarchy, 
-                transparent Bayesian reasoning, and full provenance disclosure.
-            </p>
-            
-            <div class="example-grid">
-                <div class="knowledge-card" style="grid-column: 1 / -1;">
-                    <h3>Does creatine monohydrate supplementation increase lean body mass in resistance training?</h3>
-                    
-                    <div class="confidence-section">
-                        <div class="confidence-value" style="color: var(--confidence-canonical);">90%</div>
-                        <div style="font-size: 0.9rem; color: var(--text-secondary);">
-                            Confidence (10% chance wrong)
-                        </div>
-                        <div class="confidence-bar-container">
-                            <div class="confidence-bar">
-                                <div class="confidence-fill" style="width: 90%; background: var(--confidence-canonical);"></div>
-                            </div>
-                            <div class="confidence-labels">
-                                <span>0%</span>
-                                <span>25%</span>
-                                <span>50%</span>
-                                <span>75%</span>
-                                <span>100%</span>
-                            </div>
-                        </div>
-                        <span class="funnel-position" style="background: var(--confidence-canonical);">Narrow End - Canonical</span>
-                    </div>
-                    
-                    <div class="details-section">
-                        <h4>Conclusion</h4>
-                        <div class="detail-item">
-                            <strong>Yes: Creatine significantly increases lean body mass during resistance training</strong>
-                            <p><strong>Effect Size:</strong> 0.7-1.5 kg additional lean body mass over 6-12 weeks compared to placebo</p>
-                            <p><strong>Mechanism:</strong> Increases muscle phosphocreatine stores → enables higher training volume/intensity → stimulates muscle protein synthesis</p>
-                            <p><strong>Safety:</strong> Excellent profile at 3-5g/day based on 25+ years of research</p>
-                        </div>
-                    </div>
-                    
-                    <div class="details-section">
-                        <h4>Evidence Hierarchy (Graded)</h4>
-                        <ul class="evidence-list">
-                            <li class="evidence-item">
-                                <span class="evidence-grade grade-a-plus">Grade A+</span>
-                                <strong>Candow et al. (2022) Meta-Analysis</strong>
-                                <p>35 RCTs, 1,192 participants. Effect: +0.68 kg overall, +1.1-1.5 kg with resistance training. 
-                                GRADE assessment: HIGH quality evidence.</p>
-                            </li>
-                            <li class="evidence-item">
-                                <span class="evidence-grade grade-a-plus">Grade A+</span>
-                                <strong>Antonio et al. (2021) Systematic Review</strong>
-                                <p>Comprehensive review of 500+ peer-reviewed publications. Confirms safety and efficacy. 
-                                Addresses common misconceptions.</p>
-                            </li>
-                            <li class="evidence-item">
-                                <span class="evidence-grade grade-a">Grade A</span>
-                                <strong>Kreider et al. (2017) ISSN Position Stand</strong>
-                                <p>Official scientific consensus from International Society of Sports Nutrition. 
-                                Authoritative endorsement of creatine monohydrate.</p>
-                            </li>
-                            <li class="evidence-item">
-                                <span class="evidence-grade grade-b">Grade B</span>
-                                <strong>Harris et al. (1992) Mechanistic Study</strong>
-                                <p>Foundational paper demonstrating creatine increases muscle creatine stores by 10-40%. 
-                                Mechanism validated via muscle biopsy.</p>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <div class="bayesian-path">
-                        <h4 style="margin-bottom: 15px;">Bayesian Reasoning Path</h4>
-                        <p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 0.9rem;">
-                            How confidence evolved from initial hypothesis to current conclusion:
-                        </p>
-                        
-                        <div class="bayesian-step">
-                            <div class="confidence-point">50%</div>
-                            <div class="arrow">→</div>
-                            <div class="reasoning">
-                                <strong>Prior (Starting Point)</strong><br>
-                                Mechanism plausible (ATP-PCr system understood), but ~50% of sports supplements 
-                                show no effect in well-designed RCTs. No strong expectation before testing.
-                            </div>
-                        </div>
-                        
-                        <div class="bayesian-step">
-                            <div class="confidence-point">60%</div>
-                            <div class="arrow">→</div>
-                            <div class="reasoning">
-                                <strong>Mechanistic Evidence</strong><br>
-                                Harris et al. (1992) confirms creatine increases muscle phosphocreatine by 10-40%. 
-                                Direct measurement via muscle biopsy. Mechanism validated.
-                            </div>
-                        </div>
-                        
-                        <div class="bayesian-step">
-                            <div class="confidence-point">70%</div>
-                            <div class="arrow">→</div>
-                            <div class="reasoning">
-                                <strong>Early RCTs (1990s-2000s)</strong><br>
-                                Multiple independent RCTs show 1-2 kg lean body mass gains. Effect replicates 
-                                across research groups. Moderate to strong evidence emerging.
-                            </div>
-                        </div>
-                        
-                        <div class="bayesian-step">
-                            <div class="confidence-point">80%</div>
-                            <div class="arrow">→</div>
-                            <div class="reasoning">
-                                <strong>2017 Meta-Analysis</strong><br>
-                                Large-scale synthesis shows 1.37 kg additional gain. Statistical significance 
-                                strong (p < 0.001). Effect persists across studies and populations.
-                            </div>
-                        </div>
-                        
-                        <div class="bayesian-step">
-                            <div class="confidence-point">85%</div>
-                            <div class="arrow">→</div>
-                            <div class="reasoning">
-                                <strong>2022 Comprehensive Meta-Analysis</strong><br>
-                                Candow et al.: 35 RCTs, 1,192 participants. Effect confirmed but smaller than early 
-                                studies (publication bias correction). GRADE: HIGH quality. Effect robust.
-                            </div>
-                        </div>
-                        
-                        <div class="bayesian-step" style="background: rgba(5, 150, 105, 0.1);">
-                            <div class="confidence-point" style="color: var(--confidence-canonical);">90%</div>
-                            <div class="arrow">→</div>
-                            <div class="reasoning">
-                                <strong>Overwhelming Consensus (2025)</strong><br>
-                                Multiple independent systematic reviews (ISSN, AIS, IOC) over 25+ years. 500+ peer-reviewed 
-                                papers. 95% replication rate. Mechanism understood. Predictive validity confirmed. 
-                                <strong>Canonical knowledge.</strong>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="details-section">
-                        <h4>What Would Change Our Mind?</h4>
-                        <ul class="evidence-list">
-                            <li class="evidence-item">
-                                <strong>Large null RCT (N>1,000)</strong> with proper dosing/duration shows no effect 
-                                → confidence drops to ~60%
-                            </li>
-                            <li class="evidence-item">
-                                <strong>Methodological flaw discovered:</strong> DEXA/BIA systematically overestimate 
-                                lean mass in creatine users due to water retention → confidence drops to ~50%
-                            </li>
-                            <li class="evidence-item">
-                                <strong>Publication bias meta-analysis:</strong> Entire effect disappears when 
-                                unpublished studies included → confidence drops to ~40%
-                            </li>
-                            <li class="evidence-item">
-                                <strong>Mechanism disproven:</strong> Creatine shown NOT to increase muscle phosphocreatine 
-                                in follow-up studies → confidence drops to ~30%
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <div class="provenance-section">
-                        <h4>Provenance & Limitations</h4>
-                        <div class="provenance-item">
-                            <strong>⚠️ NOT Medical Authority</strong>
-                            <p>Submitted by: Independent Nutrition Research Collective<br>
-                            NOT submitted by: FDA, NIH, or medical authority</p>
-                        </div>
-                        <div class="provenance-item">
-                            <strong>Verification Status</strong>
-                            <p>Unreviewed by external scientific panel. Analysis based on published literature only.</p>
-                        </div>
-                        <div class="provenance-item">
-                            <strong>Potential Biases</strong>
-                            <ul>
-                                <li>Some cited studies have supplement industry funding</li>
-                                <li>Publication bias favors positive results (may inflate effect size)</li>
-                                <li>May favor supplement efficacy due to researcher interests</li>
-                            </ul>
-                        </div>
-                        <div class="provenance-item">
-                            <strong>How to Verify Independently</strong>
-                            <ul>
-                                <li>Search PubMed for "creatine lean body mass resistance training" RCTs</li>
-                                <li>Consult physician before starting supplementation</li>
-                                <li>Check Cochrane Database for systematic reviews</li>
-                                <li>Review Australian Institute of Sport Sports Supplement Framework (Group A rating)</li>
-                                <li>Read cited studies directly (all linked with DOIs)</li>
-                            </ul>
-                        </div>
-                        <div class="provenance-item">
-                            <strong>Update Mechanism</strong>
-                            <p>This abstract is updated when: (1) New RCTs published, (2) Meta-analyses released, 
-                            (3) Safety concerns emerge, (4) Replication attempts fail</p>
-                        </div>
-                    </div>
-                    
-                    <div class="details-section">
-                        <h4>Important Qualifications</h4>
-                        <ul class="evidence-list">
-                            <li class="evidence-item">
-                                <strong>Requires concurrent resistance training</strong>: Creatine alone has minimal 
-                                effect on lean body mass. Effect depends on training stimulus.
-                            </li>
-                            <li class="evidence-item">
-                                <strong>Individual response varies</strong>: ~20-30% are "non-responders" (likely due 
-                                to already-high baseline muscle creatine levels).
-                            </li>
-                            <li class="evidence-item">
-                                <strong>Modest but consistent effect</strong>: ~5-10% additional gain beyond training 
-                                alone. Not a miracle supplement, but reliably effective.
-                            </li>
-                            <li class="evidence-item">
-                                <strong>Water retention component</strong>: Some early gains are intracellular water. 
-                                Long-term gains reflect true muscle protein accretion.
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <div class="disclaimer-box">
-                        <p><strong>⚠️ Not Medical Advice</strong></p>
-                        <p>This is educational information only. 90% confidence means 10% chance wrong—science is 
-                        provisional. Individual results vary significantly. Consult healthcare provider before 
-                        starting supplementation, especially if you have kidney disease or other health conditions.</p>
-                        <p><strong>Contraindications:</strong> Individuals with pre-existing kidney disease should 
-                        consult physician. Generally recognized as safe (GRAS) for healthy adults at 3-5g/day.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="intro-section" style="margin-top: 60px;">
-            <h2>Why This Matters</h2>
-            
-            <div class="principle-box">
-                <strong>For Democracy</strong>
-                <p>Citizens need reliable, transparent knowledge with quantified confidence that updates as 
-                evidence emerges. No false certainty. No hidden assumptions. Clear verification pathways.</p>
-            </div>
-            
-            <div class="principle-box">
-                <strong>For Science</strong>
-                <p>The replication crisis shows science needs better infrastructure. This provides Bayesian 
-                confidence (not binary p-values), transparent reasoning, replication tracking, bias disclosure, 
-                and provenance transparency.</p>
-            </div>
-            
-            <div class="principle-box">
-                <strong>For Rauch's Constitution of Knowledge</strong>
-                <p>This operationalizes liberal science: No final say (confidence < 1.0 always), community 
-                validation (multiple institutions weigh in), empirical checking (real-world outcomes tracked), 
-                error-seeking (falsifiability explicit), and transparent reasoning.</p>
-            </div>
-            
-            <p style="margin-top: 20px;">
-                <strong>Epistemic Status:</strong> Early-stage prototype (0.70 confidence this architecture 
-                can handle contested domains). We demonstrated provenance transparency works in both legal 
-                and scientific domains. Next: climate change and UBI test cases.
-            </p>
-            
-            <p style="margin-top: 15px; color: var(--text-secondary);">
-                <em>We might be wrong. That's the point. Let's find out.</em>
-            </p>
-        </section>
-    </div>
-
-    <footer>
-        <div class="container">
-            <p><strong>Legis Ledger v1.1.0</strong></p>
-            <p>Apache 2.0 License | Transparency Principle: All reasoning paths public</p>
-            
-            <div class="footer-links">
-                <a href="https://github.com/yourusername/legis-ledger" target="_blank">GitHub Repository</a>
-                <a href="docs/BAYESIAN_REASONING.md">Bayesian Reasoning Guide</a>
-                <a href="docs/EVIDENCE_GRADING.md">Evidence Grading System</a>
-                <a href="schemas/core-knowledge-schema.json">Core Schema</a>
-            </div>
-            
-            <p style="margin-top: 30px; font-size: 0.9rem; color: var(--text-secondary);">
-                Built with epistemic humility. All knowledge claims < 1.0 confidence.<br>
-                Science is provisional. Democracy requires understanding, not certainty.
-            </p>
+        <h1>Legis Ledger</h1>
+        <p class="tagline">Knowledge infrastructure with epistemic humility</p>
+        
+        <div class="status">
+            <strong>⚠️ Pre-Launch Development</strong><br>
+            These prototypes are private and password-protected during development. 
+            Expected public launch: Q2 2025.
         </div>
-    </footer>
 
-    <script>
-        /*
-         * DATA STRUCTURE NOTE:
-         * 
-         * This demonstration index.html contains inline examples for illustration.
-         * In production, knowledge abstracts would be loaded from:
-         * - data/abstracts/legal/*.json (Legal domain abstracts)
-         * - data/abstracts/scientific/*.json (Scientific domain abstracts)
-         * - data/abstracts/policy/*.json (Policy domain abstracts - planned)
-         * 
-         * Each abstract follows the core-knowledge-schema.json specification with
-         * domain-specific extensions as defined in:
-         * - schemas/domain-extensions/legal-extension.json
-         * - schemas/domain-extensions/scientific-extension.json
-         * 
-         * Current example abstracts referenced:
-         * - legal/eu-delay-mechanical-3hrs.json
-         * - legal/eu-delay-weather-mixed.json
-         * - legal/us-denied-boarding.json
-         * - scientific/creatine-lbm-resistance-training-2025.json
-         * 
-         * For API integration, see: /api/knowledge-claims/{identifier}
-         */
-        
-        function switchMVP(mvpType) {
-            // Update cards
-            document.querySelectorAll('.mvp-card').forEach(card => {
-                card.classList.remove('active');
-                if (card.dataset.mvp === mvpType) {
-                    card.classList.add('active');
-                }
-            });
-            
-            // Update example sections
-            document.querySelectorAll('.examples-container').forEach(section => {
-                section.classList.remove('active');
-            });
-            
-            if (mvpType === 'legal') {
-                document.getElementById('legal-examples').classList.add('active');
-            } else if (mvpType === 'scientific') {
-                document.getElementById('scientific-examples').classList.add('active');
-            }
-        }
-        
-        // Animate confidence bars on load
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(function() {
-                document.querySelectorAll('.confidence-fill').forEach(function(fill) {
-                    fill.style.transition = 'width 1.5s ease-out';
-                });
-            }, 100);
-        });
-    </script>
+        <div class="prototypes">
+            <h2 style="color: #333; margin-bottom: 20px;">Interactive Prototypes</h2>
+
+            <a href="/prototypes/minimum-wage-scrubber.html" class="prototype-card">
+                <div class="icon">🧽</div>
+                <h2>The Certainty Scrubber</h2>
+                <div>
+                    <span class="badge new">NEW</span>
+                    <span class="badge alpha">Interactive Demo</span>
+                </div>
+                <p class="description">
+                    Scrub through confidence levels just like the Wayback Machine scrubs through time. 
+                    Features real minimum wage data with genuine expert disagreement (50-60% confidence).
+                </p>
+                <p class="meta">
+                    Topic: Minimum Wage Effects | Technology: Vanilla JS | Status: Ready for review
+                </p>
+            </a>
+
+            <a href="/prototypes/wikipedia-ui/vitamin-d-wikipedia-mockup.html" class="prototype-card">
+                <div class="icon">📄</div>
+                <h2>Filtered Wikipedia (Vitamin D)</h2>
+                <div>
+                    <span class="badge alpha">Static Mockup</span>
+                </div>
+                <p class="description">
+                    Wikipedia-style article filtered by confidence threshold. Demonstrates how claims 
+                    with different evidence levels appear at different thresholds.
+                </p>
+                <p class="meta">
+                    Topic: Vitamin D Health Effects | Technology: Static HTML | Status: Early concept
+                </p>
+            </a>
+        </div>
+
+        <footer>
+            <p>
+                <strong>Legis Ledger</strong> | 
+                <a href="https://github.com/legisledger/legisledger" target="_blank">GitHub</a> | 
+                Built with epistemic humility
+            </p>
+            <p style="margin-top: 10px; font-size: 0.85em;">
+                Version: Pre-Launch | Last Updated: December 2024
+            </p>
+        </footer>
+    </div>
 </body>
 </html>
