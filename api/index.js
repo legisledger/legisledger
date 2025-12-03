@@ -10,44 +10,67 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Helper function to read JSON files
-function readAbstract(filename) {
-  const filePath = path.join(process.cwd(), 'data', 'abstracts', filename);
+// Helper function to recursively find all JSON files in a directory
+function findJsonFilesRecursive(dir, fileList = []) {
+  const files = fs.readdirSync(dir);
+  
+  files.forEach(file => {
+    const filePath = path.join(dir, file);
+    const stat = fs.statSync(filePath);
+    
+    if (stat.isDirectory()) {
+      // Recursively search subdirectories
+      findJsonFilesRecursive(filePath, fileList);
+    } else if (file.endsWith('.json')) {
+      // Add JSON files to the list
+      fileList.push(filePath);
+    }
+  });
+  
+  return fileList;
+}
+
+// Helper function to read abstract from full path
+function readAbstractFromPath(filePath) {
   try {
     const data = fs.readFileSync(filePath, 'utf8');
     return JSON.parse(data);
   } catch (error) {
-    console.error(`Error reading ${filename}:`, error.message);
+    console.error(`Error reading ${filePath}:`, error.message);
     return null;
   }
+}
+
+// Helper function to read JSON files (legacy, for backward compatibility)
+function readAbstract(filename) {
+  const filePath = path.join(process.cwd(), 'data', 'abstracts', filename);
+  return readAbstractFromPath(filePath);
 }
 
 // Helper function to read demo files
 function readDemo(filename) {
   const filePath = path.join(process.cwd(), 'data', 'demos', filename);
-  try {
-    const data = fs.readFileSync(filePath, 'utf8');
-    return JSON.parse(data);
-  } catch (error) {
-    console.error(`Error reading demo ${filename}:`, error.message);
-    return null;
-  }
+  return readAbstractFromPath(filePath);
 }
 
-// Helper function to list all abstracts
+// Helper function to list all abstracts (now recursive!)
 function listAllAbstracts() {
   const abstracts = [];
   
-  // Read from /data/abstracts
+  // Read from /data/abstracts (recursively)
   const abstractsDir = path.join(process.cwd(), 'data', 'abstracts');
   if (fs.existsSync(abstractsDir)) {
-    const files = fs.readdirSync(abstractsDir).filter(f => f.endsWith('.json'));
-    files.forEach(file => {
-      const abstract = readAbstract(file);
+    const jsonFiles = findJsonFilesRecursive(abstractsDir);
+    
+    jsonFiles.forEach(filePath => {
+      const abstract = readAbstractFromPath(filePath);
       if (abstract) {
+        // Get relative path for cleaner identifier
+        const relativePath = path.relative(abstractsDir, filePath);
+        
         abstracts.push({
           identifier: abstract.identifier || abstract['@id'],
-          filename: file,
+          filename: relativePath, // Now includes subdirectory path
           domain: abstract.scenario?.domain,
           claim: abstract.conclusion?.claim,
           confidence: abstract.conclusion?.confidence
@@ -91,197 +114,198 @@ function listAllAbstracts() {
   return abstracts;
 }
 
-// API Documentation (root endpoint)
+// API Routes
+
+// GET /api - API documentation
 app.get('/api', (req, res) => {
   res.json({
     name: 'Legis Ledger API',
     version: '1.0.0',
-    description: 'Bayesian fact-checker with quantified confidence levels',
-    documentation: 'https://github.com/damonregan/legis-ledger',
+    description: 'Knowledge infrastructure with Bayesian confidence levels',
     endpoints: {
-      'GET /api': {
-        description: 'This documentation page'
-      },
-      'GET /api/abstracts': {
-        description: 'List all available abstracts with metadata',
-        example: 'https://demo.legisledger.org/api/abstracts'
-      },
-      'GET /api/abstracts/:id': {
-        description: 'Get a specific abstract by identifier',
-        example: 'https://demo.legisledger.org/api/abstracts/vitamin-d-rickets-prevention',
-        parameters: {
-          id: 'Abstract identifier'
-        }
-      },
-      'GET /api/filter': {
-        description: 'Filter abstracts by confidence threshold',
-        example: 'https://demo.legisledger.org/api/filter?threshold=0.70',
-        parameters: {
-          threshold: 'Minimum confidence level (0.0 to 1.0)'
-        }
-      },
-      'GET /api/search': {
-        description: 'Search abstracts by text query',
-        example: 'https://demo.legisledger.org/api/search?q=vitamin',
-        parameters: {
-          q: 'Search query (searches claim, domain, and identifier)'
-        }
-      },
-      'GET /api/validate': {
-        description: 'Validate all abstracts against schema requirements',
-        example: 'https://demo.legisledger.org/api/validate'
-      }
+      '/api': 'This documentation',
+      '/api/abstracts': 'List all available abstracts',
+      '/api/abstracts/:id': 'Get specific abstract by identifier',
+      '/api/search?q=query': 'Search abstracts',
+      '/api/filter?confidence=0.7': 'Filter abstracts by minimum confidence',
+      '/api/validate': 'Validate abstract JSON against schema'
     },
-    contact: {
-      project: 'Legis Ledger',
-      purpose: 'Knowledge infrastructure for democracy with epistemic humility',
-      status: 'Pre-launch development'
+    examples: {
+      list: '/api/abstracts',
+      get: '/api/abstracts/vitamin-d-health-effects-filtered-2025',
+      search: '/api/search?q=vitamin',
+      filter: '/api/filter?confidence=0.7'
     }
   });
 });
 
-// List all abstracts
+// GET /api/abstracts - List all abstracts
 app.get('/api/abstracts', (req, res) => {
   try {
     const abstracts = listAllAbstracts();
     res.json({
-      totalAbstracts: abstracts.length,
-      abstracts
+      count: abstracts.length,
+      abstracts: abstracts
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ 
+      error: 'Failed to list abstracts',
+      message: error.message 
+    });
   }
 });
 
-// Get specific abstract
+// GET /api/abstracts/:id - Get specific abstract
 app.get('/api/abstracts/:id', (req, res) => {
   try {
     const { id } = req.params;
     
-    // Try reading from abstracts directory
-    let abstract = readAbstract(`${id}.json`);
-    
-    // Try reading from demos directory
-    if (!abstract) {
-      abstract = readDemo(`${id}.json`);
-    }
-    
-    // Try matching against claim IDs in vitamin D structure
-    if (!abstract) {
-      const vitaminD = readDemo('vitamin-d-filtered-mvp.json');
-      if (vitaminD && vitaminD.retainedClaims) {
-        const claim = [...vitaminD.retainedClaims, ...vitaminD.removedClaims]
-          .find(c => c.claimId === id);
-        if (claim) {
-          abstract = { ...claim, source: 'vitamin-d-filtered-mvp.json' };
+    // Try finding in abstracts directory (recursively)
+    const abstractsDir = path.join(process.cwd(), 'data', 'abstracts');
+    if (fs.existsSync(abstractsDir)) {
+      const jsonFiles = findJsonFilesRecursive(abstractsDir);
+      
+      for (const filePath of jsonFiles) {
+        const abstract = readAbstractFromPath(filePath);
+        if (abstract && (abstract.identifier === id || abstract['@id'] === id)) {
+          return res.json(abstract);
         }
       }
     }
     
-    if (!abstract) {
-      return res.status(404).json({ error: 'Abstract not found', id });
+    // Try demos directory
+    const demosDir = path.join(process.cwd(), 'data', 'demos');
+    if (fs.existsSync(demosDir)) {
+      const demoFiles = fs.readdirSync(demosDir).filter(f => f.endsWith('.json'));
+      
+      for (const file of demoFiles) {
+        const demo = readDemo(file);
+        if (demo) {
+          // Check main identifier
+          if (demo.identifier === id || demo['@id'] === id) {
+            return res.json(demo);
+          }
+          
+          // Check if it's a vitamin D style with individual claim IDs
+          if (demo.retainedClaims || demo.removedClaims) {
+            const allClaims = [...(demo.retainedClaims || []), ...(demo.removedClaims || [])];
+            const claim = allClaims.find(c => c.claimId === id);
+            if (claim) {
+              return res.json({ ...demo, focusedClaim: claim });
+            }
+          }
+        }
+      }
     }
     
-    res.json(abstract);
+    res.status(404).json({ 
+      error: 'Abstract not found',
+      id: id 
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ 
+      error: 'Failed to retrieve abstract',
+      message: error.message 
+    });
   }
 });
 
-// Search abstracts
+// GET /api/search - Search abstracts
 app.get('/api/search', (req, res) => {
   try {
     const { q } = req.query;
+    
     if (!q) {
       return res.status(400).json({ error: 'Query parameter "q" is required' });
     }
     
-    const allAbstracts = listAllAbstracts();
     const query = q.toLowerCase();
+    const abstracts = listAllAbstracts();
     
-    const results = allAbstracts.filter(a => 
-      (a.claim && a.claim.toLowerCase().includes(query)) ||
-      (a.identifier && a.identifier.toLowerCase().includes(query)) ||
-      (a.domain && a.domain.toLowerCase().includes(query))
-    );
+    const results = abstracts.filter(abstract => {
+      return (
+        (abstract.identifier && abstract.identifier.toLowerCase().includes(query)) ||
+        (abstract.claim && abstract.claim.toLowerCase().includes(query)) ||
+        (abstract.domain && abstract.domain.toLowerCase().includes(query))
+      );
+    });
     
     res.json({
       query: q,
-      resultsCount: results.length,
-      results
+      count: results.length,
+      results: results
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ 
+      error: 'Search failed',
+      message: error.message 
+    });
   }
 });
 
-// Filter by confidence threshold
+// GET /api/filter - Filter abstracts by confidence
 app.get('/api/filter', (req, res) => {
   try {
-    const { threshold } = req.query;
-    if (!threshold) {
-      return res.status(400).json({ error: 'Query parameter "threshold" is required (0.0 to 1.0)' });
+    const { confidence, domain } = req.query;
+    
+    let abstracts = listAllAbstracts();
+    
+    if (confidence) {
+      const minConfidence = parseFloat(confidence);
+      if (isNaN(minConfidence)) {
+        return res.status(400).json({ error: 'Confidence must be a number' });
+      }
+      abstracts = abstracts.filter(a => a.confidence >= minConfidence);
     }
     
-    const thresholdNum = parseFloat(threshold);
-    if (isNaN(thresholdNum) || thresholdNum < 0 || thresholdNum > 1) {
-      return res.status(400).json({ error: 'Threshold must be between 0.0 and 1.0' });
+    if (domain) {
+      abstracts = abstracts.filter(a => a.domain === domain);
     }
-    
-    const allAbstracts = listAllAbstracts();
-    const filtered = allAbstracts.filter(a => 
-      a.confidence && a.confidence >= thresholdNum
-    );
     
     res.json({
-      threshold: thresholdNum,
-      totalAbstracts: allAbstracts.length,
-      filteredCount: filtered.length,
-      filtered
+      filters: { confidence, domain },
+      count: abstracts.length,
+      abstracts: abstracts
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ 
+      error: 'Filter failed',
+      message: error.message 
+    });
   }
 });
 
-// Validate abstracts (basic check)
-app.get('/api/validate', (req, res) => {
+// POST /api/validate - Validate abstract JSON
+app.post('/api/validate', (req, res) => {
   try {
-    const allAbstracts = listAllAbstracts();
-    const validation = {
-      totalAbstracts: allAbstracts.length,
-      valid: allAbstracts.length > 0,
-      errors: [],
-      abstracts: allAbstracts.map(a => ({
-        identifier: a.identifier,
-        hasConfidence: typeof a.confidence === 'number',
-        hasClaim: typeof a.claim === 'string',
-        hasDomain: typeof a.domain === 'string'
-      }))
-    };
+    const abstract = req.body;
     
-    res.json(validation);
+    // Basic validation
+    const errors = [];
+    
+    if (!abstract['@type']) errors.push('Missing @type field');
+    if (!abstract.identifier) errors.push('Missing identifier field');
+    if (!abstract.scenario) errors.push('Missing scenario field');
+    if (!abstract.conclusion) errors.push('Missing conclusion field');
+    
+    if (errors.length > 0) {
+      return res.status(400).json({
+        valid: false,
+        errors: errors
+      });
+    }
+    
+    res.json({
+      valid: true,
+      message: 'Abstract structure is valid'
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ 
+      error: 'Validation failed',
+      message: error.message 
+    });
   }
 });
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({ 
-    error: 'Not found',
-    path: req.path,
-    availableEndpoints: [
-      'GET /api',
-      'GET /api/abstracts',
-      'GET /api/abstracts/:id',
-      'GET /api/search?q=query',
-      'GET /api/filter?threshold=0.70',
-      'GET /api/validate'
-    ]
-  });
-});
-
-// CRITICAL: Export for Vercel serverless
-// Do NOT use app.listen() - Vercel handles that
+// Export for Vercel serverless
 module.exports = app;
