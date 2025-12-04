@@ -767,6 +767,12 @@
             
             abstractData = await response.json();
             
+            // Check if this is a collection - redirect to collection renderer
+            if (abstractData['@type'] === 'CollectionPage') {
+                window.location.href = `/collection.html?id=${abstractId}`;
+                return;
+            }
+            
             // Update title
             let title = abstractData.scenario?.description || abstractId;
             if (abstractData.retainedClaims) {
