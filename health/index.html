@@ -427,13 +427,16 @@
             const data = await response.json();
             
             if (response.ok) {
-                const valid = data.valid || data.allValid;
+                // Check if all abstracts are valid
+                const allValid = data.allValid === true;
+                const totalAbstracts = data.totalAbstracts || 0;
+                const validAbstracts = data.validAbstracts || 0;
                 
-                if (valid) {
-                    showResult(6, true, `✓ All ${data.totalAbstracts || 0} abstracts pass validation`, data);
+                if (allValid) {
+                    showResult(6, true, `✓ All ${totalAbstracts} abstracts pass validation`, data);
                 } else {
-                    const errors = data.errors || [];
-                    showResult(6, false, `⚠️ Found ${errors.length} validation errors`, data);
+                    const invalidCount = totalAbstracts - validAbstracts;
+                    showResult(6, false, `⚠️ ${invalidCount} of ${totalAbstracts} abstracts have validation errors`, data);
                 }
             } else {
                 showResult(6, false, '✗ Validate endpoint failed', data);
