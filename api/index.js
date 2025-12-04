@@ -128,13 +128,14 @@ app.get('/api', (req, res) => {
       '/api/abstracts/:id': 'Get specific abstract by identifier',
       '/api/search?q=query': 'Search abstracts',
       '/api/filter?confidence=0.7': 'Filter abstracts by minimum confidence',
-      '/api/validate': 'Validate abstract JSON against schema'
+      '/api/validate': 'GET: Validate all abstracts; POST: Validate single abstract JSON'
     },
     examples: {
       list: '/api/abstracts',
       get: '/api/abstracts/vitamin-d-health-effects-filtered-2025',
       search: '/api/search?q=vitamin',
-      filter: '/api/filter?confidence=0.7'
+      filter: '/api/filter?confidence=0.7',
+      validate: '/api/validate'
     }
   });
 });
@@ -275,7 +276,68 @@ app.get('/api/filter', (req, res) => {
   }
 });
 
-// POST /api/validate - Validate abstract JSON
+// GET /api/validate - Validate all abstracts
+app.get('/api/validate', (req, res) => {
+  try {
+    const abstracts = listAllAbstracts();
+    const results = [];
+    let allValid = true;
+    
+    abstracts.forEach(abstract => {
+      const errors = [];
+      
+      // Check if we can fetch the full abstract
+      try {
+        // Try to load the full abstract (this validates it exists and is parseable)
+        const abstractsDir = path.join(process.cwd(), 'data', 'abstracts');
+        const jsonFiles = findJsonFilesRecursive(abstractsDir);
+        
+        let found = false;
+        for (const filePath of jsonFiles) {
+          const fullAbstract = readAbstractFromPath(filePath);
+          if (fullAbstract && (fullAbstract.identifier === abstract.identifier || fullAbstract['@id'] === abstract.identifier)) {
+            // Basic validation
+            if (!fullAbstract['@type']) errors.push('Missing @type field');
+            if (!fullAbstract.identifier && !fullAbstract['@id']) errors.push('Missing identifier field');
+            if (!fullAbstract.scenario) errors.push('Missing scenario field');
+            if (!fullAbstract.conclusion && !fullAbstract.relatedClaims) errors.push('Missing conclusion or relatedClaims field');
+            
+            found = true;
+            break;
+          }
+        }
+        
+        if (!found) {
+          errors.push('Abstract not found in filesystem');
+        }
+      } catch (error) {
+        errors.push(`Validation error: ${error.message}`);
+      }
+      
+      results.push({
+        identifier: abstract.identifier,
+        valid: errors.length === 0,
+        errors: errors
+      });
+      
+      if (errors.length > 0) allValid = false;
+    });
+    
+    res.json({
+      allValid: allValid,
+      totalAbstracts: abstracts.length,
+      validAbstracts: results.filter(r => r.valid).length,
+      results: results
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      error: 'Validation failed',
+      message: error.message 
+    });
+  }
+});
+
+// POST /api/validate - Validate a single abstract JSON
 app.post('/api/validate', (req, res) => {
   try {
     const abstract = req.body;
