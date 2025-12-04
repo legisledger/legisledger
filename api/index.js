@@ -290,25 +290,86 @@ app.get('/api/validate', (req, res) => {
       try {
         // Try to load the full abstract (this validates it exists and is parseable)
         const abstractsDir = path.join(process.cwd(), 'data', 'abstracts');
-        const jsonFiles = findJsonFilesRecursive(abstractsDir);
+        const demosDir = path.join(process.cwd(), 'data', 'demos');
         
         let found = false;
-        for (const filePath of jsonFiles) {
-          const fullAbstract = readAbstractFromPath(filePath);
-          if (fullAbstract && (fullAbstract.identifier === abstract.identifier || fullAbstract['@id'] === abstract.identifier)) {
-            // Basic validation
-            if (!fullAbstract['@type']) errors.push('Missing @type field');
-            if (!fullAbstract.identifier && !fullAbstract['@id']) errors.push('Missing identifier field');
-            if (!fullAbstract.scenario) errors.push('Missing scenario field');
-            if (!fullAbstract.conclusion && !fullAbstract.relatedClaims) errors.push('Missing conclusion or relatedClaims field');
+        let fullAbstract = null;
+        
+        // Search in abstracts directory
+        if (fs.existsSync(abstractsDir)) {
+          const jsonFiles = findJsonFilesRecursive(abstractsDir);
+          
+          for (const filePath of jsonFiles) {
+            const candidate = readAbstractFromPath(filePath);
+            if (candidate && (candidate.identifier === abstract.identifier || candidate['@id'] === abstract.identifier)) {
+              fullAbstract = candidate;
+              found = true;
+              break;
+            }
+          }
+        }
+        
+        // Search in demos directory (for vitamin D filtered format)
+        if (!found && fs.existsSync(demosDir)) {
+          const demoFiles = fs.readdirSync(demosDir).filter(f => f.endsWith('.json'));
+          
+          for (const file of demoFiles) {
+            const filePath = path.join(demosDir, file);
+            const demo = readAbstractFromPath(filePath);
             
-            found = true;
-            break;
+            if (demo) {
+              // Check if this is the main identifier
+              if (demo.identifier === abstract.identifier || demo['@id'] === abstract.identifier) {
+                fullAbstract = demo;
+                found = true;
+                break;
+              }
+              
+              // Check if it's a vitamin D style with individual claim IDs
+              if (demo.retainedClaims || demo.removedClaims) {
+                const allClaims = [...(demo.retainedClaims || []), ...(demo.removedClaims || [])];
+                const claim = allClaims.find(c => c.claimId === abstract.identifier);
+                if (claim) {
+                  // This is a sub-claim from vitamin D format - it's valid
+                  fullAbstract = claim;
+                  found = true;
+                  break;
+                }
+              }
+            }
           }
         }
         
         if (!found) {
           errors.push('Abstract not found in filesystem');
+        } else if (fullAbstract) {
+          // Validate based on type
+          const isCollection = fullAbstract['@type'] === 'CollectionPage';
+          
+          // All types need @type and identifier
+          if (!fullAbstract['@type']) errors.push('Missing @type field');
+          if (!fullAbstract.identifier && !fullAbstract['@id'] && !fullAbstract.claimId) {
+            errors.push('Missing identifier field');
+          }
+          
+          // Collections have different structure
+          if (isCollection) {
+            if (!fullAbstract.name && !fullAbstract.description) {
+              errors.push('Collection missing name or description');
+            }
+            if (!fullAbstract.relatedClaims) {
+              errors.push('Collection missing relatedClaims field');
+            }
+          } else {
+            // Regular abstracts or sub-claims need scenario (unless they're sub-claims)
+            if (!fullAbstract.scenario && !fullAbstract.claimId) {
+              errors.push('Missing scenario field');
+            }
+            // Need conclusion or be part of a filtered structure
+            if (!fullAbstract.conclusion && !fullAbstract.claim) {
+              errors.push('Missing conclusion or claim field');
+            }
+          }
         }
       } catch (error) {
         errors.push(`Validation error: ${error.message}`);
