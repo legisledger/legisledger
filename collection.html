@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legis Ledger - Collection</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .header h1 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            opacity: 0.9;
+            font-size: 16px;
+            margin-top: 15px;
+            line-height: 1.5;
+        }
+        
+        .collection-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        
+        /* Overview Section */
+        .overview {
+            background: #e8f4f8;
+            padding: 30px;
+            border-bottom: 2px solid #667eea;
+        }
+        
+        .overview h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        .overview-text {
+            color: #333;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+        
+        .key-insight {
+            background: white;
+            padding: 20px;
+            border-left: 4px solid #667eea;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+        
+        .key-insight strong {
+            color: #667eea;
+        }
+        
+        /* Claims Grid */
+        .claims-section {
+            padding: 40px;
+        }
+        
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+        
+        .section-header h2 {
+            color: #333;
+            font-size: 24px;
+        }
+        
+        .claims-count {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .claims-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        /* Claim Card */
+        .claim-card {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 25px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .claim-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            background: white;
+        }
+        
+        .claim-card.high-confidence {
+            border-left-color: #4caf50;
+        }
+        
+        .claim-card.moderate-confidence {
+            border-left-color: #ffc107;
+        }
+        
+        .claim-card.low-confidence {
+            border-left-color: #dc3545;
+        }
+        
+        .claim-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+        
+        .claim-badges {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .confidence-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        
+        .confidence-high {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .confidence-moderate {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .confidence-low {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .evidence-badge {
+            background: #e8f4f8;
+            color: #667eea;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .claim-status {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 12px;
+            font-style: italic;
+        }
+        
+        .claim-reasoning {
+            color: #555;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .claim-uncertainties {
+            background: #fff3cd;
+            padding: 12px;
+            border-radius: 4px;
+            margin-top: 12px;
+        }
+        
+        .claim-uncertainties h4 {
+            font-size: 13px;
+            color: #856404;
+            margin-bottom: 8px;
+        }
+        
+        .claim-uncertainties ul {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .claim-uncertainties li {
+            font-size: 12px;
+            color: #856404;
+            margin-bottom: 4px;
+            padding-left: 16px;
+            position: relative;
+        }
+        
+        .claim-uncertainties li::before {
+            content: "⚠️";
+            position: absolute;
+            left: 0;
+            font-size: 10px;
+        }
+        
+        .view-claim-link {
+            display: inline-block;
+            color: #667eea;
+            font-weight: 600;
+            font-size: 14px;
+            margin-top: 15px;
+            text-decoration: none;
+        }
+        
+        .view-claim-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Expert Disagreement Box */
+        .expert-disagreement {
+            background: #f0e8f8;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+        
+        .expert-disagreement h3 {
+            color: #764ba2;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        .expert-position {
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            border-left: 3px solid #764ba2;
+        }
+        
+        .expert-name {
+            font-weight: 600;
+            color: #764ba2;
+            margin-bottom: 5px;
+        }
+        
+        .expert-view {
+            color: #555;
+            font-size: 14px;
+        }
+        
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 60px 40px;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .back-link {
+            color: white;
+            text-decoration: underline;
+            opacity: 0.9;
+        }
+        
+        .back-link:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="collection-badge">📚 COLLECTION</div>
+            <h1 id="collectionTitle">Loading...</h1>
+            <p class="subtitle" id="collectionDescription">Loading...</p>
+            <p style="margin-top: 15px;">
+                <a href="/" class="back-link">← Back to Home</a>
+            </p>
+        </div>
+        
+        <!-- Overview -->
+        <div class="overview" id="overview" style="display: none;">
+            <h2>Why This Collection Matters</h2>
+            <div class="overview-text" id="overviewText"></div>
+            <div class="key-insight" id="keyInsight"></div>
+        </div>
+        
+        <!-- Claims -->
+        <div class="claims-section" id="claimsSection">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p>Loading collection from API...</p>
+            </div>
+        </div>
+    </div>
+    
+<script>
+    // Configuration
+    const API_BASE = 'https://demo.legisledger.org/api';
+    
+    // Get collection ID from URL
+    function getCollectionId() {
+        const params = new URLSearchParams(window.location.search);
+        return params.get('id');
+    }
+    
+    // Render collection
+    function renderCollection(data) {
+        // Update header
+        document.getElementById('collectionTitle').textContent = data.name || data.identifier;
+        document.getElementById('collectionDescription').textContent = data.description || '';
+        
+        // Show overview if available
+        if (data.abstract) {
+            const overview = document.getElementById('overview');
+            overview.style.display = 'block';
+            
+            const overviewText = [];
+            if (data.abstract.motivatingContext) overviewText.push(data.abstract.motivatingContext);
+            if (data.abstract.whyThisMatters) overviewText.push(data.abstract.whyThisMatters);
+            
+            document.getElementById('overviewText').innerHTML = overviewText.join('<br><br>');
+            
+            if (data.abstract.keyInsight) {
+                document.getElementById('keyInsight').innerHTML = `
+                    <strong>💡 Key Insight:</strong> ${data.abstract.keyInsight}
+                `;
+            }
+        }
+        
+        // Render claims
+        const claimsSection = document.getElementById('claimsSection');
+        
+        if (!data.relatedClaims || data.relatedClaims.length === 0) {
+            claimsSection.innerHTML = `
+                <div style="text-align: center; padding: 60px 40px; color: #666;">
+                    <h3>No claims in this collection yet</h3>
+                    <p style="margin-top: 10px;">Check back later as claims are added.</p>
+                </div>
+            `;
+            return;
+        }
+        
+        let html = `
+            <div class="section-header">
+                <h2>Related Claims</h2>
+                <div class="claims-count">${data.relatedClaims.length} claim${data.relatedClaims.length !== 1 ? 's' : ''}</div>
+            </div>
+            <div class="claims-grid">
+        `;
+        
+        data.relatedClaims.forEach(claim => {
+            const confidencePercent = Math.round(claim.confidence * 100);
+            const confidenceClass = confidencePercent >= 70 ? 'high-confidence' : 
+                                   confidencePercent >= 50 ? 'moderate-confidence' : 
+                                   'low-confidence';
+            const badgeClass = confidencePercent >= 70 ? 'confidence-high' : 
+                              confidencePercent >= 50 ? 'confidence-moderate' : 
+                              'confidence-low';
+            
+            html += `
+                <div class="claim-card ${confidenceClass}" onclick="window.location.href='/wiki.html?id=${claim.id}'">
+                    <div class="claim-title">${claim.claim}</div>
+                    
+                    <div class="claim-badges">
+                        <span class="confidence-badge ${badgeClass}">${confidencePercent}% confidence</span>
+                        ${claim.evidenceGrade ? `<span class="evidence-badge">${claim.evidenceGrade}</span>` : ''}
+                    </div>
+                    
+                    ${claim.status ? `<div class="claim-status">${claim.status}</div>` : ''}
+                    
+                    <div class="claim-reasoning">${claim.reasoning || ''}</div>
+                    
+                    ${claim.keyUncertainties && claim.keyUncertainties.length > 0 ? `
+                        <div class="claim-uncertainties">
+                            <h4>Key Uncertainties:</h4>
+                            <ul>
+                                ${claim.keyUncertainties.slice(0, 3).map(u => `<li>${u}</li>`).join('')}
+                                ${claim.keyUncertainties.length > 3 ? `<li>... and ${claim.keyUncertainties.length - 3} more</li>` : ''}
+                            </ul>
+                        </div>
+                    ` : ''}
+                    
+                    <a href="/wiki.html?id=${claim.id}" class="view-claim-link">
+                        View full analysis →
+                    </a>
+                </div>
+            `;
+        });
+        
+        html += '</div>';
+        
+        // Add expert disagreement section if present
+        const firstClaimWithDisagreement = data.relatedClaims.find(c => c.expertDisagreement);
+        if (firstClaimWithDisagreement && firstClaimWithDisagreement.expertDisagreement) {
+            const ed = firstClaimWithDisagreement.expertDisagreement;
+            html += `
+                <div class="expert-disagreement">
+                    <h3>🤝 Expert Disagreement</h3>
+                    ${ed.explanation ? `<p style="color: #555; margin-bottom: 15px;">${ed.explanation}</p>` : ''}
+            `;
+            
+            // Show different expert positions
+            Object.keys(ed).forEach(key => {
+                if (key !== 'explanation' && typeof ed[key] === 'string') {
+                    const expertName = key.replace(/([A-Z])/g, ' $1').replace(/^\w/, c => c.toUpperCase());
+                    html += `
+                        <div class="expert-position">
+                            <div class="expert-name">${expertName}</div>
+                            <div class="expert-view">${ed[key]}</div>
+                        </div>
+                    `;
+                }
+            });
+            
+            html += '</div>';
+        }
+        
+        claimsSection.innerHTML = html;
+    }
+    
+    // Load collection
+    async function loadCollection() {
+        const collectionId = getCollectionId();
+        
+        if (!collectionId) {
+            document.getElementById('claimsSection').innerHTML = `
+                <div style="text-align: center; padding: 60px 40px;">
+                    <h2>No collection specified</h2>
+                    <p style="margin-top: 10px;"><a href="/" style="color: #667eea;">← Back to Home</a></p>
+                </div>
+            `;
+            return;
+        }
+        
+        try {
+            const response = await fetch(`${API_BASE}/abstracts/${collectionId}`);
+            if (!response.ok) throw new Error('Collection not found');
+            
+            const data = await response.json();
+            
+            // Check if this is actually a collection
+            if (data['@type'] === 'CollectionPage') {
+                renderCollection(data);
+            } else {
+                // Not a collection, redirect to wiki renderer
+                window.location.href = `/wiki.html?id=${collectionId}`;
+            }
+            
+        } catch (error) {
+            console.error('Error loading collection:', error);
+            document.getElementById('claimsSection').innerHTML = `
+                <div style="text-align: center; padding: 60px 40px; color: #dc3545;">
+                    <h2>Error Loading Collection</h2>
+                    <p style="margin-top: 10px;">${error.message}</p>
+                    <p style="margin-top: 20px;"><a href="/" style="color: #667eea;">← Back to Home</a></p>
+                </div>
+            `;
+        }
+    }
+    
+    // Load on page load
+    loadCollection();
+</script>
+</body>
+</html>
