@@ -85,6 +85,34 @@
             padding: 15px 0;
         }
         
+        .slider-value-indicator {
+            position: absolute;
+            top: -35px;
+            transform: translateX(-50%);
+            background: #667eea;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 700;
+            pointer-events: none;
+            transition: left 0.1s ease;
+            white-space: nowrap;
+        }
+        
+        .slider-value-indicator::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 6px solid #667eea;
+        }
+        
         input[type="range"] {
             width: 100%;
             height: 12px;
@@ -402,6 +430,7 @@
             
             <div class="slider-track">
                 <div class="slider-ghost" id="sliderGhost"></div>
+                <div class="slider-value-indicator" id="sliderValueIndicator">70%</div>
                 <input type="range" id="confidenceSlider" min="0" max="100" value="70" step="5">
                 <div class="slider-markers">
                     <span>0% (All)</span>
@@ -447,6 +476,16 @@
     // Update threshold display
     function updateThresholdDisplay() {
         document.getElementById('thresholdValue').textContent = currentThreshold;
+        
+        // Update the floating value indicator position
+        const slider = document.getElementById('confidenceSlider');
+        const indicator = document.getElementById('sliderValueIndicator');
+        const sliderWidth = slider.offsetWidth;
+        const percentage = currentThreshold / 100;
+        const position = sliderWidth * percentage;
+        
+        indicator.style.left = position + 'px';
+        indicator.textContent = currentThreshold + '%';
     }
     
     // Animate slider to target threshold
@@ -574,20 +613,34 @@
                                        confidencePercent >= 60 ? 'confidence-moderate' : 
                                        'confidence-low';
                 
-                // Get additional details from the full abstract
+                // Get additional details - could be from claim itself or from abstractData
                 let howToChangeMyMind = [];
                 let uncertainties = [];
                 let bayesianAnalysis = null;
                 
-                // Try to find full details from abstractData
+                // Check if this claim has its own details (vitamin D filtered structure)
+                if (claim.bayesianAnalysis) {
+                    bayesianAnalysis = claim.bayesianAnalysis;
+                }
+                if (claim.uncertainties) {
+                    uncertainties = claim.uncertainties;
+                }
+                
+                // Or use abstractData-level details (standard structure)
+                if (!bayesianAnalysis && abstractData.bayesianAnalysis) {
+                    bayesianAnalysis = abstractData.bayesianAnalysis;
+                }
+                if (uncertainties.length === 0 && abstractData.conclusion && abstractData.conclusion.uncertainties) {
+                    uncertainties = abstractData.conclusion.uncertainties;
+                }
+                
+                // howToChangeMyMind is typically at abstractData level
                 if (abstractData.bayesianAnalysis && abstractData.bayesianAnalysis.howToChangeMyMind) {
                     howToChangeMyMind = abstractData.bayesianAnalysis.howToChangeMyMind;
                 }
-                if (abstractData.conclusion && abstractData.conclusion.uncertainties) {
-                    uncertainties = abstractData.conclusion.uncertainties;
-                }
-                if (claim.bayesianAnalysis) {
-                    bayesianAnalysis = claim.bayesianAnalysis;
+                // But could also be claim-specific
+                if (claim.howToChangeMyMind) {
+                    howToChangeMyMind = claim.howToChangeMyMind;
                 }
                 
                 html += `
@@ -635,8 +688,8 @@
                 }
                 
                 // Bayesian analysis summary
-                if (bayesianAnalysis || abstractData.bayesianAnalysis) {
-                    const ba = bayesianAnalysis || abstractData.bayesianAnalysis;
+                if (bayesianAnalysis) {
+                    const ba = bayesianAnalysis;
                     html += `
                         <div class="detail-section">
                             <h3>📊 Bayesian Analysis Path</h3>
@@ -665,8 +718,20 @@
                                 </div>
                             </div>
                             <p style="margin-top: 10px; font-size: 13px; color: #666;">
-                                <a href="/api/abstracts/${abstractData.identifier}" target="_blank" style="color: #667eea;">
+                                <a href="${API_BASE}/abstracts/${abstractData.identifier || abstractData['@id']}" target="_blank" style="color: #667eea;">
                                     View complete JSON-LD →
+                                </a>
+                            </p>
+                        </div>
+                    `;
+                } else {
+                    // No Bayesian analysis available
+                    html += `
+                        <div class="detail-section">
+                            <p style="color: #666; font-style: italic;">
+                                Detailed Bayesian analysis not available for this claim. 
+                                <a href="${API_BASE}/abstracts/${abstractData.identifier || abstractData['@id']}" target="_blank" style="color: #667eea;">
+                                    View raw data →
                                 </a>
                             </p>
                         </div>
@@ -804,6 +869,12 @@
     
     // Load on page load
     loadAbstract();
+    
+    // Initialize slider indicator position
+    updateThresholdDisplay();
+    
+    // Update indicator on window resize
+    window.addEventListener('resize', updateThresholdDisplay);
 </script>
 </body>
 </html>
