@@ -172,11 +172,89 @@
             margin-bottom: 20px;
             border-radius: 4px;
             transition: all 0.3s;
+            cursor: pointer;
         }
         
         .claim-card:hover {
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             transform: translateY(-2px);
+        }
+        
+        .claim-card.expanded {
+            background: white;
+            border-left-width: 6px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        
+        .claim-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+        }
+        
+        .expand-hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 10px;
+        }
+        
+        .claim-details {
+            display: none;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #eee;
+        }
+        
+        .claim-details.visible {
+            display: block;
+        }
+        
+        .detail-section {
+            margin-bottom: 20px;
+        }
+        
+        .detail-section h3 {
+            color: #667eea;
+            font-size: 16px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .detail-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .detail-list li {
+            padding: 10px;
+            background: #f8f9fa;
+            margin-bottom: 8px;
+            border-radius: 4px;
+            border-left: 3px solid #667eea;
+        }
+        
+        .bayesian-path {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        
+        .bayesian-step {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .bayesian-step::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
         }
         
         .claim-text {
@@ -372,40 +450,49 @@
     }
     
     // Animate slider to target threshold
-    function animateSliderTo(targetThreshold, duration = 500) {
+    function animateSliderTo(targetThreshold, duration = 1500) {
         if (isAnimating) return;
         
-        isAnimating = true;
-        const slider = document.getElementById('confidenceSlider');
-        const startThreshold = currentThreshold;
-        const diff = targetThreshold - startThreshold;
-        const startTime = Date.now();
+        // Scroll to the sponge section smoothly
+        document.querySelector('.confidence-sponge').scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'start' 
+        });
         
-        slider.classList.add('animating');
-        
-        function animate() {
-            const elapsed = Date.now() - startTime;
-            const progress = Math.min(elapsed / duration, 1);
+        // Wait a bit for scroll, then animate
+        setTimeout(() => {
+            isAnimating = true;
+            const slider = document.getElementById('confidenceSlider');
+            const startThreshold = currentThreshold;
+            const diff = targetThreshold - startThreshold;
+            const startTime = Date.now();
             
-            // Ease-in-out cubic
-            const eased = progress < 0.5 
-                ? 4 * progress * progress * progress 
-                : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+            slider.classList.add('animating');
             
-            currentThreshold = Math.round(startThreshold + (diff * eased));
-            slider.value = currentThreshold;
-            updateThresholdDisplay();
-            renderClaims();
-            
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            } else {
-                slider.classList.remove('animating');
-                isAnimating = false;
+            function animate() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Ease-in-out cubic (smoother)
+                const eased = progress < 0.5 
+                    ? 4 * progress * progress * progress 
+                    : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+                
+                currentThreshold = Math.round(startThreshold + (diff * eased));
+                slider.value = currentThreshold;
+                updateThresholdDisplay();
+                renderClaims();
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                } else {
+                    slider.classList.remove('animating');
+                    isAnimating = false;
+                }
             }
-        }
-        
-        animate();
+            
+            animate();
+        }, 300); // Wait 300ms for scroll to start
     }
     
     // Show ghost slider
@@ -481,17 +568,112 @@
         
         if (visibleClaims.length > 0) {
             html += '<h2 style="margin-bottom: 20px;">✅ Claims Meeting Threshold</h2>';
-            visibleClaims.forEach(claim => {
+            visibleClaims.forEach((claim, index) => {
                 const confidencePercent = Math.round(claim.confidence * 100);
                 const confidenceClass = confidencePercent >= 80 ? 'confidence-high' : 
                                        confidencePercent >= 60 ? 'confidence-moderate' : 
                                        'confidence-low';
                 
+                // Get additional details from the full abstract
+                let howToChangeMyMind = [];
+                let uncertainties = [];
+                let bayesianAnalysis = null;
+                
+                // Try to find full details from abstractData
+                if (abstractData.bayesianAnalysis && abstractData.bayesianAnalysis.howToChangeMyMind) {
+                    howToChangeMyMind = abstractData.bayesianAnalysis.howToChangeMyMind;
+                }
+                if (abstractData.conclusion && abstractData.conclusion.uncertainties) {
+                    uncertainties = abstractData.conclusion.uncertainties;
+                }
+                if (claim.bayesianAnalysis) {
+                    bayesianAnalysis = claim.bayesianAnalysis;
+                }
+                
                 html += `
-                    <div class="claim-card">
-                        <div class="claim-text">${claim.claim}</div>
-                        <div class="claim-meta">
-                            <span class="confidence-badge ${confidenceClass}">${confidencePercent}% confidence</span>
+                    <div class="claim-card" id="claim-${index}" onclick="toggleClaimDetails(${index})">
+                        <div class="claim-header">
+                            <div style="flex: 1;">
+                                <div class="claim-text">${claim.claim}</div>
+                                <div class="claim-meta">
+                                    <span class="confidence-badge ${confidenceClass}">${confidencePercent}% confidence</span>
+                                </div>
+                                <div class="expand-hint">👆 Click to see analysis details</div>
+                            </div>
+                        </div>
+                        
+                        <div class="claim-details" id="details-${index}">
+                `;
+                
+                // How to Change My Mind section
+                if (howToChangeMyMind && howToChangeMyMind.length > 0) {
+                    html += `
+                        <div class="detail-section">
+                            <h3>🔄 How to Change My Mind</h3>
+                            <p style="color: #666; font-size: 14px; margin-bottom: 10px;">
+                                This claim could be wrong. Here's what evidence would change this confidence level:
+                            </p>
+                            <ul class="detail-list">
+                    `;
+                    howToChangeMyMind.forEach(item => {
+                        html += `<li>${item}</li>`;
+                    });
+                    html += `</ul></div>`;
+                }
+                
+                // Uncertainties section
+                if (uncertainties && uncertainties.length > 0) {
+                    html += `
+                        <div class="detail-section">
+                            <h3>⚠️ Key Uncertainties</h3>
+                            <ul class="detail-list">
+                    `;
+                    uncertainties.forEach(item => {
+                        html += `<li>${item}</li>`;
+                    });
+                    html += `</ul></div>`;
+                }
+                
+                // Bayesian analysis summary
+                if (bayesianAnalysis || abstractData.bayesianAnalysis) {
+                    const ba = bayesianAnalysis || abstractData.bayesianAnalysis;
+                    html += `
+                        <div class="detail-section">
+                            <h3>📊 Bayesian Analysis Path</h3>
+                            <div class="bayesian-path">
+                                <div class="bayesian-step">
+                                    <strong>Prior:</strong> ${Math.round((ba.prior?.confidence || 0.5) * 100)}%
+                                    ${ba.prior?.basis ? '<br><small>' + ba.prior.basis + '</small>' : ''}
+                                </div>
+                    `;
+                    
+                    if (ba.evidence && ba.evidence.length > 0) {
+                        ba.evidence.slice(0, 3).forEach(ev => {
+                            const arrow = ev.increases ? '↑' : '↓';
+                            html += `
+                                <div class="bayesian-step">
+                                    ${arrow} ${ev.factor}
+                                    <br><small>Posterior: ${Math.round(ev.posteriorAfter * 100)}%</small>
+                                </div>
+                            `;
+                        });
+                    }
+                    
+                    html += `
+                                <div class="bayesian-step">
+                                    <strong>Final:</strong> ${confidencePercent}%
+                                </div>
+                            </div>
+                            <p style="margin-top: 10px; font-size: 13px; color: #666;">
+                                <a href="/api/abstracts/${abstractData.identifier}" target="_blank" style="color: #667eea;">
+                                    View complete JSON-LD →
+                                </a>
+                            </p>
+                        </div>
+                    `;
+                }
+                
+                html += `
                         </div>
                     </div>
                 `;
@@ -539,6 +721,30 @@
         }
         
         content.innerHTML = html;
+    }
+    
+    // Toggle claim details
+    function toggleClaimDetails(index) {
+        const card = document.getElementById(`claim-${index}`);
+        const details = document.getElementById(`details-${index}`);
+        
+        if (details.classList.contains('visible')) {
+            details.classList.remove('visible');
+            card.classList.remove('expanded');
+        } else {
+            // Close all other details
+            document.querySelectorAll('.claim-details').forEach(d => d.classList.remove('visible'));
+            document.querySelectorAll('.claim-card').forEach(c => c.classList.remove('expanded'));
+            
+            // Open this one
+            details.classList.add('visible');
+            card.classList.add('expanded');
+            
+            // Scroll to card
+            setTimeout(() => {
+                card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+        }
     }
     
     // Load abstract
