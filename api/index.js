@@ -343,11 +343,18 @@ app.get('/api/validate', (req, res) => {
         if (!found) {
           errors.push('Abstract not found in filesystem');
         } else if (fullAbstract) {
+          // Check if this is a sub-claim (part of vitamin D filtered format)
+          const isSubClaim = fullAbstract.claimId && !fullAbstract['@type'];
+          
           // Validate based on type
           const isCollection = fullAbstract['@type'] === 'CollectionPage';
           
-          // All types need @type and identifier
-          if (!fullAbstract['@type']) errors.push('Missing @type field');
+          // Regular abstracts and collections need @type
+          if (!isSubClaim && !fullAbstract['@type']) {
+            errors.push('Missing @type field');
+          }
+          
+          // All need some form of identifier
           if (!fullAbstract.identifier && !fullAbstract['@id'] && !fullAbstract.claimId) {
             errors.push('Missing identifier field');
           }
@@ -360,14 +367,22 @@ app.get('/api/validate', (req, res) => {
             if (!fullAbstract.relatedClaims) {
               errors.push('Collection missing relatedClaims field');
             }
+          } else if (isSubClaim) {
+            // Sub-claims need claim text and confidence
+            if (!fullAbstract.claim) {
+              errors.push('Sub-claim missing claim field');
+            }
+            if (fullAbstract.confidence === undefined) {
+              errors.push('Sub-claim missing confidence field');
+            }
           } else {
-            // Regular abstracts or sub-claims need scenario (unless they're sub-claims)
-            if (!fullAbstract.scenario && !fullAbstract.claimId) {
+            // Regular abstracts need scenario
+            if (!fullAbstract.scenario) {
               errors.push('Missing scenario field');
             }
-            // Need conclusion or be part of a filtered structure
-            if (!fullAbstract.conclusion && !fullAbstract.claim) {
-              errors.push('Missing conclusion or claim field');
+            // Need conclusion
+            if (!fullAbstract.conclusion) {
+              errors.push('Missing conclusion field');
             }
           }
         }
