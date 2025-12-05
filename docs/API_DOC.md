@@ -1,6 +1,6 @@
 # Legis Ledger API
 
-Base URL: https://demo.legisledger.org/api/
+Base URL: https://demo.legisledger.com/api/
 
 ## Endpoints
 

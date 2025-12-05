@@ -668,7 +668,7 @@ DomainRenderers.medical = {
 - Pure HTML/CSS/JavaScript (no build step)
 - Domain-specific renderers in vanilla JavaScript
 - GitHub Pages hosting
-- Custom domain (legisledger.org)
+- Custom domain (legisledger.com)
 
 **Data:**
 - JSON abstracts in `/data/abstracts`
@@ -1514,7 +1514,7 @@ open http://localhost:8000
 ```
 Regan, D. (2025). Legis Ledger: Knowledge Infrastructure for Democracy 
 through Structured Bayesian Pluralism. Retrieved from 
-https://legisledger.org
+https://legisledger.com
 
 Architecture documentation: 
 https://github.com/legisledger/legisledger/blob/main/docs/ARCHITECTURE.md
@@ -1595,9 +1595,9 @@ API access: (Phase 5, 2026)
 
 **Technical questions**: GitHub Issues<br/>
 **Schema improvements**: GitHub Discussions<br/>
-**Partnership inquiries**: [Create later: partnerships@legisledger.org]<br/>
-**General questions**: [Create later: hello@legisledger.org]<br/>
-**Website**: https://legisledger.org<br/>
+**Partnership inquiries**: [Create later: partnerships@legisledger.com]<br/>
+**General questions**: [Create later: hello@legisledger.com]<br/>
+**Website**: https://legisledger.com<br/>
 **Repository**: https://github.com/legisledger/legisledger<br/>
 **Documentation**: https://github.com/legisledger/legisledger/tree/main/docs<br/>
 

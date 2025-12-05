@@ -10,7 +10,7 @@
 
 This project exists in TWO places:
 1. **Claude Project Folder** (this conversation space) - For AI continuity
-2. **Git Repository** (legisledger.org) - For version control and public transparency
+2. **Git Repository** (legisledger.com) - For version control and public transparency
 
 Each serves different purposes. This guide explains what goes where and why.
 
@@ -187,7 +187,7 @@ Git Repository (commit, publish, version control)
 **The complete source of truth:**
 
 ```
-legisledger.org/
+legisledger.com/
 ├── README.md
 ├── FAQ.md
 ├── docs/
@@ -258,7 +258,7 @@ legisledger.org/
 
 **Use Git for validation:**
 ```bash
-cd legisledger.org
+cd legisledger.com
 node scripts/validate.js examples/scientific/new-abstract.json
 ```
 
@@ -360,8 +360,8 @@ If Claude Project properly configured:
 
 **Clone from Git:**
 ```bash
-git clone https://github.com/[username]/legisledger.org
-cd legisledger.org
+git clone https://github.com/[username]/legisledger.com
+cd legisledger.com
 git pull origin main
 ```
 

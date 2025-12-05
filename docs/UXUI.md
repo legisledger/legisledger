@@ -445,14 +445,14 @@ User types: "mini"
 
 **Format:**
 ```
-legisledger.org/wiki/{article_name}?confidence={threshold}
+legisledger.com/wiki/{article_name}?confidence={threshold}
 ```
 
 **Examples:**
 ```
-legisledger.org/wiki/Minimum_Wage?confidence=70
-legisledger.org/wiki/Vitamin_D?confidence=80
-legisledger.org/wiki/Climate_Change?confidence=95
+legisledger.com/wiki/Minimum_Wage?confidence=70
+legisledger.com/wiki/Vitamin_D?confidence=80
+legisledger.com/wiki/Climate_Change?confidence=95
 ```
 
 **URL behavior:**
@@ -463,13 +463,13 @@ legisledger.org/wiki/Climate_Change?confidence=95
 
 **Special URLs:**
 ```
-legisledger.org/                         → Home page
-legisledger.org/browse/health            → Category browse
-legisledger.org/about                    → What is this?
-legisledger.org/methodology              → How it works
-legisledger.org/wiki/{article}           → Article at default 70%
-legisledger.org/wiki/{article}/spectrum  → Confidence spectrum view
-legisledger.org/wiki/{article}/sources   → Full source bibliography
+legisledger.com/                         → Home page
+legisledger.com/browse/health            → Category browse
+legisledger.com/about                    → What is this?
+legisledger.com/methodology              → How it works
+legisledger.com/wiki/{article}           → Article at default 70%
+legisledger.com/wiki/{article}/spectrum  → Confidence spectrum view
+legisledger.com/wiki/{article}/sources   → Full source bibliography
 ```
 
 ---
@@ -774,7 +774,7 @@ legisledger.org/wiki/{article}/sources   → Full source bibliography
 | "5 snapshots in May 2024" | "2 claims survive at 70%" |
 | Archive historical pages | Archive contested claims |
 | "What did this look like then?" | "What's settled vs uncertain?" |
-| URL: `web.archive.org/web/20180101/site` | URL: `legisledger.org/wiki/Topic?confidence=70` |
+| URL: `web.archive.org/web/20180101/site` | URL: `legisledger.com/wiki/Topic?confidence=70` |
 | Mission: Preserve web history | Mission: Preserve epistemic uncertainty |
 
 **The innovation: Apply the Wayback Machine's temporal scrubbing interface to epistemic confidence instead of time.**

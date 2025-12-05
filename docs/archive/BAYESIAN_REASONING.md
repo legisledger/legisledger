@@ -818,7 +818,7 @@ Thomas Bayes gave us a gift: a way to reason about uncertainty with mathematical
 
 **For Help:**
 - Open GitHub issue with "Bayesian" tag
-- Email: bayesian-help@legisledger.org
+- Email: bayesian-help@legisledger.com
 - Community forum: [link when available]
 
 ---

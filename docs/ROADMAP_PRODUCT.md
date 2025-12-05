@@ -343,7 +343,7 @@ This is HONEST UNCERTAINTY - not a failure of the system.
 
 **Launch activities:**
 1. Repository goes public
-2. Website live at legisledger.org
+2. Website live at legisledger.com
 3. Blog post: "Why We Built This"
 4. Outreach to beta testers
 5. Submit to Show HN / Product Hunt
