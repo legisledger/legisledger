@@ -365,12 +365,10 @@
         if (confidence >= 0.80) confidenceClass = 'confidence-high';
         else if (confidence < 0.60) confidenceClass = 'confidence-low';
         
-        const title = abstract.identifier
-            ? abstract.identifier.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())
-            : 'Unknown';
+        const title = abstract.title || 'Untitled';
         
         const domain = abstract.domain || 'unknown';
-        const claim = abstract.claim || 'Click to view details';
+        const claim = abstract.title || 'Click to view details';
         
         return `
             <a href="wiki.html?id=${abstract.id}" class="abstract-card">
