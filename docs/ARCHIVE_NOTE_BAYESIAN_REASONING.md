@@ -156,7 +156,7 @@ This document was a comprehensive **tutorial and educational guide** for contrib
 
 **If you need this content or have questions about the archive:**
 - Open GitHub issue with "Documentation" tag
-- Email: docs@legisledger.org (when available)
+- Email: docs@legisledger.com (when available)
 - See current documentation: `/docs/BAYESIAN_STANDARD.md` and `/docs/BAYESIAN_CALCULATION_METHOD.md`
 
 ---
