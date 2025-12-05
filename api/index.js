@@ -39,16 +39,30 @@ module.exports = (req, res) => {
     return res.status(200).end();
   }
 
-  const url = new URL(req.url, `http://${req.headers.host}`);
-  const pathname = url.pathname;
+  const pathname = req.url;
+  console.log('Request pathname:', pathname);
 
-  // Route: /api/health
-  if (pathname === '/api/health' || pathname === '/health') {
+  // Route: /api (root) - API info
+  if (pathname === '/' || pathname === '') {
+    return res.status(200).json({ 
+      name: 'Legis Ledger API',
+      version: '1.0',
+      endpoints: {
+        '/abstracts': 'List all abstracts',
+        '/abstracts/:id': 'Get specific abstract',
+        '/validate/:id': 'Validate abstract schema',
+        '/health': 'Health check'
+      }
+    });
+  }
+
+  // Route: /health
+  if (pathname === '/health') {
     return res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
   }
 
-  // Route: /api/abstracts
-  if (pathname === '/api/abstracts' || pathname === '/abstracts') {
+  // Route: /abstracts
+  if (pathname === '/abstracts') {
     try {
       const abstractsDir = path.join(process.cwd(), 'data', 'abstracts');
       const jsonFiles = findJsonFilesRecursive(abstractsDir);
@@ -73,8 +87,8 @@ module.exports = (req, res) => {
     }
   }
 
-  // Route: /api/abstracts/:id
-  const abstractMatch = pathname.match(/\/api\/abstracts\/([^\/]+)/) || pathname.match(/\/abstracts\/([^\/]+)/);
+  // Route: /abstracts/:id
+  const abstractMatch = pathname.match(/^\/abstracts\/([^\/]+)$/);
   if (abstractMatch) {
     try {
       const id = abstractMatch[1];
@@ -87,7 +101,7 @@ module.exports = (req, res) => {
       });
       
       if (!matchingFile) {
-        return res.status(404).json({ error: 'Abstract not found' });
+        return res.status(404).json({ error: 'Abstract not found', id: id });
       }
       
       const abstract = readAbstractFromPath(matchingFile);
@@ -97,8 +111,8 @@ module.exports = (req, res) => {
     }
   }
 
-  // Route: /api/validate/:id
-  const validateMatch = pathname.match(/\/api\/validate\/([^\/]+)/) || pathname.match(/\/validate\/([^\/]+)/);
+  // Route: /validate/:id
+  const validateMatch = pathname.match(/^\/validate\/([^\/]+)$/);
   if (validateMatch) {
     try {
       const id = validateMatch[1];
@@ -127,5 +141,5 @@ module.exports = (req, res) => {
   }
 
   // 404 for unknown routes
-  return res.status(404).json({ error: 'Not found' });
+  return res.status(404).json({ error: 'Not found', pathname: pathname, hint: 'Try /abstracts, /abstracts/:id, /validate/:id, or /health' });
 };
