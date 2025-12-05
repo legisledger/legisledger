@@ -1,14 +1,6 @@
-// /api/index.js - Vercel Serverless Function (Simplified, no auth for now)
-const express = require('express');
-const cors = require('cors');
+// Vercel Serverless Function
 const fs = require('fs');
 const path = require('path');
-
-const app = express();
-
-// Enable CORS
-app.use(cors());
-app.use(express.json());
 
 // Helper: Recursively find JSON files
 function findJsonFilesRecursive(dir, fileList = []) {
@@ -36,86 +28,104 @@ function readAbstractFromPath(filePath) {
   }
 }
 
-// GET /api/abstracts
-app.get('/abstracts', (req, res) => {
-  try {
-    const abstractsDir = path.join(process.cwd(), 'data', 'abstracts');
-    const jsonFiles = findJsonFilesRecursive(abstractsDir);
-    
-    const abstracts = jsonFiles
-      .map(filePath => {
+// Main handler
+module.exports = (req, res) => {
+  // Enable CORS
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  const url = new URL(req.url, `http://${req.headers.host}`);
+  const pathname = url.pathname;
+
+  // Route: /api/health
+  if (pathname === '/api/health' || pathname === '/health') {
+    return res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+  }
+
+  // Route: /api/abstracts
+  if (pathname === '/api/abstracts' || pathname === '/abstracts') {
+    try {
+      const abstractsDir = path.join(process.cwd(), 'data', 'abstracts');
+      const jsonFiles = findJsonFilesRecursive(abstractsDir);
+      
+      const abstracts = jsonFiles
+        .map(filePath => {
+          const abstract = readAbstractFromPath(filePath);
+          if (!abstract) return null;
+          return {
+            id: abstract.identifier || abstract['@id'],
+            title: abstract.scenario?.description || 'Untitled',
+            confidence: abstract.conclusion?.confidence || 0,
+            domain: abstract.scenario?.domain || 'unknown',
+            type: abstract['@type'] || 'KnowledgeClaim'
+          };
+        })
+        .filter(Boolean);
+      
+      return res.status(200).json(abstracts);
+    } catch (error) {
+      return res.status(500).json({ error: 'Failed to list abstracts' });
+    }
+  }
+
+  // Route: /api/abstracts/:id
+  const abstractMatch = pathname.match(/\/api\/abstracts\/([^\/]+)/) || pathname.match(/\/abstracts\/([^\/]+)/);
+  if (abstractMatch) {
+    try {
+      const id = abstractMatch[1];
+      const abstractsDir = path.join(process.cwd(), 'data', 'abstracts');
+      const jsonFiles = findJsonFilesRecursive(abstractsDir);
+      
+      const matchingFile = jsonFiles.find(filePath => {
         const abstract = readAbstractFromPath(filePath);
-        if (!abstract) return null;
-        return {
-          id: abstract.identifier || abstract['@id'],
-          title: abstract.scenario?.description || 'Untitled',
-          confidence: abstract.conclusion?.confidence || 0,
-          domain: abstract.scenario?.domain || 'unknown',
-          type: abstract['@type'] || 'KnowledgeClaim'
-        };
-      })
-      .filter(Boolean);
-    
-    res.json(abstracts);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to list abstracts' });
-  }
-});
-
-// GET /api/abstracts/:id
-app.get('/abstracts/:id', (req, res) => {
-  try {
-    const { id } = req.params;
-    const abstractsDir = path.join(process.cwd(), 'data', 'abstracts');
-    const jsonFiles = findJsonFilesRecursive(abstractsDir);
-    
-    const matchingFile = jsonFiles.find(filePath => {
-      const abstract = readAbstractFromPath(filePath);
-      return abstract && (abstract.identifier === id || abstract['@id'] === id);
-    });
-    
-    if (!matchingFile) {
-      return res.status(404).json({ error: 'Abstract not found' });
+        return abstract && (abstract.identifier === id || abstract['@id'] === id);
+      });
+      
+      if (!matchingFile) {
+        return res.status(404).json({ error: 'Abstract not found' });
+      }
+      
+      const abstract = readAbstractFromPath(matchingFile);
+      return res.status(200).json(abstract);
+    } catch (error) {
+      return res.status(500).json({ error: 'Failed to fetch abstract' });
     }
-    
-    const abstract = readAbstractFromPath(matchingFile);
-    res.json(abstract);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch abstract' });
   }
-});
 
-// GET /api/validate/:id
-app.get('/validate/:id', (req, res) => {
-  try {
-    const { id } = req.params;
-    const abstractsDir = path.join(process.cwd(), 'data', 'abstracts');
-    const jsonFiles = findJsonFilesRecursive(abstractsDir);
-    
-    const matchingFile = jsonFiles.find(filePath => {
-      const abstract = readAbstractFromPath(filePath);
-      return abstract && (abstract.identifier === id || abstract['@id'] === id);
-    });
-    
-    if (!matchingFile) {
-      return res.status(404).json({ error: 'Abstract not found' });
+  // Route: /api/validate/:id
+  const validateMatch = pathname.match(/\/api\/validate\/([^\/]+)/) || pathname.match(/\/validate\/([^\/]+)/);
+  if (validateMatch) {
+    try {
+      const id = validateMatch[1];
+      const abstractsDir = path.join(process.cwd(), 'data', 'abstracts');
+      const jsonFiles = findJsonFilesRecursive(abstractsDir);
+      
+      const matchingFile = jsonFiles.find(filePath => {
+        const abstract = readAbstractFromPath(filePath);
+        return abstract && (abstract.identifier === id || abstract['@id'] === id);
+      });
+      
+      if (!matchingFile) {
+        return res.status(404).json({ error: 'Abstract not found' });
+      }
+      
+      const abstract = readAbstractFromPath(matchingFile);
+      const errors = [];
+      if (!abstract['@context']) errors.push('Missing @context');
+      if (!abstract['@type']) errors.push('Missing @type');
+      if (!abstract.identifier) errors.push('Missing identifier');
+      
+      return res.status(200).json({ valid: errors.length === 0, errors, abstract });
+    } catch (error) {
+      return res.status(500).json({ error: 'Validation failed' });
     }
-    
-    const abstract = readAbstractFromPath(matchingFile);
-    const errors = [];
-    if (!abstract['@context']) errors.push('Missing @context');
-    if (!abstract['@type']) errors.push('Missing @type');
-    if (!abstract.identifier) errors.push('Missing identifier');
-    
-    res.json({ valid: errors.length === 0, errors, abstract });
-  } catch (error) {
-    res.status(500).json({ error: 'Validation failed' });
   }
-});
 
-// GET /api/health
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', timestamp: new Date().toISOString() });
-});
-
-module.exports = app;
+  // 404 for unknown routes
+  return res.status(404).json({ error: 'Not found' });
+};
