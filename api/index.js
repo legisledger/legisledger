@@ -39,10 +39,11 @@ module.exports = (req, res) => {
     return res.status(200).end();
   }
 
-  const pathname = req.url;
-  console.log('Request pathname:', pathname);
+  // Parse URL and pathname (remove query string)
+  const url = new URL(req.url, `http://${req.headers.host}`);
+  const pathname = url.pathname;
 
-  // Route: /api (root) - API info
+  // Route: / (root) - API info
   if (pathname === '/' || pathname === '') {
     return res.status(200).json({ 
       name: 'Legis Ledger API',
@@ -61,8 +62,8 @@ module.exports = (req, res) => {
     return res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
   }
 
-  // Route: /abstracts
-  if (pathname === '/abstracts') {
+  // Route: /abstracts (exact match)
+  if (pathname === '/abstracts' || pathname === '/api/abstracts') {
     try {
       const abstractsDir = path.join(process.cwd(), 'data', 'abstracts');
       const jsonFiles = findJsonFilesRecursive(abstractsDir);
@@ -87,11 +88,11 @@ module.exports = (req, res) => {
     }
   }
 
-  // Route: /abstracts/:id
-  const abstractMatch = pathname.match(/^\/abstracts\/([^\/]+)$/);
+  // Route: /abstracts/:id or /api/abstracts/:id
+  const abstractMatch = pathname.match(/^\/(api\/)?abstracts\/([^\/]+)$/);
   if (abstractMatch) {
     try {
-      const id = abstractMatch[1];
+      const id = abstractMatch[2];
       const abstractsDir = path.join(process.cwd(), 'data', 'abstracts');
       const jsonFiles = findJsonFilesRecursive(abstractsDir);
       
@@ -111,11 +112,11 @@ module.exports = (req, res) => {
     }
   }
 
-  // Route: /validate/:id
-  const validateMatch = pathname.match(/^\/validate\/([^\/]+)$/);
+  // Route: /validate/:id or /api/validate/:id
+  const validateMatch = pathname.match(/^\/(api\/)?validate\/([^\/]+)$/);
   if (validateMatch) {
     try {
-      const id = validateMatch[1];
+      const id = validateMatch[2];
       const abstractsDir = path.join(process.cwd(), 'data', 'abstracts');
       const jsonFiles = findJsonFilesRecursive(abstractsDir);
       
