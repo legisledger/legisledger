@@ -225,7 +225,7 @@
     <!-- Test 5: Get Specific Abstract -->
     <div class="test-section">
         <h2>Test 5: Individual Abstract Retrieval <span class="status-badge pending" id="status-5">Pending</span></h2>
-        <div class="endpoint">GET /api/abstracts/vitamin-d-rickets-prevention</div>
+        <div class="endpoint">GET /api/abstracts/vitamin-d-bone-health-2025</div>
         <p style="font-size: 14px; color: #666; margin-bottom: 10px;">Retrieves a specific abstract by identifier.</p>
         <button onclick="testVitaminDAbstract()">Run Test</button>
         <div id="result-5"></div>
@@ -405,7 +405,7 @@
     async function testVitaminDAbstract() {
         showLoading(5);
         try {
-            const response = await fetch(`${API_BASE}/abstracts/vitamin-d-rickets-prevention`);
+            const response = await fetch(`${API_BASE}/abstracts/vitamin-d-bone-health-2025`);
             const data = await response.json();
             
             if (response.ok && !data.error) {
