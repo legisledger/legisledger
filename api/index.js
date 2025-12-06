@@ -75,8 +75,9 @@ module.exports = (req, res) => {
           return {
             id: abstract.identifier || abstract['@id'],
             title: abstract.scenario?.description || 'Untitled',
+            claim: abstract.conclusion?.claim || abstract.scenario?.description || 'No claim available',
             confidence: abstract.conclusion?.confidence || 0,
-            domain: abstract.scenario?.domain || 'unknown',
+            domain: abstract.scenario?.domain || 'Domain unknown',
             type: abstract['@type'] || 'KnowledgeClaim'
           };
         })
