@@ -1,0 +1,35 @@
+# CODEOWNERS File for Legis Ledger Project (Public Repository)
+#
+# This file defines the team(s) that must review and approve changes 
+# to critical security, governance, and architectural files.
+#
+# The format is: <file-pattern> <@org-name/team-name>
+# -------------------------------------------------------------------
+
+# 1. Project Governance and Decisions (CCB Review Mandatory)
+# Any changes to governance documentation or the decision log.
+/docs/DECISIONS.md      @LegisLedger/governance
+
+# 2. Critical Architecture and Schema (CCB Review Mandatory)
+# Any changes to the core data structure.
+/schemas/core-knowledge-schema-*.json                       @LegisLedger/governance
+/schemas/domain-extensions/legal-extension.json             @LegisLedger/governance
+/schemas/domain-extensions/scientific-extension.json        @LegisLedger/governance
+
+# 3. Security and Deployment (CCB Review Mandatory)
+# Changes to Vercel/GitHub/Security configurations.
+/vercel.json            @LegisLedger/governance
+/api/index.js           @LegisLedger/governance
+/package.json           @LegisLedger/governance
+
+# 4. Methodology (Review by Governance is required as these are foundational)
+/docs/BAYESIAN_REASONING.md    @LegisLedger/governance
+/docs/EVIDENCE_GRADING.md      @LegisLedger/governance
+/docs/UXUI.md                  @LegisLedger/governance
+
+# -------------------------------------------------------------------
+# Default Rule (Optional): All other files (e.g., /src/ui, /data/abstracts/*.json) 
+# would typically be reviewed by a general development team (e.g., @LegisLedger/core-engineers) 
+# which you can create later, or by the primary contributor.
+#
+# /* @LegisLedger/core-engineers

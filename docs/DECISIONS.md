@@ -16,7 +16,10 @@
 
 **Entry format:**
 ```markdown
-## YYYY-MM-DD: [Decision Title]
+## D-YYYY-NNN: [Decision Title]
+- **D** stands for Decision. 
+- **YYYY** is the year.
+- **NNN** is a sequential number (e.g., 001, 002)
 **Decision:** [What we decided]
 **Rationale:** [Why we decided this]
 **Source:** [What informed this decision]
@@ -25,6 +28,13 @@
 ```
 
 ---
+
+## 2025-12-06: Structured Disagreement Knowledge Collection Schema
+**Decision:** Introduce a new JSON schema type (`@type: CollectionPage`) to group related, contested, or multi-faceted knowledge claims (e.g., Minimum Wage effects). Each knowledge claim abstract remains 'One Claim,' but the Collection acts as a master index for navigating and communicating *structured disagreement*.
+**Rationale:** The strict "One Abstract = One Claim" rule (2025-11-05 decision) failed to scale for complex policy/scientific topics that involve multiple, equally valid claims (e.g., employment vs. poverty effects of minimum wage) where confidence levels differ. The Collection schema preserves this necessary nuance and enables the **Confidence Slider** UX (as defined in `UXUI.md`) to filter *collections* of related claims.
+**Source:** Development of minimum-wage-master-collection-2025.json and feedback on Abstract #20 complexity.
+**Status:** Adopted
+**Implications:** Requires a new `CollectionPage` schema and frontend support for displaying Collection metadata and linking related claims in the UI.
 
 ## 2025-11-06: Bayesian Documentation Integration
 
