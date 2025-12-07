@@ -435,51 +435,6 @@ Schema updated to formalize this structure
 
 ---
 
-## 2025-01-26: Hatch Act Clearance Strategy
-
-**Decision:** Develop privately, seek clearance as "personal project" not "government outreach"
-
-**Rationale:**
-- Since pivot to private development (not Congressional lobbying), Hatch Act concerns reduced
-- "Developing fact-checking tool" easier to clear than "federated infrastructure for government agencies"
-- Can transition to full-time if gains traction
-
-**Status:** Pending clearance request to General Counsel
-
-**Safe harbor practices:**
-- Personal time only
-- Personal equipment
-- No DON affiliation
-- No government resources
-- Clear "personal project" disclaimers
-
----
-
-## Future Decisions to Track
-
-**Pending decisions:**
-- Open source vs commercial vs hybrid model (decide after market validation)
-- Non-profit vs for-profit structure (depends on revenue model)
-- Institutional partnership terms (after proof of concept)
-- Smart contract governance deployment (after 50+ abstracts)
-
----
-
-## Decision Review Process
-
-**Quarterly review:** Re-evaluate major decisions
-
-**Next review:** 2025-04-26 (after ~10 abstracts completed)
-
-**Questions for review:**
-1. Is methodology working? (Can create abstracts in 6-9 hours?)
-2. Are calculations trusted? (Peer reviewers finding issues?)
-3. Is provenance clear? (Users able to verify?)
-4. Are we learning? (Each abstract easier than last?)
-5. Should any decisions be revised?
-
----
-
 **How to contribute to this log:**
 
 When making a significant decision:
@@ -492,4 +447,4 @@ This log ensures continuity across context windows and team members.
 
 ---
 
-**Version:** 1.0 (2025-01-26)
+**Version:** 1.1 (2025-12-06)
