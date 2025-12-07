@@ -38,7 +38,7 @@ Build knowledge infrastructure that enables institutions to publish expert opini
   
 - ✅ Vitamin D supplementation (scientific domain, multiple claims)
   - Complete JSON abstract
-  - Sent to Steve Midgley for strategic review
+  - Sent to Advisor for strategic review
   - Demonstrates claim granularity (1 abstract = 1 claim architecture)
 
 - 🚧 Minimum wage (policy domain, 0.60-0.72 confidence)
@@ -50,21 +50,17 @@ Build knowledge infrastructure that enables institutions to publish expert opini
 **Documentation:**
 - ✅ README.md (project overview)
 - ✅ FAQ.md (stakeholder questions)
-- ✅ CONSTITUTION.md (governance by design)
-- ✅ GOVERNANCE_NEXT_STEPS.md (implementation tasks)
 - ✅ BAYESIAN_CALCULATION_METHOD.md (probability sourcing)
 - ✅ CREATION_WORKFLOW.md (abstract creation process)
 - ✅ DECISIONS.md (strategic choices log)
 - ✅ FILE_MANAGEMENT_GUIDE.md (Claude Project vs Git)
 - ✅ UXUI.md (interface design specification)
 - ✅ ROADMAP_PRODUCT.md (this document)
-- ✅ ROADMAP.md (business/investor roadmap)
 
 **Strategic Clarity:**
 - ✅ Pivot to "Bayesian fact-checker" (from federated infrastructure)
 - ✅ Bootstrap with Wikipedia disputed articles (not waiting for institutions)
-- ✅ Steve Midgley engaged as strategic advisor
-- ✅ Hatch Act compliance strategy defined
+- ✅ Advisor engaged as strategic advisor
 - ✅ Business model preliminary validation targets set
 
 ### 🚧 In Progress
@@ -74,15 +70,6 @@ Build knowledge infrastructure that enables institutions to publish expert opini
 - Issue: Currently over-emphasizes individual researchers (Neumark/Dube)
 - Fix needed: Lead with A+ meta-analyses (Martinez, Doucouliagos)
 - Timeline: Complete this week
-
-**Legal/PA Clearance:**
-- Status: Pending
-- Timeline: Expected Q2 2025
-- Blocker: Repository remains private until cleared
-
-**Strategic Advisory:**
-- Status: Awaiting Steve Midgley feedback on Vitamin D abstract
-- Next: Incorporate feedback, iterate on presentation
 
 ---
 
@@ -181,10 +168,10 @@ This is HONEST UNCERTAINTY - not a failure of the system.
 
 ## Near-Term Goals (Next 2-4 Weeks)
 
-### Week 2: Steve Feedback & Iteration
+### Week 2: Advisor Feedback & Iteration
 
 **Waiting for:**
-- Steve Midgley review of Vitamin D abstract
+- Advisor review of Vitamin D abstract
 - Feedback on business model potential
 - Suggestions for customer validation
 
@@ -334,7 +321,7 @@ This is HONEST UNCERTAINTY - not a failure of the system.
 ### Month 5-6: Legal Clearance & Public Launch
 
 **Pre-launch checklist:**
-- ✅ Legal/PA clearance received
+- ✅ Legal clearance received
 - ✅ 15+ abstracts complete and reviewed
 - ✅ Working UI deployed
 - ✅ Documentation complete
@@ -473,28 +460,6 @@ This is HONEST UNCERTAINTY - not a failure of the system.
 
 ---
 
-## Dependencies & Risks
-
-### Critical Dependencies
-
-**Legal clearance (HIGH PRIORITY):**
-- Status: Pending with General Counsel
-- Risk: Delays public launch
-- Mitigation: Continue private development, prepare for Q2 2025 launch
-- Contingency: If delayed past Q2, consider spinning out separately
-
-**Strategic advisor feedback:**
-- Status: Awaiting Steve Midgley review
-- Risk: Major pivot needed based on feedback
-- Mitigation: Built modular architecture, can adjust messaging
-- Contingency: Have fallback customer segments
-
-**Bayes professor hire:**
-- Status: In progress via Jess connection
-- Risk: Methodology not validated by expert
-- Mitigation: Conservative estimates, clear disclaimers
-- Contingency: Hire external consultant if internal unavailable
-
 ### Known Risks
 
 **Technical:**
@@ -558,22 +523,6 @@ This is HONEST UNCERTAINTY - not a failure of the system.
 - Trust requirements
 
 **Decide by:** After 2-3 authors participate
-
-### Decision 3: Open Source Timing (Month 6)
-
-**Context:** After legal clearance, decide repository access
-
-**Options:**
-- A: Fully public immediately (maximum transparency)
-- B: Public code, private data (moderate transparency)
-- C: Invite-only initially (controlled rollout)
-
-**Decision criteria:**
-- Legal clearance conditions
-- Quality readiness
-- Community management capacity
-
-**Decide by:** When clearance received
 
 ---
 
@@ -644,33 +593,14 @@ This is HONEST UNCERTAINTY - not a failure of the system.
 **Key dates:**
 - 2024-12: Initial concept discussions
 - 2025-01-22: Governance constitution drafted
-- 2025-01-25: Steve Midgley strategic advisory begins
+- 2025-01-25: Strategic advisory begins
 - 2025-01-26: Pivot to Bayesian fact-checker model
 - 2025-01-26: Bayesian calculation method documented
 - 2025-11-08: Minimum wage abstract (contested knowledge)
 - 2025-11-08: UX/UI design specification complete
 - 2025-11-08: Product roadmap formalized
-- 2025-Q2: Expected legal clearance + public launch
+- 2026-Q2: Target public launch
 - 2026-07-04: America's 250th anniversary (goal: working prototype)
-
----
-
-## Next Steps (Immediate)
-
-**This week:**
-1. ✅ Fix minimum wage evidence hierarchy (lead with A+ meta-analyses)
-2. ✅ Create filtered Wikipedia mockup (shows honest uncertainty)
-3. ✅ Finalize creatine abstract (schema v1.2.0 validation)
-
-**Next week:**
-4. Await Steve feedback on Vitamin D
-5. Begin planning next examples (Omega-3, Intermittent fasting)
-6. Prepare materials for Bayes professor review
-
-**This month:**
-7. Complete 5-7 total abstracts
-8. Document lessons learned from first 5 abstracts
-9. Refine creation workflow based on experience
 
 ---
 
@@ -730,11 +660,7 @@ This is HONEST UNCERTAINTY - not a failure of the system.
 
 **Documentation:**
 - [Core Schema](schemas/core-knowledge-schema.json)
-- [Bayesian Method](docs/BAYESIAN_CALCULATION_METHOD.md)
-- [Creation Workflow](docs/CREATION_WORKFLOW.md)
 - [UX/UI Design](docs/UXUI.md)
-- [Governance](docs/CONSTITUTION.md)
-- [Business Roadmap](docs/ROADMAP.md)
 
 **Examples:**
 - [Creatine](examples/scientific/creatine-lbm-resistance-training-2025.json)
@@ -749,10 +675,8 @@ This is HONEST UNCERTAINTY - not a failure of the system.
 ---
 
 **Version:** 1.0 (2025-11-08)  
-**Next Update:** After Steve feedback received  
-**Owner:** Damon Regan  
-**Strategic Advisor:** Steve Midgley (Learning Tapestry)  
-**Technical Advisor:** TBD (Bayes professor via Carnegie Mellon)
+**Next Update:** After Advisor feedback received  
+**Owner:** Legis Ledger Admin 
 
 ---
 
@@ -761,6 +685,5 @@ This is HONEST UNCERTAINTY - not a failure of the system.
 ---
 
 **See also:**
-- [ROADMAP.md](ROADMAP.md) - Business strategy, fundraising, revenue targets
 - [UXUI.md](UXUI.md) - Interface design specifications
 - [DECISIONS.md](DECISIONS.md) - Strategic decision log

@@ -820,7 +820,7 @@ When we have a prototype, test with users:
 
 **Version:** 1.0 (2025-11-08)  
 **Next Review:** After MVP user testing  
-**Maintainer:** Legis Ledger UX Team
+**Maintainer:** Core Team
 
 ---
 
