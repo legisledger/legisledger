@@ -1,8 +1,6 @@
 # Legis Ledger: Knowledge Infrastructure for Democracy
 
-**🚧 PRE-LAUNCH STATUS: This repository is currently PRIVATE pending legal clearance.**
-
-**Expected Public Launch:** Q2 2025 (pending approvals)
+**🟢 STATUS: The Legis Ledger public repository is now live.**
 
 ---
 
@@ -107,28 +105,28 @@ The system uses a universal schema that works across legal, scientific, and poli
 }
 ```
 
-See: [Core Schema](schemas/core-knowledge-schema.json)
+See: [Core Schema](schemas/core-knowledge-schema-1.2.0.json)
 
 ---
 
 ## Key Principles
 
-### 1. Epistemic Humility
+### 1. Honest Uncertainty (Captures Humility & Confidence < 1.0)
 - Confidence always < 1.0 (no absolute certainty)
 - "Could be wrong" section explicit
 - Uncertainties listed transparently
 
-### 2. Provenance Transparency
+### 2. Transparency (Captures Provenance, Auditability, and Verification)
 - Who submitted (institution type, potential biases)
 - How to verify independently
 - What's NOT (not submitted by official authorities)
 
-### 3. Bayesian Reasoning
+### 3. Integrity (Captures Schema Validation, CCB, Bayesian Rigor)
 - Prior → Evidence → Posterior (transparent path)
 - Show your work (all steps visible)
 - Update as evidence emerges
 
-### 4. Governance by Design
+### 4. Momentum (Captures the Bias toward Shipping, necessary to achieve the Vision)
 - No central authority
 - Fork rights prevent capture
 - Institutional sovereignty preserved
@@ -140,7 +138,7 @@ See: [Core Schema](schemas/core-knowledge-schema.json)
 
 ### Core
 - [README](README.md) - This file
-- [Core Schema](schemas/core-knowledge-schema.json)
+- [Core Schema](schemas/core-knowledge-schema-1.2.0.json)
 - [Constitution](docs/CONSTITUTION.md) - Governance by design
 - [FAQ](docs/FAQ.md)
 
@@ -191,19 +189,13 @@ See: [Core Schema](schemas/core-knowledge-schema.json)
 
 ## Development Roadmap
 
-### Phase 1: Private Development (Current)
+### Phase 1: GTM Validation & MVP Polish (Current)
 - Core schema finalized
 - MVP examples complete
 - Governance architecture documented
 - Legal clearance in progress
 
-### Phase 2: Public Launch (early 2026)
-- Repository made public
-- Documentation site live
-- Institution onboarding process
-- API documentation
-
-### Phase 3: Growth (2026)
+### Phase 2: Growth (2026)
 - Climate change example
 - UBI pilot results
 - Multi-institution disagreement examples
@@ -229,8 +221,6 @@ See [docs/CONTRIBUTING.md](CONTRIBUTING.md) (to be created)
 ## Contact
 
 **Project Inquiry:** hello@legis-ledger.org (to be set up)
-
-**For now:** This is a private repository during development. If you're viewing this, you've been invited to provide pre-launch feedback. Thank you!
 
 ---
 
@@ -276,25 +266,5 @@ All code, schemas, and documentation will be open source.
 
 ---
 
-**Last Updated:** 2025-01-25  
-**Version:** 1.1.0-prelaunch  
-**Next Review:** After legal clearance
-
----
-
-## If You're Viewing This Repository
-
-**Thank you for being part of the pre-launch review process!**
-
-**Please:**
-- Provide feedback via Issues
-- Keep this confidential until public launch
-- Ask questions if anything is unclear
-- Suggest improvements
-
-**Timeline:**
-- Legal/PA review: In progress
-- Expected public launch: Q2 2025
-- Your contributions will be credited after launch
-
-**Confidentiality:** This repository will become public after clearance. Any contributions you make will become public at that time. Please let us know if you're not comfortable with that.
+**Last Updated:** 2025-12-07  
+**Version:** 1.2.0-launch  
