@@ -1,34 +1,33 @@
 # Legis Ledger: Product Development Roadmap
 
-**Version:** 1.0  
+**Version:** 1.1  
 **Date:** 2025-11-08  
-**Last Updated:** 2025-11-08  
-**Status:** Pre-launch development (repository private pending legal clearance)  
+**Last Updated:** 2025-12-08  
+**Status:** Launch  
 **Audience:** Team, collaborators, product execution
-
-**Note:** For business strategy, fundraising, and investor materials, see [ROADMAP.md](ROADMAP.md)
 
 ---
 
 ## Mission
 
-Build knowledge infrastructure that enables institutions to publish expert opinions with quantified confidence, transparent provenance, and structured disagreement - operationalizing Rauch's "Constitution of Knowledge" through Bayesian fact-checking.
+Build knowledge infrastructure with a technical commitment to structured data, APIs, and schemas (the "infrastructure").
 
-**2026 Goal:** Have working prototype demonstrating value across health, policy, and scientific domains, ready for institutional partnerships.
+## Vision
+
+Disagreement becomes structured and productive.
+
+This is the core thesis of the entire project: shifting the nature of polarization from emotional to evidence-based.
 
 ---
 
-## Current Status (November 2025)
+## Current Status
 
 ### ✅ Completed
 
 **Core Architecture:**
-- ✅ Domain-agnostic schema (v1.2.0) finalized
-- ✅ Bayesian calculation methodology documented
-- ✅ Evidence grading system established (A+ → D)
-- ✅ Provenance transparency framework (v1.1)
-- ✅ Governance constitution documented
-- ✅ Creation workflow documented (6-9 hours per abstract)
+- ✅ Core Schema
+- ✅ Bayesian Methodology
+- ✅ Git
 
 **Working Examples:**
 - ✅ Creatine supplementation (scientific domain, 0.90 confidence)
@@ -53,17 +52,16 @@ Build knowledge infrastructure that enables institutions to publish expert opini
 - ✅ BAYESIAN_CALCULATION_METHOD.md (probability sourcing)
 - ✅ CREATION_WORKFLOW.md (abstract creation process)
 - ✅ DECISIONS.md (strategic choices log)
-- ✅ FILE_MANAGEMENT_GUIDE.md (Claude Project vs Git)
 - ✅ UXUI.md (interface design specification)
-- ✅ ROADMAP_PRODUCT.md (this document)
+- ✅ ROADMAP_PUBLIC.md (this document)
 
 **Strategic Clarity:**
 - ✅ Pivot to "Bayesian fact-checker" (from federated infrastructure)
 - ✅ Bootstrap with Wikipedia disputed articles (not waiting for institutions)
-- ✅ Advisor engaged as strategic advisor
-- ✅ Business model preliminary validation targets set
 
-### 🚧 In Progress
+### Current Focus
+
+We are currently focused on Corpus Building and Beta Testing to gather market validation for API usage.
 
 **Minimum Wage Abstract:**
 - Status: 90% complete, needs revision
@@ -73,169 +71,16 @@ Build knowledge infrastructure that enables institutions to publish expert opini
 
 ---
 
-## Immediate Priorities (This Week)
+## Current Focus
 
-### Priority 1: Complete Minimum Wage Abstract
 
-**Action items:**
-1. Restructure evidence hierarchy:
-   - Lead with Grade A+ meta-analyses (Martinez & Martinez 2021, Doucouliagos & Stanley 2009)
-   - Secondary: Individual researchers (Neumark, Dube) as competing interpretations
-   - Fix: Meta-analyses should get higher weight in Bayesian analysis
+## Near-Term Goals
 
-2. Add comprehensive disclaimers:
-   ```json
-   {
-     "disclaimer": {
-       "provenanceAndLimitations": {
-         "methodologicalComplexity": "Third-party analysis of contested economic research. Full confidence assessment requires author participation.",
-         "uncertaintyLevel": "HIGH - Multiple reasonable interpretations exist",
-         "recommendations": [
-           "Bayes professor review pending",
-           "Author outreach planned (Neumark, Dube, Martinez)",
-           "Consider preliminary pending expert validation"
-         ]
-       }
-     }
-   }
-   ```
+* **Corpus Expansion:** Complete 20 total abstracts (Health, Policy, Scientific domains).
+* **Methodology Validation:** Secure expert review from a Bayesian professor.
+* **UI/UX MVP:** Deploy the initial working prototype on Vercel (Month 3).
 
-3. Finalize confidence levels:
-   - Overall employment: 0.65-0.70 (moderate)
-   - Teenage employment: 0.60-0.65 (moderate-low)
-   - Wage gains: 0.72 (moderate-high)
-   - All below 70% threshold (honest about uncertainty)
-
-**Success criteria:**
-- Evidence hierarchy correct (A+ leads)
-- Conservative confidence estimates
-- Comprehensive disclaimers
-- Peer review ready
-
-**Timeline:** Complete by end of week
-
-### Priority 2: Create Filtered Wikipedia Mockup
-
-**Purpose:** Show what user sees when claims don't meet threshold
-
-**Mockup content:**
-```
-Minimum Wage - Filtered View (70% confidence threshold)
-
-⚠️ NO CLAIMS MEET THRESHOLD
-
-Available claims (below 70%):
-• Overall employment effects small (65%) [Show anyway?]
-• Teenage employment effects moderate (60%) [Show anyway?]
-• Wage gains for low earners (72%) [Show anyway?]
-
-💡 What this means:
-As of 2025, minimum wage employment effects remain genuinely 
-uncertain. Meta-analyses show small overall effects, but 
-methodological debates continue.
-
-This is HONEST UNCERTAINTY - not a failure of the system.
-
-📊 View all claims (including below threshold)
-🔬 Research agenda: What studies would resolve this?
-```
-
-**Success criteria:**
-- Clear communication of uncertainty
-- Option to view below-threshold claims
-- Educational (explains what uncertainty means)
-- Honest (doesn't hide that nothing meets threshold)
-
-**Timeline:** Mockup complete this week
-
-### Priority 3: Finalize Creatine Abstract
-
-**Action items:**
-1. Verify JSON matches schema v1.2.0
-2. Ensure probability provenance complete
-3. Add any missing disclaimers
-4. Validate calculations with Bayesian calculator
-
-**Success criteria:**
-- Schema validation passes
-- All probabilities sourced
-- Conservative estimates applied
-- Peer review ready
-
-**Timeline:** Complete this week
-
----
-
-## Near-Term Goals (Next 2-4 Weeks)
-
-### Week 2: Advisor Feedback & Iteration
-
-**Waiting for:**
-- Advisor review of Vitamin D abstract
-- Feedback on business model potential
-- Suggestions for customer validation
-
-**Actions when received:**
-1. Incorporate feedback into Vitamin D abstract
-2. Apply learnings to minimum wage
-3. Refine value proposition messaging
-4. Identify beta test customers (3-5 per category)
-
-### Week 3-4: Additional Examples (Tier 1)
-
-**Target: 2-3 more "easy" examples (Grade A+ evidence)**
-
-**Candidates:**
-1. **Omega-3 fatty acids** (heart health)
-   - Meta-analyses available
-   - Clear evidence base
-   - Moderate confidence (0.65-0.75 expected)
-
-2. **Intermittent fasting** (weight loss)
-   - Recent systematic reviews
-   - Growing evidence base
-   - Moderate confidence (0.60-0.70 expected)
-
-3. **Statins** (cardiovascular benefits)
-   - Canonical knowledge (0.90+ expected)
-   - Well-established evidence
-   - Shows system with high-confidence claims
-
-**Success criteria:**
-- 5-7 total abstracts complete
-- Mix of confidence levels (0.60-0.90)
-- Mix of domains (health, policy)
-- All peer reviewed
-
-### Week 4: Bayes Professor Engagement Plan
-
-**Objective:** Secure expert review of Bayesian methodology
-
-**Action items:**
-1. Prepare review materials:
-   - Minimum wage abstract (most complex)
-   - Bayesian calculation methodology doc
-   - Specific questions for review
-
-2. Questions for Bayes professor:
-   - Are priors justified and sourced appropriately?
-   - Are P(E|H) and P(E|~H) values reasonable?
-   - Do Bayes Factors match evidence strength?
-   - What would you do differently?
-
-3. Schedule review session (2-3 hours)
-
-**Success criteria:**
-- Expert validation of methodology
-- Identify any systematic issues
-- Refine approach based on feedback
-- Document lessons learned
-
----
-
-## Medium-Term Milestones (Q1-Q2 2025)
-
-### Month 2: Corpus Building (10+ Abstracts)
+## Medium-Term Milestones
 
 **Goal:** Prove system works across domains and confidence levels
 
@@ -258,37 +103,12 @@ This is HONEST UNCERTAINTY - not a failure of the system.
 - COVID vaccine long-term effects (0.50)
 
 **Success criteria:**
-- 10-15 abstracts complete
+- 20-30 abstracts complete
 - All domains represented (health, policy, scientific)
 - All confidence ranges represented (0.50-0.95)
 - All peer reviewed
 
-### Month 3: UI/UX Development
-
-**Phase 1 MVP Features:**
-
-**Essential:**
-- Home page with search
-- Article view with confidence slider
-- Claim cards (collapsed/expanded states)
-- Direct URLs with confidence parameter
-- Basic responsive design
-
-**Technical stack:**
-- Frontend: React or Vue.js
-- Styling: Tailwind CSS
-- Hosting: Vercel or Netlify (static initially)
-- Data: JSON files (Git-backed)
-
-**Success criteria:**
-- Working prototype deployed
-- Confidence slider functional
-- 5+ articles rendered
-- Mobile responsive
-
-**See [UXUI.md](UXUI.md) for complete design specifications**
-
-### Month 4: Beta Testing & Iteration
+### Beta Testing & Iteration
 
 **Beta test cohorts (3-5 users each):**
 
@@ -318,7 +138,7 @@ This is HONEST UNCERTAINTY - not a failure of the system.
 - Identify 2-3 major pain points
 - At least 1 cohort wants more
 
-### Month 5-6: Legal Clearance & Public Launch
+### Public Launch
 
 **Pre-launch checklist:**
 - ✅ Legal clearance received
@@ -328,13 +148,6 @@ This is HONEST UNCERTAINTY - not a failure of the system.
 - ✅ Beta testing positive
 - ✅ Press materials ready
 
-**Launch activities:**
-1. Repository goes public
-2. Website live at legisledger.com
-3. Blog post: "Why We Built This"
-4. Outreach to beta testers
-5. Submit to Show HN / Product Hunt
-
 **Success metrics:**
 - 1,000+ unique visitors first week
 - 50+ GitHub stars first month
@@ -343,9 +156,9 @@ This is HONEST UNCERTAINTY - not a failure of the system.
 
 ---
 
-## Long-Term Vision (Late 2025 - 2026)
+## Long-Term Vision
 
-### Q3 2025: Author Participation Pilot
+### Author Participation Pilot
 
 **Objective:** Test if researchers will submit their own abstracts
 
@@ -370,23 +183,18 @@ This is HONEST UNCERTAINTY - not a failure of the system.
 - Feedback on process (too burdensome?)
 - Identify barriers to participation
 
-### Q4 2025: Institutional Partnerships
+### Institutional Partnerships
 
 **Target institutions (3-5 pilots):**
 
 **Government agencies:**
-- FDA, NIH (health claims)
-- EPA (environmental claims)
-- BLS (economic data)
 - Value: Reduce support burden, increase transparency
 
 **Think tanks:**
-- Brookings, AEI, Urban Institute (policy)
 - Value: Wider dissemination, impact tracking
 
 **Universities:**
-- Carnegie Mellon (via Jess connection)
-- Others with Bayesian statistics programs
+- Bayesian statistics programs
 - Value: Research impact, student training
 
 **Success criteria:**
@@ -395,7 +203,7 @@ This is HONEST UNCERTAINTY - not a failure of the system.
 - Feedback on governance model
 - Interest in continued participation
 
-### 2026: Scaling & Sustainability
+### Scaling & Sustainability
 
 **Corpus growth:**
 - 50+ abstracts across domains
@@ -444,7 +252,7 @@ This is HONEST UNCERTAINTY - not a failure of the system.
 - 10,000+ unique visitors
 - 5+ institutional inquiries
 
-### Phase 3: Institutional Adoption (Late 2025-2026)
+### Institutional Adoption 
 
 **Participation:**
 - 2-3 author-submitted abstracts
@@ -481,7 +289,7 @@ This is HONEST UNCERTAINTY - not a failure of the system.
   - Mitigation: Comprehensive coverage, explicit biases
 
 **Strategic:**
-- Steve feedback suggests major pivot
+- Advisor feedback suggests major pivot
   - Mitigation: Architecture supports multiple models
 - Legal clearance denied/delayed
   - Mitigation: Spin out as personal project post-government
@@ -528,24 +336,24 @@ This is HONEST UNCERTAINTY - not a failure of the system.
 
 ## Quarterly Review Schedule
 
-**Q1 2025 Review (March):**
+**Q1 Review (March):**
 - Assess: Corpus building progress (target 10-15 abstracts)
 - Decide: UI development approach
 - Evaluate: Beta testing readiness
 
-**Q2 2025 Review (June):**
+**Q2 Review (June):**
 - Assess: Legal clearance status
 - Decide: Public launch timing
 - Evaluate: Initial market response
 
-**Q3 2025 Review (September):**
+**Q3 Review (September):**
 - Assess: Author participation pilot results
 - Decide: Institutional partnership approach
 - Evaluate: Feature roadmap priorities
 
-**Q4 2025 Review (December):**
+**Q4 Review (December):**
 - Assess: First year progress vs goals
-- Decide: 2026 strategic priorities
+- Decide: Next year strategic priorities
 - Evaluate: Sustainability trajectory
 
 ---
@@ -553,7 +361,7 @@ This is HONEST UNCERTAINTY - not a failure of the system.
 ## Communication Plan
 
 **Internal (Team):**
-- Weekly: Progress updates (this roadmap)
+- Weekly: Progress updates (Github Kanban)
 - Biweekly: Strategic discussions
 - Monthly: Comprehensive review + planning
 
@@ -674,9 +482,11 @@ This is HONEST UNCERTAINTY - not a failure of the system.
 
 ---
 
-**Version:** 1.0 (2025-11-08)  
-**Next Update:** After Advisor feedback received  
-**Owner:** Legis Ledger Admin 
+**Version:** 1.1 (2025-12-08)  
+**Next Update:** Once beta testing begins  
+**Owner:** Core Team
+**Strategic Advisor:** S.M. (Learning Tapestry)
+**Technical Advisor:** TBD (Bayesian Methodologist) 
 
 ---
 

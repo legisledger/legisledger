@@ -2,6 +2,7 @@
 
 **Purpose:** Track strategic decisions as the project evolves  
 **Started:** 2025-01-26
+**Last Changed** 2025-12-08
 
 ---
 
@@ -29,14 +30,15 @@
 
 ---
 
-## 2025-12-06: Structured Disagreement Knowledge Collection Schema
+## D-2025-018: Structured Disagreement Knowledge Collection Schema
+
 **Decision:** Introduce a new JSON schema type (`@type: CollectionPage`) to group related, contested, or multi-faceted knowledge claims (e.g., Minimum Wage effects). Each knowledge claim abstract remains 'One Claim,' but the Collection acts as a master index for navigating and communicating *structured disagreement*.
 **Rationale:** The strict "One Abstract = One Claim" rule (2025-11-05 decision) failed to scale for complex policy/scientific topics that involve multiple, equally valid claims (e.g., employment vs. poverty effects of minimum wage) where confidence levels differ. The Collection schema preserves this necessary nuance and enables the **Confidence Slider** UX (as defined in `UXUI.md`) to filter *collections* of related claims.
 **Source:** Development of minimum-wage-master-collection-2025.json and feedback on Abstract #20 complexity.
 **Status:** Adopted
 **Implications:** Requires a new `CollectionPage` schema and frontend support for displaying Collection metadata and linking related claims in the UI.
 
-## 2025-11-06: Bayesian Documentation Integration
+## D-2025-017: Bayesian Documentation Integration
 
 **Decision:** Integrated three Bayesian documents (BAYESIAN_REASONING.md, 
 BAYESIAN_CALCULATION_METHOD.md, EVIDENCE_GRADING.md) into two-document 
@@ -51,7 +53,7 @@ system: BAYESIAN_STANDARD.md (methodology) and BAYESIAN_CALCULATION_METHOD.md
 
 **Status:** Adopted
 
-## 2025-11-06: Standardized Interpretation of Bayes Factors < 1 (Evidence Against Hypothesis)
+## D-2025-016: Standardized Interpretation of Bayes Factors < 1 (Evidence Against Hypothesis)
 
 **Decision:** The schema will include a new boolean field, `favorsNullHypothesis`, within the `probabilityProvenance` object. This field will explicitly indicate when evidence supports the null hypothesis (i.e., when $BF_H < 1$), enabling clearer, human-friendly interpretations in the UI and prose.
 
@@ -70,7 +72,7 @@ system: BAYESIAN_STANDARD.md (methodology) and BAYESIAN_CALCULATION_METHOD.md
     * The `factor` description and `conclusion.outcome.result` will use direct language such as "no effect found," "no benefit observed," or "evidence supports absence of difference."
 * **UI Recommendation:** Implement clear visual indicators (e.g., specific icons, color coding, or tooltips) that translate `favorsNullHypothesis: true` into easy-to-understand statements for the user.
 
-## 2025-11-06: Schema Version v1.2.0 Finalization & Evidence Rubric Update
+## D-2025-015: Schema Version v1.2.0 Finalization & Evidence Rubric Update
 
 **Decision:** The domain-agnostic schema is finalized as **v1.2.0**. We are also revising the **Bayesian Factor (BF) Rubric** and adopting a standard for **Inverse BF Interpretation**.
 
@@ -88,7 +90,7 @@ system: BAYESIAN_STANDARD.md (methodology) and BAYESIAN_CALCULATION_METHOD.md
 * **Inverse BF Standard:** When evidence favors the null hypothesis ($\neg H$), the prose must refer to the **Inverse Bayes Factor** ($BF_{\neg H} > 1$) for categorization.
 * **Schema:** The `submittedBy` field will be formalized as a structured object (see separate motion).
 
-## 2025-11-06: Schema Refactoring for Fact-Checking Pivot
+## D-2025-014: Schema Refactoring for Fact-Checking Pivot
 
 **Decision:** Refactor the `core-knowledge-schema.json` to be domain-agnostic for the "Factual Claim" domain, specifically supporting the Wikipedia/WayBack Machine pivot.
 
@@ -110,7 +112,7 @@ system: BAYESIAN_STANDARD.md (methodology) and BAYESIAN_CALCULATION_METHOD.md
 * Updated `conclusion` block to use **`factuality`** (`True`/`False`/`Uncertain`) instead of legal `entitled`/`remedy`.
 * Renamed `evidenceBasis` to **`claimBasis`**.
 
-## 2025-11-06: Schema Version v1.2.0 Finalization
+## D-2025-013: Schema Version v1.2.0 Finalization
 
 **Decision:** The domain-agnostic schema is finalized as **v1.2.0**, incorporating changes from the fact-checking pivot and explicitly adopting the **Bayesian Factor (BF) Thresholds** as defined in `EVIDENCE_GRADING.md`.
 
@@ -129,7 +131,7 @@ system: BAYESIAN_STANDARD.md (methodology) and BAYESIAN_CALCULATION_METHOD.md
 * Schema version officially set to `1.2.0`.
 * All future abstract generation must ensure BF-to-Interpretation mapping adheres strictly to the **BF 3-10 (Moderate)** rule.
 
-## 2025-11-05: Claim Granularity Architecture - One Abstract = One Claim
+## D-2025-012: Claim Granularity Architecture - One Abstract = One Claim
 
 **Decision:** One JSON abstract contains ONE primary claim with full Bayesian analysis. Related claims listed with summary info (confidence + evidence grade + funnel position) and pointer to their own full abstracts.
 
@@ -154,17 +156,17 @@ Schema updated to formalize this structure
 
 **Trade-off:** More files to manage (7 vitamin D claims = 7 files), but Git handles this well. Master index provides navigation.
 
-## 2025-01-26: Strategic Pivot to Bayesian Fact-Checker
+## D-2025-011: Strategic Pivot to Bayesian Fact-Checker
 
 **Decision:** Build corpus of Wikipedia-derived Bayesian abstracts first, institutional partnerships later
 
 **Rationale:** 
-- Steve Midgley advisor feedback: "Institutions won't populate this initially"
+- Advisor feedback: "Institutions won't populate this initially"
 - Archive.org model: Build value, then partnerships emerge naturally
 - Cold start problem: Need to demonstrate value before recruiting institutions
 - Clearer value proposition: "Bayesian fact-checker" vs "federated infrastructure"
 
-**Source:** Meeting with Steve Midgley (Learning Tapestry), 2025-01-25
+**Source:** Meeting with Advisor, 2025-11-04
 
 **Status:** Adopted
 
@@ -176,7 +178,7 @@ Schema updated to formalize this structure
 
 ---
 
-## 2025-01-26: Wikipedia as Primary Source Material
+## D-2025-010: Wikipedia as Primary Source Material
 
 **Decision:** Extract claims from contested Wikipedia articles rather than waiting for institutional submissions
 
@@ -197,7 +199,7 @@ Schema updated to formalize this structure
 
 ---
 
-## 2025-01-26: Evidence Grading System
+## D-2025-009: Evidence Grading System
 
 **Decision:** Use A+ (meta-analysis) → A (RCT) → B (mechanistic) → C (observational) → D (anecdotal)
 
@@ -220,7 +222,7 @@ Schema updated to formalize this structure
 
 ---
 
-## 2025-01-26: No Unsourced Probabilities Rule
+## D-2025-008: No Unsourced Probabilities Rule
 
 **Decision:** Require documented source for ALL probabilities in Bayesian calculations
 
@@ -244,7 +246,7 @@ Schema updated to formalize this structure
 
 ---
 
-## 2025-01-26: Bayesian Calculator Tool
+## D-2025-007: Bayesian Calculator Tool
 
 **Decision:** Use https://www.gigacalculator.com/calculators/bayes-theorem-calculator.php
 
@@ -263,7 +265,7 @@ Schema updated to formalize this structure
 
 ---
 
-## 2025-01-26: Provenance Transparency v1.1
+## D-2025-006: Provenance Transparency v1.1
 
 **Decision:** Mandatory provenance disclaimers in every abstract
 
@@ -288,7 +290,7 @@ Schema updated to formalize this structure
 
 ---
 
-## 2025-01-26: Conservative Probability Defaults
+## D-2025-005: Conservative Probability Defaults
 
 **Decision:** When uncertain about probability, round toward lower confidence
 
@@ -312,7 +314,7 @@ Schema updated to formalize this structure
 
 ---
 
-## 2025-01-26: Peer Review Requirement
+## D-2025-004: Peer Review Requirement
 
 **Decision:** Every abstract must be reviewed by second person before publication
 
@@ -337,7 +339,7 @@ Schema updated to formalize this structure
 
 ---
 
-## 2025-01-26: Confidence Cap at 0.999
+## D-2025-003: Confidence Cap at 0.999
 
 **Decision:** Never allow confidence = 1.0, maximum 0.999 for canonical knowledge
 
@@ -358,7 +360,7 @@ Schema updated to formalize this structure
 
 ---
 
-## 2025-01-26: Documentation Architecture
+## D-2025-002: Documentation Architecture
 
 **Decision:** Three-tiered documentation system
 
@@ -375,12 +377,11 @@ Schema updated to formalize this structure
 - **DECISIONS.md:** This file - track strategic choices over time
 
 **Location:** 
-- Claude Project folder (for continuity across conversations)
 - Git repository `/docs` (for version control, public transparency)
 
 ---
 
-## 2025-01-26: Target Completion - First 10 Abstracts
+## D-2025-001: Target Completion - First 10 Abstracts
 
 **Decision:** Build 10 abstracts across difficulty spectrum before seeking institutional partnerships
 
@@ -403,35 +404,6 @@ Schema updated to formalize this structure
 - Calculations independently reproducible
 - Provenance fully transparent
 - Cover breadth: health, policy, scientific domains
-
----
-
-## 2025-01-26: Business Model Validation Target
-
-**Decision:** Validate value proposition with 3-5 potential customers per category before scaling
-
-**Rationale:**
-- Steve's guidance: "Could be a business with value to multiple industries"
-- Need market validation before committing to open source vs commercial
-- Preserve optionality
-
-**Status:** Planned for Phase 2 (after 10 abstracts complete)
-
-**Target customers:**
-- Journalism/fact-checking: 3-5 news orgs
-- Health tech: 3-5 supplement/wellness apps
-- Policy think tanks: 3-5 organizations
-- Legal tech: 3-5 firms
-- Research institutions: 3-5 universities
-
-**Key question:** "Would you pay $X/year for access to Bayesian fact-checked knowledge abstracts?"
-
-**Pricing exploration:**
-- Journalism: $10k-50k/year
-- Health tech: API fees $0.01-0.10/query
-- Think tanks: $25k-100k/year
-- Legal tech: $50k-200k/year
-- Research: $50k-150k/year
 
 ---
 
