@@ -10,10 +10,11 @@
 Legis Ledger is **open-source knowledge infrastructure** for democracy. We're building federated systems where institutions share expertise with transparent confidence and provenance.
 
 **Core Values:**
-- 🎯 **Working code trumps theory** - Ship MVPs, iterate with real users
-- 📚 **Learning over perfection** - Mistakes are data
-- 🏛️ **Governance by design** - Structural solutions, not cultural norms
-- 🔬 **Epistemic humility** - Confidence <1.0 always, "could be wrong" explicit
+
+🎯 **Momentum** (Ship MVPs, iterate with real users)
+📚 **Integrity** (Structural solutions, verified claims, transparent CCB)
+🏛️ **Transparency** (Provenance, auditability, open data)
+🔬 **Honest Uncertainty** (Confidence < 1.0 always, "could be wrong" explicit)
 
 ---
 
@@ -90,7 +91,7 @@ Legis Ledger is **open-source knowledge infrastructure** for democracy. We're bu
 ### 4. Documentation
 
 **Always needed:**
-- Tutorials ("How to publish your first claim")
+- Tutorials
 - API documentation improvements
 - Schema explanations with examples
 - Case studies (institutional success stories)

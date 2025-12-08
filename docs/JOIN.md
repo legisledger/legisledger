@@ -1,7 +1,8 @@
 # Join Legis Ledger: Guide for Institutions
 
-**Version:** 1.0  
+**Version:** 1.1  
 **Date:** 2025-01-25
+**Last Updated:** 2025-12-08
 
 ---
 
@@ -13,7 +14,7 @@ Legis Ledger is a **federated knowledge infrastructure** where institutions publ
 
 ## Value Propositions by Institution Type
 
-### Government Agencies (DGAC, DOT, FDA, CDC)
+### Government Agencies
 
 **What you get:**
 - **Reduced support burden:** 1 knowledge abstract answers 10,000+ citizen queries
@@ -147,15 +148,13 @@ Use your institutional DID (Decentralized Identifier):
 }
 ```
 
-We provide tools to generate keys and sign claims.
+### Step 4: Engage in a Pilot Program
 
-### Step 4: Submit via API
+Since the public API is under development (Month 4 of the roadmap), we onboard new claims through guided pilot programs to ensure methodological rigor.
 
-```bash
-curl -X POST https://api.legis-ledger.org/submit \
-  -H "Content-Type: application/json" \
-  -d @your-claim.json
-```
+1. **Start Small**: Pilot with 1 knowledge claim (e.g., Creatine).
+2. **Contact Us**: Email us at institutions@legis-ledger.org to discss a pilot or open a GitHub Issue to propose your first claim abstract.
+3. **Evaluate**: You will evaluate the result after 30 days to ensure a positive ROI and mission alignment.
 
 ---
 
@@ -164,37 +163,10 @@ curl -X POST https://api.legis-ledger.org/submit \
 ### Free Tier (Most Institutions)
 - **Cost:** $0
 - **Includes:**
-  - Publish unlimited knowledge abstracts
-  - Cryptographic signing
+  - Browse/search abstracts
   - Basic analytics dashboard
   - Community support (GitHub issues)
   - Listed in institution directory
-
-### Sponsorship Tiers (Optional)
-
-**Bronze ($10k/year):**
-- All Free features
-- Logo on website footer
-- Quarterly impact reports
-- Priority GitHub issues
-
-**Silver ($50k/year):**
-- All Bronze features
-- Priority technical support (email + video)
-- Custom vocabulary extension assistance
-- Named in major announcements
-- Dedicated success manager
-
-**Gold ($100k/year):**
-- All Silver features
-- Dedicated integration engineering (up to 40 hours)
-- Custom analytics dashboard for your domain
-- Advisory board seat (non-voting, input only)
-- Co-branded case studies and publications
-
-**Note:** Sponsorship is **optional** and provides **no governance control**. All institutions have equal standing in vocabulary votes and federation governance.
-
----
 
 ## Governance Guarantees
 
@@ -310,7 +282,7 @@ A: Propose a domain extension via GitHub. Simple majority of institutions in tha
    - [Quality Tiers](docs/governance/QUALITY_TIERS.md) - How visibility works
 
 3. **Contact us:**
-   - Email: institutions@legis-ledger.org
+   - Email: institutions@legisledger.org
    - GitHub: Open an issue in `/onboarding` repository
    - Office hours: Tuesdays 2-4pm ET (Zoom link on website)
 
@@ -318,20 +290,6 @@ A: Propose a domain extension via GitHub. Simple majority of institutions in tha
    - Pilot with 1 claim (2 hours)
    - Evaluate results after 30 days
    - Expand if ROI positive
-
----
-
-## Training & Support
-
-**Free Resources:**
-- Documentation: Complete guides and examples
-- GitHub: Community support via issues
-- Webinars: Monthly "How to Publish Knowledge Claims" (recorded)
-
-**Paid Training (Optional):**
-- Institution workshop: $5k (1-day on-site, up to 20 staff)
-- Certification program: $2k/person (Bayesian reasoning for analysts)
-- Custom integration: $50k (dedicated engineering for complex systems)
 
 ---
 
