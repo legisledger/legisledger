@@ -1,8 +1,8 @@
 # Legis Ledger Architecture
 ```
 Version: 1.0.0
-Last Updated: October 24, 2025
-Status: MVP #1 (Passenger Rights) - Live
+Last Updated: December 8, 2025
+Status: Live
 ```
 # Table of Contents
 
