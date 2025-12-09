@@ -337,41 +337,6 @@ Source: Independent research group (not FDA). Verify: [links]"
 
 ---
 
-## Economic Questions
-
-### How is this funded?
-
-**Multi-sided market:**
-- **Commercial users pay** (travel sites, health apps) - API fees
-- **Citizens access free** (always)
-- **Sponsors optional** (corporations, foundations) - but no governance control
-- **Grants transitional** (Year 1-3) then self-sustaining
-
-See: [FUNDING.md](FUNDING.md) for detailed model
-
-### What's your revenue model?
-
-| Source | Year 3 Target |
-|--------|---------------|
-| API fees (commercial) | $150k |
-| Sponsorships | $150k |
-| Data access (aggregate analytics) | $30k |
-| Training (institutions) | $40k |
-| **Total** | **$370k** |
-
-**Costs (Year 3):** $740k → **Gap needs filling via revenue growth or continued grant support**
-
-**Realistic path to sustainability:** Years 4-5, not Year 3.
-
-### Why not charge users?
-
-**Public good model:**
-- Citizens should access expert knowledge for free
-- Commercial beneficiaries subsidize (they profit from traffic)
-- Maximizes impact (no paywall)
-
-**Like:** Public libraries, Wikipedia, open-source software
-
 ### What if commercial revenue doesn't materialize?
 
 **Fallback:**
