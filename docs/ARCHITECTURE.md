@@ -23,35 +23,27 @@ Status: MVP #1 (Passenger Rights) - Live
 
 
 ## Core Principles
-### 1. Epistemic Humility
-
+### 1. 🔬 **Honest Uncertainty** 
 * No claim ever reaches 1.0 confidence (absolute certainty)
 * Uncertainty is quantified, not hidden
 * "We could be wrong" is structurally enforced
 
-### 2. Transparent Reasoning
-
+### 2. 🏛️ **Transparency** 
+* Provenance
+* Auditability with open data
 * Bayesian analysis shows: Prior → Evidence → Posterior
 * Every confidence level must be justified
 * Falsification criteria must be specified
 
-### 3. Structured Disagreement
-
+### 3. 📚 **Integrity** 
 * Multiple institutions can analyze the same scenario
 * Different conclusions are preserved, not averaged
 * Disagreement is made precise through quantified confidence
 
-### 4. Provenance
-
+### 4. 🎯 **Momentum** 
+* Ship MVPs
+* Iterate with real users
 * Git tracks every change
-* Sources are linked and accessible
-* Attribution is permanent
-
-### 5. Domain Agnosticism
-
-* Core schema works for legal, scientific, policy, medical domains
-* Extensions add domain-specific fields
-* Common patterns across all knowledge types
 
 ## The Problem We're Solving
 
@@ -667,17 +659,17 @@ DomainRenderers.medical = {
 **Frontend:**
 - Pure HTML/CSS/JavaScript (no build step)
 - Domain-specific renderers in vanilla JavaScript
-- GitHub Pages hosting
+- Vercel page hosting
 - Custom domain (legisledger.com)
 
 **Data:**
-- JSON abstracts in `/data/abstracts`
+- JSON abstracts in `/api/abstracts`
 - Validated against JSON Schema
 - Git as database (provenance built-in)
 
 **Infrastructure:**
 - GitHub for version control
-- GitHub Pages for hosting
+- Vercel for hosting
 - GoDaddy for DNS
 
 **Why this stack:**
@@ -909,12 +901,8 @@ Both analyses visible. Users see:
 
 ### Security & Trust
 #### Threat Model
-**Attack vectors:**
 
-1. False submissions (fake institution submits low-quality opinion)
-2. Gaming confidence (institution inflates confidence unjustifiably)
-3. Censorship (infrastructure operators suppress opinions)
-4. Manipulation (bad actors flood with noise)
+The Legis Ledger architecture is designed under the assumption of malicious participation and the challenge of systemic bias. We actively model threats related to data gaming, institutional capture, Sybil attacks, and information warfare. Detailed threat models are maintained internally and are used to drive the priorities of the Change Control Board (CCB). We welcome community feedback on potential failure modes via GitHub Issues.
 
 #### Defenses:
 
@@ -1000,56 +988,6 @@ This architecture is not final. It will evolve based on:
 * **Popper**: Falsifiability as demarcation criterion
 
 See [/docs/BAYESIAN_REASONING.md](/docs/BAYESIAN_REASONING.md) for detailed methodology.
-
-### Status & Roadmap
-#### ✅ Phase 1: MVP (Q1 2025) - LIVE
-
-* Passenger rights domain
-* 4 knowledge abstracts
-* Bayesian confidence visualization
-* Core schema + legal extension
-* Domain-specific rendering architecture
-
-#### 🔄 Phase 2: Refinement (Q2 2025) - IN PROGRESS
-
-* Community feedback integration
-* Additional passenger rights abstracts
-* Improved documentation
-* CONTRIBUTING.md and governance model
-
-#### 🔮 Phase 3: Scientific Domain (Q3 2025) - PLANNED
-
-* Climate change test case (multiple abstracts)
-* Replication tracking
-* Predictive accuracy validation
-
-#### Phase 4: Policy Domain (Q4 2025) - PLANNED
-
-* Universal Basic Income (UBI) test case
-* Multiple institutional perspectives
-* Implementation results tracking
-* Cost-benefit analysis integration
-
-#### 🔮 Phase 5: API & Automation (2026) - FUTURE
-
-* REST API for institutional submissions
-* Automated Bayesian validation
-* Real-world feedback integration
-* Confidence calibration and updates
-
-#### 🔮 Phase 6: Knowledge Graph (2026) - FUTURE
-
-* Relationship mapping (supports/contradicts/refines)
-* Confidence propagation through graph
-* Contradiction detection
-* Evidence network visualization
-
-#### 🔮 Phase 7: AI Integration (2026) - FUTURE
-
-* Model Context Protocol (MCP) server
-* ChatGPT/Claude integration
-* Scenario extraction from natural language
-* Conversational confidence explanation
 
 ### Open Questions
 These are architectural questions we don't yet have answers to:

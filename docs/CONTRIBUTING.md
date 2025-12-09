@@ -137,8 +137,8 @@ Legis Ledger is **open-source knowledge infrastructure** for democracy. We're bu
 
 ```bash
 # Clone repository
-git clone https://github.com/legis-ledger/legis-ledger.git
-cd legis-ledger
+git clone https://github.com/legisledger/legisledger.git
+cd legisledger
 
 # Install dependencies
 npm install  # or: pip install -r requirements.txt
@@ -432,25 +432,32 @@ By contributing, you agree:
 
 ### Our Principles
 
-**Epistemic humility:**
-- Acknowledge uncertainty
+**🔬 **Honest Uncertainty** 
+- Confidence < 1.0 always
 - Welcome correction
 - "Could be wrong" is strength, not weakness
 
-**Collaborative:**
+
+**📚 **Integrity** 
+- Structural solutions
+- Verified claims
+- Transparent CCB
+
+**🏛️ **Transparency** 
+- Provenance
+- Auditability
+- Open data
 - Assume good faith
 - Critique ideas, not people
 - Seek understanding before disagreeing
-
-**Inclusive:**
 - Welcome newcomers
 - Value diverse perspectives
-- No gatekeeping
 
-**Focus on impact:**
+**🎯 **Momentum** (Ship MVPs, iterate with real users):**
 - Users and institutions come first
 - Working code over perfect code
 - Iterate based on feedback
+- No gatekeeping (only pull requests)
 
 ### Unacceptable Behavior
 
