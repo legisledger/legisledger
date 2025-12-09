@@ -667,11 +667,6 @@ DomainRenderers.medical = {
 - Validated against JSON Schema
 - Git as database (provenance built-in)
 
-**Infrastructure:**
-- GitHub for version control
-- Vercel for hosting
-- GoDaddy for DNS
-
 **Why this stack:**
 - ✅ Simple (no deployment complexity)
 - ✅ Transparent (view source works)
