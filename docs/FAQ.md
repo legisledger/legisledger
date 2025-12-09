@@ -527,7 +527,7 @@ We're claiming:
 1. Check full documentation: `/docs` directory
 2. GitHub Discussions: Ask the community
 3. Email: hello@legis-ledger.org
-4. Office hours: Tuesdays 2-4pm ET (Zoom link on website)
+4. Office hours: Tuesdays 2-4pm ET (Zoom link on website), if asked for 
 
 **Found an issue with this FAQ?** Open a PR to improve it!
 
