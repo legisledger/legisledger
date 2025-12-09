@@ -1,6 +1,6 @@
 # Legis Ledger: Knowledge Infrastructure for Democracy
 
-**🟢 STATUS: The Legis Ledger public repository is now live.**
+**🟢 STATUS: The Legis Ledger public repository is now live at https://demo.legisledger.com.**
 
 ---
 
@@ -111,22 +111,22 @@ See: [Core Schema](schemas/core-knowledge-schema-1.2.0.json)
 
 ## Key Principles
 
-### 1. Honest Uncertainty (Captures Humility & Confidence < 1.0)
+### 1. Honest Uncertainty (Humility & Confidence < 1.0)
 - Confidence always < 1.0 (no absolute certainty)
 - "Could be wrong" section explicit
 - Uncertainties listed transparently
 
-### 2. Transparency (Captures Provenance, Auditability, and Verification)
+### 2. Transparency (Provenance, Auditability, and Verification)
 - Who submitted (institution type, potential biases)
 - How to verify independently
 - What's NOT (not submitted by official authorities)
 
-### 3. Integrity (Captures Schema Validation, CCB, Bayesian Rigor)
+### 3. Integrity (Schema Validation, CCB, Bayesian Rigor)
 - Prior → Evidence → Posterior (transparent path)
 - Show your work (all steps visible)
 - Update as evidence emerges
 
-### 4. Momentum (Captures the Bias toward Shipping, necessary to achieve the Vision)
+### 4. Momentum (Bias toward Shipping, necessary to achieve the Vision)
 - No central authority
 - Fork rights prevent capture
 - Institutional sovereignty preserved
@@ -214,13 +214,13 @@ This project will welcome contributions in:
 - Vocabulary governance
 - Institution recruitment
 
-See [docs/CONTRIBUTING.md](CONTRIBUTING.md) (to be created)
+See [docs/CONTRIBUTING.md](CONTRIBUTING.md)
 
 ---
 
 ## Contact
 
-**Project Inquiry:** hello@legis-ledger.org (to be set up)
+**Project Inquiry:** [hello@legisledger.org](mailto:hello@legisledger.org)
 
 ---
 
@@ -228,7 +228,7 @@ See [docs/CONTRIBUTING.md](CONTRIBUTING.md) (to be created)
 
 Apache 2.0 License - See [LICENSE](LICENSE)
 
-All code, schemas, and documentation will be open source.
+All code, schemas, and documentation are open source.
 
 ---
 
@@ -253,8 +253,8 @@ All code, schemas, and documentation will be open source.
 
 **Theoretical Foundations:**
 - Jonathan Rauch - *The Constitution of Knowledge* (2021)
-- James Madison - *Federalist Papers* (1787)
 - F.A. Hayek - *The Use of Knowledge in Society* (1945)
+- James Madison - *Federalist Papers* (1787)
 - Bayesian epistemology and statistical inference
 - GRADE Working Group (evidence assessment)
 
@@ -266,5 +266,5 @@ All code, schemas, and documentation will be open source.
 
 ---
 
-**Last Updated:** 2025-12-07  
+**Last Updated:** 2025-12-08 
 **Version:** 1.2.0-launch  

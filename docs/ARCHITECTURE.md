@@ -1,8 +1,8 @@
 # Legis Ledger Architecture
 ```
 Version: 1.0.0
-Last Updated: October 24, 2025
-Status: MVP #1 (Passenger Rights) - Live
+Last Updated: December 8, 2025
+Status: Live
 ```
 # Table of Contents
 
@@ -666,11 +666,6 @@ DomainRenderers.medical = {
 - JSON abstracts in `/api/abstracts`
 - Validated against JSON Schema
 - Git as database (provenance built-in)
-
-**Infrastructure:**
-- GitHub for version control
-- Vercel for hosting
-- GoDaddy for DNS
 
 **Why this stack:**
 - ✅ Simple (no deployment complexity)
