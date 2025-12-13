@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Legis Ledger - The Universal Truth Standard</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1, h2, h3 {
+            color: #667eea;
+            margin-top: 30px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        h1 { font-size: 36px; border-bottom: none; }
+        h2 { font-size: 24px; }
+        h3 { font-size: 18px; color: #333; }
+        p, ul, ol {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        ul, ol {
+            padding-left: 20px;
+        }
+        code {
+            background: #f0f0f0;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+        a {
+            color: #667eea;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        .disclaimer, .status {
+            border: 1px solid #ffc107;
+            background: #fffbe6;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        .status strong { color: #856404; }
+
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 3px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+        }
+        
+        .hero p {
+            font-size: 18px;
+            opacity: 0.95;
+            line-height: 1.6;
+            max-width: 700px;
+        }
+        
+        .hero .tagline {
+            font-size: 14px;
+            opacity: 0.8;
+            margin-top: 20px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <div style="display: flex; align-items: center; margin-bottom: 15px;">
+                <img 
+                    src="./assets/legis-ledger-icon.svg" 
+                    alt="Legis Ledger Logo" 
+                    style="height: 50px; margin-top: 15px; margin-right: 15px; filter: invert(1);"
+                >
+                <h1 style="margin-bottom: 0;color:#ffffff;">Legis Ledger</h1>
+            </div>
+            <p style="font-size: 20px; font-weight: 600; margin-bottom: 15px; line-height: 1.4;">
+                A Foundation for Quantified Knowledge 
+            </p>
+        </div>
+        <p><strong>🟢 STATUS: Legis Ledger is now live at <a href="https://demo.legisledger.com">https://demo.legisledger.com</a>.</strong></p>
+
+        <div class="disclaimer">
+            <h2>⚖️ LEGAL DISCLAIMER</h2>
+            <p><strong>Independent Open Source Project</strong></p>
+            <p>This is an independent open source project and is not affiliated with, endorsed by, or representative of any government agency or the United States Government.</p>
+            <p>The views and opinions expressed in this project are those of the contributors and do not necessarily reflect the official policy or position of any government agency.</p>
+            <p>This project was developed outside of official duty hours using personal resources.</p>
+            <p><strong>License:</strong> Apache 2.0</p>
+        </div>
+
+        <h2>What This Is</h2>
+        <p>Legis Ledger is knowledge infrastructure that enables institutions to publish expert opinions with:</p>
+        <ul>
+            <li><strong>Quantified confidence</strong> (Bayesian probabilities, not binary true/false)</li>
+            <li><strong>Transparent provenance</strong> (who submitted, potential biases, verification paths)</li>
+            <li><strong>Real-world validation</strong> (track outcomes, update confidence)</li>
+            <li><strong>Structured disagreement</strong> (preserve pluralism while enabling convergence)</li>
+        </ul>
+        <p>Like Madison's Constitution provides a framework for political disagreement, this infrastructure provides a framework for <strong>epistemic disagreement</strong>.</p>
+
+        <h2>Why This Exists</h2>
+        <p><strong>The Problem:</strong></p>
+        <p>Wikipedia enables cooperation through consensus, which works for settled facts ("Paris is the capital of France") but breaks down for:</p>
+        <ul>
+            <li>Contested scientific claims ("Does creatine increase muscle mass?")</li>
+            <li>Situational judgments ("Is high-dose Omega-3 effective for all patients?")</li>
+        </ul>
+        <p>The existing consensus model cannot accommodate "high confidence for group A, low confidence for group B." This leads to: 1) Fact wars, or 2) Retreat to consensus, which strips out essential nuance.</p>
+        <p><strong>The Solution: Epistemic Humility Infrastructure</strong></p>
+        <p>We need infrastructure that tracks **epistemic uncertainty** alongside the claim. A single abstract should be able to convey the probability distribution of expert confidence based on transparent evidence, without requiring consensus.</p>
+
+        <h2>Status</h2>
+        <div class="status">
+            <p><strong>Epistemic Status:</strong> Early-stage prototype (0.65 confidence we can handle contested domains)</p>
+            <p><strong>Current Confidence in Architecture:</strong></p>
+            <ul>
+                <li>Can handle legal domain: 0.85</li>
+                <li>Can handle scientific domain: 0.90</li>
+                <li>Can handle climate change: 0.75 (testing needed)</li>
+                <li>Can handle UBI: 0.65 (most uncertain)</li>
+            </ul>
+        </div>
+        
+        <h2>Acknowledgments</h2>
+        <p><strong>Theoretical Foundations:</strong></p>
+        <ul>
+            <li>Jonathan Rauch - <em>The Constitution of Knowledge</em> (2021)</li>
+            <li>F.A. Hayek - <em>The Use of Knowledge in Society</em> (1945)</li>
+            <li>James Madison - <em>Federalist Papers</em> (1787)</li>
+            <li>Bayesian epistemology and statistical inference</li>
+            <li>GRADE Working Group (evidence assessment)</li>
+        </ul>
+        <p><strong>Inspiration:</strong></p>
+        <ul>
+            <li>Wikipedia (cooperation through consensus)</li>
+            <li>Schema.org (structured data for the web)</li>
+            <li>Git (distributed version control)</li>
+            <li>Email (federated protocols)</li>
+        </ul>
+
+        <h2>Contact</h2>
+        <p><strong>Project Inquiry:</strong> <a href="mailto:hello@legisledger.org">hello@legisledger.org</a></p>
+        <p><strong>License:</strong> Apache 2.0</p>
+        <p style="text-align: right; font-size: 14px; opacity: 0.7;">Last Updated: December 13, 2025</p>
+    </div>
+</body>
+</html>
