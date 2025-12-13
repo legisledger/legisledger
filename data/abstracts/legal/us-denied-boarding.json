@@ -8,6 +8,7 @@
   
   "scenario": {
     "description": "Passenger with confirmed reservation denied boarding on domestic US flight due to oversale. Airline sought volunteers first, then involuntarily denied boarding. Alternative flight arrived 3.5 hours later than original. Passenger checked in on time and was at gate when boarding began.",
+    "domain": "legal",    
     "originCountry": "US",
     "originAirport": "ORD",
     "destinationCountry": "US",

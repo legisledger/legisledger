@@ -8,8 +8,8 @@
   
   "scenario": {
     "description": "Flight from Paris (CDG) to New York (JFK) delayed 4 hours. Airline claims weather delay, and meteorological reports confirm severe thunderstorms at departure time that grounded multiple flights. Flight logs show weather as primary cause, mechanical issue was secondary response to lightning strike during taxi.",
+    "domain": "legal",
     "originCountry": "FR",
-    "originAirport": "CDG",
     "originAirport": "CDG",
     "destinationCountry": "US",
     "destinationAirport": "JFK",

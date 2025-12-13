@@ -11,6 +11,7 @@
   
   "scenario": {
     "description": "Flight from Paris (CDG) to New York (JFK) delayed 4 hours due to mechanical issue. Airline claims weather was a factor but flight logs show mechanical problem as primary cause.",
+    "domain": "legal",
     "originCountry": "FR",
     "originAirport": "CDG",
     "destinationCountry": "US",
