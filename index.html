@@ -356,6 +356,84 @@
         container.innerHTML = html;
     }
     
+    function renderAbstracts() {
+        const container = document.getElementById('abstractsContainer');
+        
+        if (filteredAbstracts.length === 0) {
+            container.innerHTML = `
+                <div class="loading">
+                    <p>No abstracts match your search.</p>
+                </div>
+            `;
+            return;
+        }
+
+        // 1. **NEW:** Apply Round-Robin Sorting for Domain Diversity
+        //    We only apply this sorting if no active filter is set (i.e., we are on the homepage)
+        //    A flag (e.g., isFiltered) would be ideal, but for simplicity, we sort the whole list.
+        const abstractsForDisplay = sortAbstractsByDomainDiversity(filteredAbstracts);
+        
+        const html = `
+            <div class="abstract-grid">
+                ${abstractsForDisplay.map(abstract => createAbstractCard(abstract)).join('')}
+            </div>
+        `;
+        
+        container.innerHTML = html;
+    }
+
+
+    /**
+     * Helper function to sort abstracts for display, prioritizing domain diversity.
+     * @param {Array<Object>} abstracts - The list of abstract objects to sort.
+     * @returns {Array<Object>} The new array sorted using a round-robin approach.
+     */
+    function sortAbstractsByDomainDiversity(abstracts) {
+        if (!abstracts || abstracts.length === 0) {
+            return [];
+        }
+
+        // 1. Group Abstracts by Domain
+        const groupedAbstracts = abstracts.reduce((acc, abstract) => {
+            const domain = abstract.domain || 'unknown';
+            if (!acc[domain]) {
+                acc[domain] = [];
+            }
+            acc[domain].push(abstract);
+            return acc;
+        }, {});
+        
+        // 2. Define Display Order (Ensuring 'legal' is included)
+        // We get the keys from the grouped abstracts to handle any missing domains gracefully
+        const allDomains = Object.keys(groupedAbstracts);
+        // You can hardcode a priority order if needed:
+        // const domainOrder = ['health', 'policy', 'science', 'legal'].filter(d => allDomains.includes(d)); 
+        // For now, let's just use all found domains to ensure every abstract is pulled.
+
+        const sortedList = [];
+        let cycleIndex = 0;
+        const maxCycles = abstracts.length; // Safety break
+        
+        // 3. Round-Robin Merge
+        while (sortedList.length < abstracts.length && cycleIndex < maxCycles * allDomains.length) {
+            
+            // Use modulus operator to cycle through allDomains (e.g., 0, 1, 2, 3, 0, 1, 2, 3, ...)
+            const domainKey = allDomains[cycleIndex % allDomains.length]; 
+            
+            // Check if the current domain group has remaining abstracts
+            if (groupedAbstracts[domainKey] && groupedAbstracts[domainKey].length > 0) {
+                // Use .shift() to remove the first element from the domain array and add it to the sorted list
+                sortedList.push(groupedAbstracts[domainKey].shift());
+            }
+
+            cycleIndex++;
+        }
+
+        // Return the new, diverse list
+        return sortedList;
+    }
+
+    
     // Create abstract card
     function createAbstractCard(abstract) {
         const confidence = abstract.confidence || 0.5;
