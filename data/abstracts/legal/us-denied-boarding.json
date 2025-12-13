@@ -96,6 +96,7 @@
   ],
   
   "conclusion": {
+    "claim": "You likely are entitled to 400% of your one-way fare, with a maximum of $1,550, because alternative transport arrived more than 2 hours late at final destination. This must be paid in CASH or CHECK (not vouchers) on the spot at the airport, unless you voluntarily agree to accept airline vouchers/miles instead. Payment is required by federal law - this is not discretionary.",
     "entitled": true,
     "remedy": {
       "type": "monetary-compensation",

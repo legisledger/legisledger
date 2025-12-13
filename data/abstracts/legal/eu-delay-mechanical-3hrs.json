@@ -101,6 +101,7 @@
   ],
   
   "conclusion": {
+    "claim": "You are entitled to €600 compensation under EU Regulation 261/2004. This is in addition to any reimbursement for meals, accommodation, or alternative transport the airline should have provided.",
     "entitled": true,
     "remedy": {
       "type": "monetary-compensation",

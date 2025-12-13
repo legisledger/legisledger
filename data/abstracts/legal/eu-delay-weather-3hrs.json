@@ -26,6 +26,7 @@
   },
   
   "conclusion": {
+    "claim": "You are likely NOT entitled to monetary compensation because weather qualifies as extraordinary circumstances. However, airline must still provide care (meals, accommodation if overnight delay).",
     "entitled": false,
     "remedy": {
       "type": "care-provisions",
