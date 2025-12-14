@@ -215,17 +215,71 @@
         
         .stats {
             display: flex;
-            gap: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
             margin-top: 10px;
         }
         
         .stat {
-            flex: 1;
+            flex: 1 1 calc(33.333% - 10px);
+            min-width: 120px;
             text-align: center;
             padding: 15px;
             background: #f8f9fa;
             border-radius: 8px;
             border: 2px solid #f8f9fa;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            .hero {
+                padding: 15px 20px;
+            }
+            
+            .hero h1 {
+                font-size: 28px;
+            }
+            
+            .logo-icon {
+                height: 2.5rem;
+                margin-right: 10px;
+            }
+            
+            .hero p {
+                font-size: 16px;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .stats {
+                gap: 10px;
+            }
+            
+            .stat {
+                flex: 1 1 calc(50% - 5px);
+                min-width: 0;
+            }
+            
+            .stat:last-child {
+                flex: 1 1 100%;
+            }
+            
+            .stat .number {
+                font-size: 24px;
+            }
+            
+            .stat .label {
+                font-size: 12px;
+            }
+            
+            .abstract-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         .clickable-stat {
