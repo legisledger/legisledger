@@ -87,6 +87,8 @@
             color: #f8f8f2;
             padding: 1rem;
             border-radius: 4px;
+            white-space: pre;
+            line-height: 1.5;
         }
 
         .json-key {
@@ -340,7 +342,12 @@
                     const contentDiv = document.createElement('div');
                     contentDiv.className = 'section-content';
                     contentDiv.id = `section-${section.key}`;
-                    contentDiv.innerHTML = renderValue(jsonData[section.key], 0, section.key);
+                    
+                    const jsonDiv = document.createElement('div');
+                    jsonDiv.className = 'json-container';
+                    jsonDiv.innerHTML = renderValue(jsonData[section.key], 0, section.key);
+                    
+                    contentDiv.appendChild(jsonDiv);
                     
                     sectionDiv.appendChild(titleDiv);
                     sectionDiv.appendChild(contentDiv);
@@ -368,7 +375,12 @@
                     const contentDiv = document.createElement('div');
                     contentDiv.className = 'section-content';
                     contentDiv.id = `section-${key}`;
-                    contentDiv.innerHTML = renderValue(jsonData[key], 0, key);
+                    
+                    const jsonDiv = document.createElement('div');
+                    jsonDiv.className = 'json-container';
+                    jsonDiv.innerHTML = renderValue(jsonData[key], 0, key);
+                    
+                    contentDiv.appendChild(jsonDiv);
                     
                     sectionDiv.appendChild(titleDiv);
                     sectionDiv.appendChild(contentDiv);
@@ -393,7 +405,13 @@
             }
             
             if (typeof value === 'string') {
-                return `<span class="json-string">"${escapeHtml(value)}"</span>`;
+                // Handle multi-line strings
+                const escaped = escapeHtml(value);
+                if (escaped.length > 80 && indent > 0) {
+                    // Long strings get their own line
+                    return `<span class="json-string">"${escaped}"</span>`;
+                }
+                return `<span class="json-string">"${escaped}"</span>`;
             }
             
             if (Array.isArray(value)) {
@@ -401,11 +419,11 @@
                     return `<span class="json-brace">[]</span>`;
                 }
                 
-                let html = `<span class="json-brace">[</span>\n`;
+                let html = `<span class="json-brace">[</span><br>`;
                 value.forEach((item, i) => {
                     html += indentStr + '  ' + renderValue(item, indent + 1, `${path}[${i}]`);
                     if (i < value.length - 1) html += ',';
-                    html += '\n';
+                    html += '<br>';
                 });
                 html += indentStr + `<span class="json-brace">]</span>`;
                 return html;
@@ -417,13 +435,13 @@
                     return `<span class="json-brace">{}</span>`;
                 }
                 
-                let html = `<span class="json-brace">{</span>\n`;
+                let html = `<span class="json-brace">{</span><br>`;
                 keys.forEach((key, i) => {
                     html += indentStr + '  ';
                     html += `<span class="json-key">"${escapeHtml(key)}"</span>: `;
                     html += renderValue(value[key], indent + 1, `${path}.${key}`);
                     if (i < keys.length - 1) html += ',';
-                    html += '\n';
+                    html += '<br>';
                 });
                 html += indentStr + `<span class="json-brace">}</span>`;
                 return html;
