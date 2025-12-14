@@ -695,7 +695,7 @@
                     `;
                     
                     if (ba.evidence && ba.evidence.length > 0) {
-                        ba.evidence.slice(0, 3).forEach(ev => {
+                        ba.evidence.forEach(ev => {
                             const arrow = ev.increases ? '↑' : '↓';
                             html += `
                                 <div class="bayesian-step">
@@ -712,8 +712,8 @@
                                 </div>
                             </div>
                             <p style="margin-top: 10px; font-size: 13px; color: #666;">
-                                <a href="${API_BASE}/abstracts/${abstractData.identifier || abstractData['@id']}" target="_blank" style="color: #667eea;">
-                                    View complete JSON-LD →
+                                <a href="json-viewer.html?id=${abstractData.identifier || abstractData['@id']}">
+                                    View Full JSON-LD (Pretty Print)
                                 </a>
                             </p>
                         </div>
@@ -724,11 +724,12 @@
                         <div class="detail-section">
                             <p style="color: #666; font-style: italic;">
                                 Detailed Bayesian analysis not available for this claim. 
-                                <a href="${API_BASE}/abstracts/${abstractData.identifier || abstractData['@id']}" target="_blank" style="color: #667eea;">
+                                <a href="json-viewer.html?id=${abstractData.identifier || abstractData['@id']}" 
+                                target="_blank" style="color: #667eea;">
                                     View raw data →
                                 </a>
                             </p>
-                        </div>
+                        </div>      
                     `;
                 }
                 
