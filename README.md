@@ -1,6 +1,7 @@
-# Legis Ledger: Knowledge Infrastructure for Democracy
+# Legis Ledger: ARCHIVED
+(Codebase Secured)
 
-**🟢 STATUS: The Legis Ledger public repository is now live at https://demo.legisledger.com.**
+**⚠️ ARCHIVED: The active codebase has been migrated to a private organization repository for security and IP protection. The public site is still live at [https://demo.legisledger.com](https://demo.legisledger.com).**
 
 ---
 
@@ -13,8 +14,6 @@ This is an independent open source project and is not affiliated with, endorsed 
 The views and opinions expressed in this project are those of the contributors and do not necessarily reflect the official policy or position of any government agency.
 
 This project was developed outside of official duty hours using personal resources.
-
-**License:** Apache 2.0
 
 ---
 
@@ -226,9 +225,7 @@ See [docs/CONTRIBUTING.md](CONTRIBUTING.md)
 
 ## License
 
-Apache 2.0 License - See [LICENSE](LICENSE)
-
-All code, schemas, and documentation are open source.
+All code, schemas, and documentation were open source in this version. The active, maintained repository is now private.
 
 ---
 
