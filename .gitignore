@@ -140,3 +140,7 @@ vite.config.ts.timestamp-*
 .vercel
 
 .DS_Store
+
+#V Visual Studio Code Workspaces
+*.code-workspace
+.vscode/
