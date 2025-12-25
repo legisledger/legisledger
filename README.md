@@ -1,6 +1,6 @@
 # Legis Ledger
 
-** The public site is live at [https://demo.legisledger.com](https://demo.legisledger.com).**
+**The public site is live at [https://demo.legisledger.com](https://demo.legisledger.com).**
 
 ---
 
