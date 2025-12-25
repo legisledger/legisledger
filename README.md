@@ -1,7 +1,6 @@
-# Legis Ledger: ARCHIVED
-(Codebase Secured)
+# Legis Ledger
 
-**⚠️ ARCHIVED: The active codebase has been migrated to a private organization repository for security and IP protection. The public site is still live at [https://demo.legisledger.com](https://demo.legisledger.com).**
+** The public site is live at [https://demo.legisledger.com](https://demo.legisledger.com).**
 
 ---
 
